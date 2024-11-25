@@ -1,4 +1,4 @@
-package mathModel;
+package mathModels;
 
 public class MathModel {
     
