@@ -1,8 +1,9 @@
 package controller;
 
 import javafx.scene.layout.Pane;
+import view.Page;
 import view.MainPage;
-import view.GenericPage;
+import view.FirstPage;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,14 +21,16 @@ public class PageManager {
     // Initialize and register all pages
     private void initializePages() {
         // Register the main page
-        pages.put("Main", () -> new MainPage(navigationController).getRoot());
+        Page mainPage = new MainPage(navigationController);
+        pages.put(mainPage.getPageName(), () -> new MainPage(navigationController).getRoot());
 
-        // Register pages Q1-Q5
-        pages.put("Q1", () -> GenericPage.createPage(navigationController, "Q1", "Graph 1", 3));
-        pages.put("Q2", () -> GenericPage.createPage(navigationController, "Q2", "Graph 2", 5));
-        pages.put("Q3", () -> GenericPage.createPage(navigationController, "Q3", "Graph 3", 2));
-        pages.put("Q4", () -> GenericPage.createPage(navigationController, "Q4", "Graph 4", 4));
-        pages.put("Q5", () -> GenericPage.createPage(navigationController, "Q5", "Graph 5", 1));
+        // Register pages
+        Page firstPage = new FirstPage(navigationController);
+        pages.put(firstPage.getPageName(), () -> new FirstPage(navigationController).getRoot());
+        pages.put("Q2", () -> new FirstPage(navigationController).getRoot());
+        pages.put("Q3", () -> new FirstPage(navigationController).getRoot());
+        pages.put("Q4", () -> new FirstPage(navigationController).getRoot());
+        pages.put("Q5", () -> new FirstPage(navigationController).getRoot());
     }
 
     public Pane getPage(String pageName) {
@@ -36,7 +39,7 @@ public class PageManager {
         }
         throw new IllegalArgumentException("Page not found: " + pageName);
     }
-
+    
     public void addPage(String pageName, Supplier<Pane> pageSupplier) {
         pages.put(pageName, pageSupplier);
     }

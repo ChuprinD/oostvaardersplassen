@@ -4,78 +4,223 @@ import controller.NavigationController;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 
-public class MainPage {
+public class MainPage implements Page {
+    private final String pageName = "Main";
     private final BorderPane root;
 
     public MainPage(NavigationController navigationController) {
+        root = new BorderPane();
+
         double windowWidth = javafx.stage.Screen.getPrimary().getBounds().getWidth();
         double windowHeight = javafx.stage.Screen.getPrimary().getBounds().getHeight();
 
-        root = new BorderPane();
+        // Header
+        HBox header = HeaderFooterFactory.createHeader(pageName, navigationController, windowWidth, windowHeight);
+        root.setTop(header);
 
-        // Horizontal navigation bar
-        HBox navBar = new HBox();
-        navBar.setAlignment(Pos.CENTER);
-        navBar.setSpacing(windowWidth * 0.008);
+        // Main content sections
+        VBox mainContent = new VBox();
+        HBox sectionHome = createSectionHome(windowWidth, windowHeight);
+        HBox sectionAboutPreserve = createSectionAboutPreserve(windowWidth, windowHeight);
+        HBox sectionAboutAnimals = createSectionAboutAnimals(windowWidth, windowHeight);
 
-        String[] sections = {"Q1", "Q2", "Q3", "Q4", "Q5"};
-        for (String section : sections) {
-            Button button = new Button(section);
-            button.setPrefSize(windowWidth * 0.08, windowHeight * 0.03);
-            button.setStyle("-fx-font-size: 20px;");
-            button.setOnAction(e -> navigationController.showPage(section)); // Navigate to the selected page
-            button.setFocusTraversable(false);
-            navBar.getChildren().add(button);
+        mainContent.getChildren().addAll(sectionHome, sectionAboutPreserve, sectionAboutAnimals);
+
+        // Scrollable pane for the main content
+        ScrollPane scrollPane = new ScrollPane();
+        scrollPane.setContent(mainContent);
+        scrollPane.setFitToWidth(true);
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollPane.setStyle("-fx-focus-color: transparent; -fx-faint-focus-color: transparent;");
+
+        root.setCenter(scrollPane);
+
+        // Footer
+        HBox footer = HeaderFooterFactory.createFooter(navigationController, windowWidth, windowHeight);
+        root.setBottom(footer);
+    }
+
+    // Section 1: Home
+    private HBox createSectionHome(double windowWidth, double windowHeight) {
+        Label title = new Label("Grey Wolves in Oostvaardersplassen");
+        title.setStyle("-fx-font-size: 30px; -fx-font-weight: bold;");
+
+        Label description = new Label(
+                "Something Something Something\n"
+                        + "SomethingSomething Something\n"
+                        + "SomethingSomething Something\n"
+                        + "SomethingSomething Something\n");
+        description.setStyle("-fx-font-size: 20px;");
+        description.setWrapText(true);
+
+        VBox textBlock = new VBox(windowHeight * 0.001, title, description);
+        textBlock.setAlignment(Pos.CENTER);
+        textBlock.setMinWidth(windowWidth / 2 - windowWidth * 0.05);
+
+        // Replace the square with the carousel
+        HBox imageBlock = createRectangleCarousel(windowWidth, windowHeight);
+
+        // Combine text and carousel into one section
+        HBox content = new HBox(windowWidth * 0.05, textBlock, imageBlock);
+        content.setAlignment(Pos.CENTER);
+        content.setPadding(new Insets(windowHeight * 0.07, 0, windowHeight * 0.07, 0));
+        return content;
+    }
+
+    // Section 2: About the Preserve
+    public HBox createSectionAboutPreserve(double windowWidth, double windowHeight) {
+        Label title = new Label("Oostvaardersplassen");
+        title.setStyle("-fx-font-size: 30px; -fx-font-weight: bold;");
+
+        Label description = new Label(
+                "Something Something Something\n"
+                        + "SomethingSomething Something\n"
+                        + "SomethingSomething Something\n"
+                        + "SomethingSomething Something\n");
+        description.setStyle("-fx-font-size: 20px;");
+        description.setWrapText(true);
+
+        VBox textBlock = new VBox(windowHeight * 0.001, title, description);
+        textBlock.setAlignment(Pos.CENTER);
+        textBlock.setMinWidth(windowWidth / 2 - windowWidth * 0.05);
+
+        Rectangle image = new Rectangle(windowWidth * 0.4, windowHeight * 0.35);
+        image.setFill(Color.web("#808080"));
+        image.setStroke(Color.BLACK);
+        image.setStrokeWidth(2);
+
+        // Combine text and image into one section
+        HBox content = new HBox(windowWidth * 0.05, image, textBlock);
+        content.setAlignment(Pos.CENTER);
+        content.setStyle("-fx-background-color: lightgray;");
+        content.setPadding(new Insets(windowHeight * 0.07, 0, windowHeight * 0.07, 0));
+        return content;
+    }
+
+    // Section 3: About the Animals
+    private HBox createSectionAboutAnimals(double windowWidth, double windowHeight) {
+        HBox content = new HBox(windowWidth * 0.15);
+        content.setAlignment(Pos.CENTER);
+
+        for (int i = 0; i < 3; i++) {
+            Label title = new Label("Animal" + (i + 1));
+            title.setStyle("-fx-font-size: 25px; -fx-font-weight: bold;");
+
+            Label description = new Label(
+                    "Something Something\n"
+                            + "SomethingSomething\n"
+                            + "SomethingSomething\n"
+                            + "SomethingSomething\n");
+            description.setStyle("-fx-font-size: 20px;");
+            description.setWrapText(true);
+
+            Rectangle square = new Rectangle(windowWidth * 0.15, windowHeight * 0.2);
+            square.setFill(Color.web("#808080"));
+            square.setStroke(Color.BLACK);
+            square.setStrokeWidth(2);
+
+            VBox animalBlock = new VBox(windowHeight * 0.001, square, title, description);
+            animalBlock.setAlignment(Pos.CENTER);
+
+            content.getChildren().add(animalBlock);
         }
 
-        navBar.setPadding(new Insets(windowHeight * 0.03, 0, 0, 0));
+        content.setPadding(new Insets(windowHeight * 0.07, 0, windowHeight * 0.07, 0));
+        return content;
+    }
 
-        root.setTop(navBar);
+    // Create carousel with rectangles
+    private HBox createRectangleCarousel(double windowWidth, double windowHeight) {
+        Color[] colors = {
+                Color.RED,
+                Color.GREEN,
+                Color.BLUE,
+                Color.YELLOW,
+                Color.ORANGE
+        };
 
-        // Central area with the image above the text
-        VBox centerContent = new VBox();
-        centerContent.setAlignment(Pos.TOP_CENTER);
-        centerContent.setSpacing(windowHeight * 0.5); // Space between the image and the text
-        centerContent.setPadding(new Insets(windowHeight * 0.04, 0, 0, 0)); // Add padding between navBar and the image
+        final int[] currentIndex = {0};
 
-        // Add the image placeholder (gray square)
-        StackPane imagePlaceholder = new StackPane();
-        imagePlaceholder.setStyle("-fx-background-color: gray;");
-        imagePlaceholder.setMinSize(windowWidth * 0.7, windowHeight * 0.7);
-        imagePlaceholder.setMaxSize(windowWidth * 0.7, windowHeight * 0.7);
+        StackPane rectanglePane = new StackPane();
+        rectanglePane.setMaxWidth(windowWidth * 0.4);
+        rectanglePane.setMaxHeight(windowHeight * 0.4);
 
-        // Text description below the image
-        Text description = new Text("Description of the preserve. Here is some introductory text about the application.");
-        description.setStyle("-fx-font-size: 32px; -fx-text-alignment: center;");
+        Rectangle rectangle = new Rectangle(windowWidth * 0.4, windowHeight * 0.4);
+        rectangle.setFill(colors[currentIndex[0]]);
+        rectangle.setStroke(Color.BLACK);
+        rectangle.setStrokeWidth(1);
 
-        // Add empty space below the text using Region
-        Region spacer = new Region();
-        spacer.setPrefHeight(windowHeight * 0.05);
+        rectanglePane.getChildren().add(rectangle);
 
-        // Add the image, text, and spacer to the central container
-        centerContent.getChildren().addAll(imagePlaceholder, description, spacer);
+        HBox carouselDots = new HBox(10);
+        carouselDots.setAlignment(Pos.CENTER);
+        for (int i = 0; i < colors.length; i++) {
+            Label dot = new Label("●");
+            dot.setStyle("-fx-font-size: 20px; -fx-text-fill: #cccccc;");
+            carouselDots.getChildren().add(dot);
+        }
 
-        // Wrap the central content in a ScrollPane
-        ScrollPane scrollPane = new ScrollPane();
-        scrollPane.setContent(centerContent);
-        scrollPane.setFitToWidth(true); // Allow the content to fit the width of the ScrollPane
-        scrollPane.setFitToHeight(true); // Allow the content to fit the height of the ScrollPane
-        scrollPane.setPannable(true); // Enable panning with the mouse
-        scrollPane.setStyle("-fx-background: transparent; -fx-background-color: transparent;");
+        updateDots(carouselDots, currentIndex[0]);
 
-        // Set the ScrollPane in the main layout
-        root.setCenter(scrollPane);
+        // Left arrow
+        Button leftArrow = new Button("<");
+        leftArrow.setStyle(
+                "-fx-background-radius: 50%; -fx-background-color: white; -fx-font-size: 18px;"
+        );
+        leftArrow.setOnAction(event -> {
+            currentIndex[0] = (currentIndex[0] - 1 + colors.length) % colors.length;
+            rectangle.setFill(colors[currentIndex[0]]);
+            updateDots(carouselDots, currentIndex[0]);
+        });
+
+        // Right arrow
+        Button rightArrow = new Button(">");
+        rightArrow.setStyle(
+                "-fx-background-radius: 50%; -fx-background-color: white; -fx-font-size: 18px;"
+        );
+        rightArrow.setOnAction(event -> {
+            currentIndex[0] = (currentIndex[0] + 1) % colors.length;
+            rectangle.setFill(colors[currentIndex[0]]);
+            updateDots(carouselDots, currentIndex[0]);
+        });
+
+        StackPane.setAlignment(leftArrow, Pos.CENTER_LEFT);
+        StackPane.setAlignment(rightArrow, Pos.CENTER_RIGHT);
+        StackPane.setMargin(leftArrow, new Insets(0, 10, 0, 10));
+        StackPane.setMargin(rightArrow, new Insets(0, 10, 0, 10));
+        rectanglePane.getChildren().addAll(leftArrow, rightArrow);
+
+        VBox carouselBox = new VBox(10, rectanglePane, carouselDots);
+        carouselBox.setAlignment(Pos.CENTER);
+        return new HBox(carouselBox);
+    }
+
+    // Update the style of the active dot
+    private void updateDots(HBox carouselDots, int activeIndex) {
+        for (int i = 0; i < carouselDots.getChildren().size(); i++) {
+            Label dot = (Label) carouselDots.getChildren().get(i);
+            if (i == activeIndex) {
+                dot.setStyle("-fx-font-size: 20px; -fx-text-fill: #00aaff;");
+            } else {
+                dot.setStyle("-fx-font-size: 20px; -fx-text-fill: #cccccc;");
+            }
+        }
     }
 
     public BorderPane getRoot() {
         return root;
+    }
+
+    public String getPageName() {
+        return pageName;
     }
 }
