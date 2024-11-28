@@ -23,6 +23,8 @@ public class PageManager {
         // Register the main page
         Page mainPage = new MainPage(navigationController);
         pages.put(mainPage.getPageName(), () -> new MainPage(navigationController).getRoot());
+        pages.put(mainPage.getPageName() + ".About", () -> MainPage.createPageAndScroll(navigationController, "About").getRoot());
+        pages.put(mainPage.getPageName() + ".Animals", () -> MainPage.createPageAndScroll(navigationController, "Animals").getRoot());
 
         // Register pages
         Page firstPage = new FirstPage(navigationController);

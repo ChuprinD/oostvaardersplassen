@@ -1,6 +1,7 @@
 package view;
 
 import controller.NavigationController;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -16,6 +17,9 @@ import javafx.scene.shape.Rectangle;
 public class MainPage implements Page {
     private final String pageName = "Main";
     private final BorderPane root;
+    private final ScrollPane scrollPane;
+    private final HBox sectionAboutPreserve;
+    private final HBox sectionAboutAnimals;
 
     public MainPage(NavigationController navigationController) {
         root = new BorderPane();
@@ -30,23 +34,45 @@ public class MainPage implements Page {
         // Main content sections
         VBox mainContent = new VBox();
         HBox sectionHome = createSectionHome(windowWidth, windowHeight);
-        HBox sectionAboutPreserve = createSectionAboutPreserve(windowWidth, windowHeight);
-        HBox sectionAboutAnimals = createSectionAboutAnimals(windowWidth, windowHeight);
+        sectionAboutPreserve = createSectionAboutPreserve(windowWidth, windowHeight);
+        sectionAboutAnimals = createSectionAboutAnimals(windowWidth, windowHeight);
 
         mainContent.getChildren().addAll(sectionHome, sectionAboutPreserve, sectionAboutAnimals);
 
-        // Scrollable pane for the main content
-        ScrollPane scrollPane = new ScrollPane();
+        // Scroltlable pane for the main content
+        scrollPane = new ScrollPane();
         scrollPane.setContent(mainContent);
         scrollPane.setFitToWidth(true);
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scrollPane.setStyle("-fx-focus-color: transparent; -fx-faint-focus-color: transparent;");
+        
 
         root.setCenter(scrollPane);
 
         // Footer
         HBox footer = HeaderFooterFactory.createFooter(navigationController, windowWidth, windowHeight);
         root.setBottom(footer);
+    }
+
+    public static MainPage createPageAndScroll(NavigationController navigationController, String scrollToSection) {
+        MainPage mainPage = new MainPage(navigationController);
+        double windowHeight = javafx.stage.Screen.getPrimary().getBounds().getHeight();
+    
+        javafx.application.Platform.runLater(() -> {
+            if ("About".equalsIgnoreCase(scrollToSection)) {
+                double scrollTarget = (mainPage.sectionAboutPreserve.getLayoutY() + windowHeight * 0.2 * 2)
+                        / mainPage.scrollPane.getContent().getBoundsInLocal().getHeight();
+                mainPage.scrollPane.setVvalue(scrollTarget);
+            }
+
+            if ("Animals".equalsIgnoreCase(scrollToSection)) {
+                double scrollTarget = (mainPage.sectionAboutAnimals.getLayoutY() + windowHeight * 0.2 * 4)
+                        / mainPage.scrollPane.getContent().getBoundsInLocal().getHeight();
+                mainPage.scrollPane.setVvalue(scrollTarget);
+            }
+        });
+    
+        return mainPage;
     }
 
     // Section 1: Home
@@ -72,7 +98,7 @@ public class MainPage implements Page {
         // Combine text and carousel into one section
         HBox content = new HBox(windowWidth * 0.05, textBlock, imageBlock);
         content.setAlignment(Pos.CENTER);
-        content.setPadding(new Insets(windowHeight * 0.07, 0, windowHeight * 0.07, 0));
+        content.setPadding(new Insets(windowHeight * 0.2, 0, windowHeight * 0.2, 0));
         return content;
     }
 
@@ -102,7 +128,7 @@ public class MainPage implements Page {
         HBox content = new HBox(windowWidth * 0.05, image, textBlock);
         content.setAlignment(Pos.CENTER);
         content.setStyle("-fx-background-color: lightgray;");
-        content.setPadding(new Insets(windowHeight * 0.07, 0, windowHeight * 0.07, 0));
+        content.setPadding(new Insets(windowHeight * 0.2, 0, windowHeight * 0.2, 0));
         return content;
     }
 
@@ -134,7 +160,7 @@ public class MainPage implements Page {
             content.getChildren().add(animalBlock);
         }
 
-        content.setPadding(new Insets(windowHeight * 0.07, 0, windowHeight * 0.07, 0));
+        content.setPadding(new Insets(windowHeight * 0.2, 0, windowHeight * 0.2, 0));
         return content;
     }
 
@@ -154,7 +180,7 @@ public class MainPage implements Page {
         rectanglePane.setMaxWidth(windowWidth * 0.4);
         rectanglePane.setMaxHeight(windowHeight * 0.4);
 
-        Rectangle rectangle = new Rectangle(windowWidth * 0.4, windowHeight * 0.4);
+        Rectangle rectangle = new Rectangle(windowWidth * 0.45, windowHeight * 0.45);
         rectangle.setFill(colors[currentIndex[0]]);
         rectangle.setStroke(Color.BLACK);
         rectangle.setStrokeWidth(1);

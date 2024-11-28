@@ -91,14 +91,14 @@ public class HeaderFooterFactory {
         Button aboutButton = new Button("About");
         aboutButton.setMinSize(buttonWidth, buttonHeight);
         aboutButton.setStyle("-fx-font-size: 20px;");
-        aboutButton.setOnAction(e -> navigationController.showPage("Main")); // Handle navigation
+        aboutButton.setOnAction(e -> navigationController.showPage("Main.About")); // Handle navigation
         aboutButton.setFocusTraversable(false);
 
         // Placeholder button
         Button somethingButton = new Button("[something]");
         somethingButton.setMinSize(buttonWidth, buttonHeight);
         somethingButton.setStyle("-fx-font-size: 20px;");
-        somethingButton.setOnAction(e -> navigationController.showPage("Main")); // Handle navigation
+        somethingButton.setOnAction(e -> navigationController.showPage("Main.Animals")); // Handle navigation
         somethingButton.setFocusTraversable(false);
 
         // Center buttons with spacing

@@ -96,7 +96,7 @@ public class FirstPage implements Page {
 
         VBox graphSection = new VBox(titleBox, graphBox);
         graphSection.setAlignment(Pos.TOP_CENTER);
-        graphSection.setPadding(new Insets(windowHeight * 0.05, 0, windowHeight * 0.07, 0));
+        graphSection.setPadding(new Insets(windowHeight * 0.13, 0, windowHeight * 0.13, 0));
         return graphSection;
     }
 
@@ -119,7 +119,7 @@ public class FirstPage implements Page {
         VBox descriptionSection = new VBox(descriptionTitle, descriptionText);
         descriptionSection.setStyle("-fx-background-color: lightgray;");
         descriptionSection.setAlignment(Pos.TOP_LEFT);
-        descriptionSection.setPadding(new Insets(windowHeight * 0.07, 0, windowHeight * 0.07, 0));
+        descriptionSection.setPadding(new Insets(windowHeight * 0.13, 0, windowHeight * 0.13, 0));
         return descriptionSection;
     }
 
