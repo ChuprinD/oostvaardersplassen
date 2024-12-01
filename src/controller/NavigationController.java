@@ -30,4 +30,8 @@ public class NavigationController {
     public Stage getPrimaryStage() {
         return primaryStage;
     }
+
+    public PageManager getPageManager() {
+        return pageManager;
+    }
 }
