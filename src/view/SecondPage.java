@@ -17,13 +17,13 @@ import javafx.stage.Stage;
 import utils.Util;
 import javafx.scene.control.ScrollPane;
 
-public class FirstPage implements Page {
-    private final String pageName = "Q1";
+public class SecondPage implements Page {
+    private final String pageName = "Q2";
     private final BorderPane root;
     private final VBox descriptionSection;
     private final ScrollPane scrollPane;
 
-    public FirstPage(NavigationController navigationController) {
+    public SecondPage(NavigationController navigationController) {
         root = new BorderPane();
     
         double windowWidth = javafx.stage.Screen.getPrimary().getBounds().getWidth();
@@ -114,6 +114,11 @@ public class FirstPage implements Page {
         // Description text
         Label descriptionText = new Label(
                 "Something Something Something Something Something Something Something \n"
+                        + "Something Something Something Something Something Something Something \n"
+                        + "Something Something Something Something Something Something Something \n"
+                        + "Something Something Something Something Something Something Something \n"
+                        + "Something Something Something Something Something Something Something \n"
+                        + "Something Something Something Something Something Something Something \n"
                         + "Something Something Something Something Something Something Something \n"
                         + "Something Something Something Something Something Something Something \n"
                         + "Something Something Something Something Something Something Something \n");

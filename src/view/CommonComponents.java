@@ -3,20 +3,21 @@ package view;
 import controller.NavigationController;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 
-public class HeaderFooterFactory {
+public class CommonComponents {
 
     // Creates the header section with logo, navigation buttons, and dropdown menu
     public static HBox createHeader(String pageName, NavigationController navigationController, double windowWidth,
             double windowHeight) {
         // Logo on the left
         Label logo = new Label("Logo");
-        logo.setStyle(
-                "-fx-background-color: lightgray; -fx-border-color: black; -fx-border-width: 1; -fx-alignment: center; -fx-font-size: 20px;");
+        logo.setStyle("-fx-background-color: lightgray; -fx-border-color: black; -fx-border-width: 1; -fx-alignment: center; -fx-font-size: 20px;");
         logo.setMinSize(windowWidth * 0.08, windowHeight * 0.04);
 
         HBox leftBox = new HBox(logo);
@@ -41,7 +42,9 @@ public class HeaderFooterFactory {
 
         // Combine all sections into the header
         HBox header = new HBox();
-        header.setStyle("-fx-background-color: #a9a9a9; -fx-alignment: center-left;"); // Light gray background
+        header.setStyle("-fx-background-color: #a9a9a9;" + 
+                        "-fx-alignment: center-left;" +
+                        "-fx-background-radius: 0 0 15 15;");              
         header.setMinHeight(windowHeight * 0.07);
         header.getChildren().addAll(leftBox, centerBox, rightBox);
 
@@ -107,5 +110,13 @@ public class HeaderFooterFactory {
         centerBox.setMinWidth(windowWidth / 3); // Allocate 1/3 of the header/footer width for the buttons
 
         return centerBox;
+    }
+
+    // Show a confirmation pop-up for downloading
+    public static void showDownloadPopup() {
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setTitle("Download Confirmation");
+        alert.setHeaderText("Do you want to download 'Graph Title' as a PDF?");
+        alert.showAndWait();
     }
 }

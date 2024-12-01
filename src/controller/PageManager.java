@@ -2,6 +2,7 @@ package controller;
 
 import javafx.scene.layout.Pane;
 import view.Page;
+import view.SecondPage;
 import view.MainPage;
 import view.FirstPage;
 
@@ -28,8 +29,9 @@ public class PageManager {
 
         // Register pages
         Page firstPage = new FirstPage(navigationController);
+        Page secondPage = new SecondPage(navigationController);
         pages.put(firstPage.getPageName(), () -> new FirstPage(navigationController).getRoot());
-        pages.put("Q2", () -> new FirstPage(navigationController).getRoot());
+        pages.put(secondPage.getPageName(), () -> new SecondPage(navigationController).getRoot());
         pages.put("Q3", () -> new FirstPage(navigationController).getRoot());
         pages.put("Q4", () -> new FirstPage(navigationController).getRoot());
         pages.put("Q5", () -> new FirstPage(navigationController).getRoot());

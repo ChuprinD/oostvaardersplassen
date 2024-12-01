@@ -1,7 +1,6 @@
 package view;
 
 import controller.NavigationController;
-import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -13,6 +12,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import utils.Util;
 
 public class MainPage implements Page {
     private final String pageName = "Main";
@@ -28,7 +28,7 @@ public class MainPage implements Page {
         double windowHeight = javafx.stage.Screen.getPrimary().getBounds().getHeight();
 
         // Header
-        HBox header = HeaderFooterFactory.createHeader(pageName, navigationController, windowWidth, windowHeight);
+        HBox header = CommonComponents.createHeader(pageName, navigationController, windowWidth, windowHeight);
         root.setTop(header);
 
         // Main content sections
@@ -50,8 +50,8 @@ public class MainPage implements Page {
         root.setCenter(scrollPane);
 
         // Footer
-        HBox footer = HeaderFooterFactory.createFooter(navigationController, windowWidth, windowHeight);
-        root.setBottom(footer);
+        //HBox footer = HeaderFooterFactory.createFooter(navigationController, windowWidth, windowHeight);
+        //root.setBottom(footer);
     }
 
     public static MainPage createPageAndScroll(NavigationController navigationController, String scrollToSection) {
@@ -78,14 +78,14 @@ public class MainPage implements Page {
     // Section 1: Home
     private HBox createSectionHome(double windowWidth, double windowHeight) {
         Label title = new Label("Grey Wolves in Oostvaardersplassen");
-        title.setStyle("-fx-font-size: 30px; -fx-font-weight: bold;");
+        title.setStyle("-fx-font-size: " + Util.getTitleFontSize(windowWidth, windowHeight) + "px; -fx-font-weight: bold;");
 
         Label description = new Label(
                 "Something Something Something\n"
                         + "SomethingSomething Something\n"
                         + "SomethingSomething Something\n"
                         + "SomethingSomething Something\n");
-        description.setStyle("-fx-font-size: 20px;");
+        description.setStyle("-fx-font-size: " + Util.getRegularFontSize(windowWidth, windowHeight) + "px;");
         description.setWrapText(true);
 
         VBox textBlock = new VBox(windowHeight * 0.001, title, description);
@@ -105,14 +105,14 @@ public class MainPage implements Page {
     // Section 2: About the Preserve
     public HBox createSectionAboutPreserve(double windowWidth, double windowHeight) {
         Label title = new Label("Oostvaardersplassen");
-        title.setStyle("-fx-font-size: 30px; -fx-font-weight: bold;");
+        title.setStyle("-fx-font-size: " + Util.getTitleFontSize(windowWidth, windowHeight) + "px; -fx-font-weight: bold;");
 
         Label description = new Label(
                 "Something Something Something\n"
                         + "SomethingSomething Something\n"
                         + "SomethingSomething Something\n"
                         + "SomethingSomething Something\n");
-        description.setStyle("-fx-font-size: 20px;");
+        description.setStyle("-fx-font-size: " + Util.getRegularFontSize(windowWidth, windowHeight) + "px;");
         description.setWrapText(true);
 
         VBox textBlock = new VBox(windowHeight * 0.001, title, description);
@@ -139,17 +139,17 @@ public class MainPage implements Page {
 
         for (int i = 0; i < 3; i++) {
             Label title = new Label("Animal" + (i + 1));
-            title.setStyle("-fx-font-size: 25px; -fx-font-weight: bold;");
+            title.setStyle("-fx-font-size: " + Util.getTitleFontSize(windowWidth, windowHeight) + "px; -fx-font-weight: bold;");
 
             Label description = new Label(
                     "Something Something\n"
                             + "SomethingSomething\n"
                             + "SomethingSomething\n"
                             + "SomethingSomething\n");
-            description.setStyle("-fx-font-size: 20px;");
+            description.setStyle("-fx-font-size: " + Util.getRegularFontSize(windowWidth, windowHeight) + "px;");
             description.setWrapText(true);
 
-            Rectangle square = new Rectangle(windowWidth * 0.15, windowHeight * 0.2);
+            Rectangle square = new Rectangle(windowWidth * 0.2, windowHeight * 0.25);
             square.setFill(Color.web("#808080"));
             square.setStroke(Color.BLACK);
             square.setStrokeWidth(2);
