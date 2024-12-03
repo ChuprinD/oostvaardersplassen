@@ -1,4 +1,4 @@
-package view;
+package com.group3.view;
 
 import javafx.scene.layout.BorderPane;
 

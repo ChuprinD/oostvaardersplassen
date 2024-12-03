@@ -1,4 +1,4 @@
-package database;
+package com.group3.database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

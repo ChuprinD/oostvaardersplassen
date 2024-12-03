@@ -1,13 +1,15 @@
-package view;
+package com.group3.view;
 
-import controller.NavigationController;
-import javafx.geometry.Insets;
+import com.group3.controller.NavigationController;
+import com.group3.utils.Util;
+
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 
 public class CommonComponents {
@@ -16,12 +18,12 @@ public class CommonComponents {
     public static HBox createHeader(String pageName, NavigationController navigationController, double windowWidth,
             double windowHeight) {
         // Logo on the left
-        Label logo = new Label("Logo");
-        logo.setStyle("-fx-background-color: lightgray; -fx-border-color: black; -fx-border-width: 1; -fx-alignment: center; -fx-font-size: 20px;");
-        logo.setMinSize(windowWidth * 0.08, windowHeight * 0.04);
+        Image image = new Image(CommonComponents.class.getResourceAsStream("/images/main-logo.png"));
+        ImageView imageView = new ImageView(image);
+        imageView.setFitWidth(windowWidth * 0.07); 
+        imageView.setFitHeight(windowHeight * 0.07); 
 
-        HBox leftBox = new HBox(logo);
-        leftBox.setPadding(new Insets(0, windowHeight * 0.01, 0, 0)); // Add padding on the right
+        HBox leftBox = new HBox(imageView);
         leftBox.setMinWidth(windowWidth / 3); // Allocate 1/3 of the header width for the left box
         leftBox.setAlignment(Pos.CENTER);
 
@@ -33,7 +35,15 @@ public class CommonComponents {
         dropdownMenu.getItems().addAll("Main", "Q1", "Q2", "Q3", "Q4", "Q5");
         dropdownMenu.setOnAction(e -> navigationController.showPage(dropdownMenu.getValue())); // Handle page switching
         dropdownMenu.setValue(pageName); // Set current page
-        dropdownMenu.setStyle("-fx-font-size: 20px; -fx-faint-focus-color: transparent; -fx-focus-color: #cccccc;");
+        int font_size = Util.getButtonFontSize(windowWidth, windowHeight);
+        dropdownMenu.setStyle("-fx-font-size: " + font_size + "px;" +
+                                "-fx-font-family: " + Util.getVoltaireFont(font_size).getFamily() + ";" +
+                                "-fx-focus-color: transparent;" + 
+                                "-fx-faint-focus-color: transparent;" + 
+                                "-fx-background-radius: 15;" +
+                                "-fx-border-radius: 15;" +
+                                "-fx-border-width: 2px;");
+                                
         dropdownMenu.setMinSize(windowWidth * 0.06, windowHeight * 0.03);
 
         HBox rightBox = new HBox(dropdownMenu);
@@ -42,39 +52,14 @@ public class CommonComponents {
 
         // Combine all sections into the header
         HBox header = new HBox();
-        header.setStyle("-fx-background-color: #a9a9a9;" + 
-                        "-fx-alignment: center-left;" +
-                        "-fx-background-radius: 0 0 15 15;");              
+        header.setStyle("-fx-background-color: #a8c28c;" +
+                        "-fx-border-color: transparent transparent gray transparent;" +
+                        "-fx-border-width: 0 0 2 0;" +
+                        "-fx-border-style: solid;");              
         header.setMinHeight(windowHeight * 0.07);
         header.getChildren().addAll(leftBox, centerBox, rightBox);
 
         return header;
-    }
-
-    // Creates the footer section with logo and navigation buttons
-    public static HBox createFooter(NavigationController navigationController, double windowWidth,
-            double windowHeight) {
-        // Logo on the left
-        Label logo = new Label("Logo");
-        logo.setStyle(
-                "-fx-background-color: lightgray; -fx-border-color: black; -fx-border-width: 1; -fx-alignment: center; -fx-font-size: 20px;");
-        logo.setMinSize(windowWidth * 0.08, windowHeight * 0.04);
-
-        HBox leftBox = new HBox(logo);
-        leftBox.setPadding(new Insets(0, windowHeight * 0.01, 0, 0)); // Add padding on the right
-        leftBox.setMinWidth(windowWidth / 3); // Allocate 1/3 of the footer width for the left box
-        leftBox.setAlignment(Pos.CENTER);
-
-        // Center section with navigation buttons
-        HBox centerBox = createButtons(navigationController, windowWidth, windowHeight);
-
-        // Combine all sections into the footer
-        HBox footer = new HBox();
-        footer.setStyle("-fx-background-color: #a9a9a9; -fx-alignment: center-left;"); // Light gray background
-        footer.setMinHeight(windowHeight * 0.07);
-        footer.getChildren().addAll(leftBox, centerBox);
-
-        return footer;
     }
 
     // Creates navigation buttons for the center section
@@ -86,21 +71,30 @@ public class CommonComponents {
         // Home button
         Button homeButton = new Button("Home");
         homeButton.setMinSize(buttonWidth, buttonHeight);
-        homeButton.setStyle("-fx-font-size: 20px;");
+        homeButton.setFont(Util.getVoltaireFont(Util.getButtonFontSize(windowWidth, windowHeight)));
+        homeButton.setStyle("-fx-background-radius: 15;" +
+                            "-fx-border-radius: 15;" +
+                            "-fx-border-width: 2px;");
         homeButton.setOnAction(e -> navigationController.showPage("Main")); // Handle navigation
         homeButton.setFocusTraversable(false);
 
         // About button
         Button aboutButton = new Button("About");
         aboutButton.setMinSize(buttonWidth, buttonHeight);
-        aboutButton.setStyle("-fx-font-size: 20px;");
+        aboutButton.setFont(Util.getVoltaireFont(Util.getButtonFontSize(windowWidth, windowHeight)));
+        aboutButton.setStyle("-fx-background-radius: 15;" +
+                             "-fx-border-radius: 15;" +
+                             "-fx-border-width: 2px;");
         aboutButton.setOnAction(e -> navigationController.showPage("Main.About")); // Handle navigation
         aboutButton.setFocusTraversable(false);
 
         // Placeholder button
         Button somethingButton = new Button("[something]");
         somethingButton.setMinSize(buttonWidth, buttonHeight);
-        somethingButton.setStyle("-fx-font-size: 20px;");
+        somethingButton.setFont(Util.getVoltaireFont(Util.getButtonFontSize(windowWidth, windowHeight)));
+        somethingButton.setStyle("-fx-background-radius: 15;" +
+                                 "-fx-border-radius: 15;" +
+                                 "-fx-border-width: 2px;");
         somethingButton.setOnAction(e -> navigationController.showPage("Main.Animals")); // Handle navigation
         somethingButton.setFocusTraversable(false);
 

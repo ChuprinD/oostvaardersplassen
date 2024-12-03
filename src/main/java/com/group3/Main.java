@@ -1,6 +1,8 @@
+package com.group3;
+
 import javafx.application.Application;
 import javafx.stage.Stage;
-import controller.NavigationController;
+import com.group3.controller.NavigationController;
 
 public class Main extends Application {
     @Override

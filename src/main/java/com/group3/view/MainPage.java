@@ -1,6 +1,6 @@
-package view;
+package com.group3.view;
 
-import controller.NavigationController;
+import com.group3.controller.NavigationController;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -12,7 +12,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import utils.Util;
+import com.group3.utils.Util;
 
 public class MainPage implements Page {
     private final String pageName = "Main";
@@ -45,13 +45,8 @@ public class MainPage implements Page {
         scrollPane.setFitToWidth(true);
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scrollPane.setStyle("-fx-focus-color: transparent; -fx-faint-focus-color: transparent;");
-        
 
         root.setCenter(scrollPane);
-
-        // Footer
-        //HBox footer = HeaderFooterFactory.createFooter(navigationController, windowWidth, windowHeight);
-        //root.setBottom(footer);
     }
 
     public static MainPage createPageAndScroll(NavigationController navigationController, String scrollToSection) {
@@ -60,13 +55,13 @@ public class MainPage implements Page {
     
         javafx.application.Platform.runLater(() -> {
             if ("About".equalsIgnoreCase(scrollToSection)) {
-                double scrollTarget = (mainPage.sectionAboutPreserve.getLayoutY() + windowHeight * 0.2 * 2)
+                double scrollTarget = (mainPage.sectionAboutPreserve.getLayoutY() + windowHeight * 0.45)
                         / mainPage.scrollPane.getContent().getBoundsInLocal().getHeight();
                 mainPage.scrollPane.setVvalue(scrollTarget);
             }
 
             if ("Animals".equalsIgnoreCase(scrollToSection)) {
-                double scrollTarget = (mainPage.sectionAboutAnimals.getLayoutY() + windowHeight * 0.2 * 4)
+                double scrollTarget = (mainPage.sectionAboutAnimals.getLayoutY() + windowHeight)
                         / mainPage.scrollPane.getContent().getBoundsInLocal().getHeight();
                 mainPage.scrollPane.setVvalue(scrollTarget);
             }
@@ -78,14 +73,15 @@ public class MainPage implements Page {
     // Section 1: Home
     private HBox createSectionHome(double windowWidth, double windowHeight) {
         Label title = new Label("Grey Wolves in Oostvaardersplassen");
-        title.setStyle("-fx-font-size: " + Util.getTitleFontSize(windowWidth, windowHeight) + "px; -fx-font-weight: bold;");
+        title.setFont(Util.getVoltaireFont(Util.getTitleFontSize(windowWidth, windowHeight)));
 
         Label description = new Label(
                 "Something Something Something\n"
                         + "SomethingSomething Something\n"
                         + "SomethingSomething Something\n"
                         + "SomethingSomething Something\n");
-        description.setStyle("-fx-font-size: " + Util.getRegularFontSize(windowWidth, windowHeight) + "px;");
+        
+        description.setFont(Util.getVoltaireFont(Util.getRegularFontSize(windowWidth, windowHeight)));
         description.setWrapText(true);
 
         VBox textBlock = new VBox(windowHeight * 0.001, title, description);
@@ -98,21 +94,22 @@ public class MainPage implements Page {
         // Combine text and carousel into one section
         HBox content = new HBox(windowWidth * 0.05, textBlock, imageBlock);
         content.setAlignment(Pos.CENTER);
-        content.setPadding(new Insets(windowHeight * 0.2, 0, windowHeight * 0.2, 0));
+        content.setStyle("-fx-background-color: #a8c28c;");
+        content.setMinHeight(windowHeight - windowHeight * 0.07);
         return content;
     }
 
     // Section 2: About the Preserve
     public HBox createSectionAboutPreserve(double windowWidth, double windowHeight) {
         Label title = new Label("Oostvaardersplassen");
-        title.setStyle("-fx-font-size: " + Util.getTitleFontSize(windowWidth, windowHeight) + "px; -fx-font-weight: bold;");
+        title.setFont(Util.getVoltaireFont(Util.getTitleFontSize(windowWidth, windowHeight)));
 
         Label description = new Label(
                 "Something Something Something\n"
                         + "SomethingSomething Something\n"
                         + "SomethingSomething Something\n"
                         + "SomethingSomething Something\n");
-        description.setStyle("-fx-font-size: " + Util.getRegularFontSize(windowWidth, windowHeight) + "px;");
+        description.setFont(Util.getVoltaireFont(Util.getRegularFontSize(windowWidth, windowHeight)));
         description.setWrapText(true);
 
         VBox textBlock = new VBox(windowHeight * 0.001, title, description);
@@ -127,8 +124,8 @@ public class MainPage implements Page {
         // Combine text and image into one section
         HBox content = new HBox(windowWidth * 0.05, image, textBlock);
         content.setAlignment(Pos.CENTER);
-        content.setStyle("-fx-background-color: lightgray;");
-        content.setPadding(new Insets(windowHeight * 0.2, 0, windowHeight * 0.2, 0));
+        content.setStyle("-fx-background-color: #ffffff;");
+        content.setMinHeight(windowHeight - windowHeight * 0.07);
         return content;
     }
 
@@ -139,14 +136,14 @@ public class MainPage implements Page {
 
         for (int i = 0; i < 3; i++) {
             Label title = new Label("Animal" + (i + 1));
-            title.setStyle("-fx-font-size: " + Util.getTitleFontSize(windowWidth, windowHeight) + "px; -fx-font-weight: bold;");
+            title.setFont(Util.getVoltaireFont(Util.getTitleFontSize(windowWidth, windowHeight)));
 
             Label description = new Label(
                     "Something Something\n"
                             + "SomethingSomething\n"
                             + "SomethingSomething\n"
                             + "SomethingSomething\n");
-            description.setStyle("-fx-font-size: " + Util.getRegularFontSize(windowWidth, windowHeight) + "px;");
+            description.setFont(Util.getVoltaireFont(Util.getRegularFontSize(windowWidth, windowHeight)));
             description.setWrapText(true);
 
             Rectangle square = new Rectangle(windowWidth * 0.2, windowHeight * 0.25);
@@ -160,7 +157,8 @@ public class MainPage implements Page {
             content.getChildren().add(animalBlock);
         }
 
-        content.setPadding(new Insets(windowHeight * 0.2, 0, windowHeight * 0.2, 0));
+        content.setMinHeight(windowHeight - windowHeight * 0.07);
+        content.setStyle("-fx-background-color: #a8c28c;");
         return content;
     }
 
@@ -200,7 +198,7 @@ public class MainPage implements Page {
         // Left arrow
         Button leftArrow = new Button("<");
         leftArrow.setStyle(
-                "-fx-background-radius: 50%; -fx-background-color: white; -fx-font-size: 18px;"
+                "-fx-background-radius: 50%; -fx-background-color: #1e4c40; -fx-font-size: 18px; -fx-text-fill: #ffffff;"
         );
         leftArrow.setOnAction(event -> {
             currentIndex[0] = (currentIndex[0] - 1 + colors.length) % colors.length;
@@ -211,7 +209,7 @@ public class MainPage implements Page {
         // Right arrow
         Button rightArrow = new Button(">");
         rightArrow.setStyle(
-                "-fx-background-radius: 50%; -fx-background-color: white; -fx-font-size: 18px;"
+                "-fx-background-radius: 50%; -fx-background-color: #1e4c40; -fx-font-size: 18px; -fx-text-fill: #ffffff;"
         );
         rightArrow.setOnAction(event -> {
             currentIndex[0] = (currentIndex[0] + 1) % colors.length;
@@ -235,9 +233,9 @@ public class MainPage implements Page {
         for (int i = 0; i < carouselDots.getChildren().size(); i++) {
             Label dot = (Label) carouselDots.getChildren().get(i);
             if (i == activeIndex) {
-                dot.setStyle("-fx-font-size: 20px; -fx-text-fill: #00aaff;");
+                dot.setStyle("-fx-font-size: 20px; -fx-text-fill: #251351;");
             } else {
-                dot.setStyle("-fx-font-size: 20px; -fx-text-fill: #cccccc;");
+                dot.setStyle("-fx-font-size: 20px; -fx-text-fill: #e07a5f;");
             }
         }
     }

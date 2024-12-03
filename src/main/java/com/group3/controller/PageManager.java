@@ -1,10 +1,11 @@
-package controller;
+package com.group3.controller;
 
 import javafx.scene.layout.Pane;
-import view.Page;
-import view.SecondPage;
-import view.MainPage;
-import view.FirstPage;
+import com.group3.view.Page;
+import com.group3.view.SecondPage;
+import com.group3.view.ThirdPage;
+import com.group3.view.MainPage;
+import com.group3.view.FirstPage;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -30,9 +31,10 @@ public class PageManager {
         // Register pages
         Page firstPage = new FirstPage(navigationController);
         Page secondPage = new SecondPage(navigationController);
+        Page thirdPage = new ThirdPage(navigationController);
         pages.put(firstPage.getPageName(), () -> new FirstPage(navigationController).getRoot());
         pages.put(secondPage.getPageName(), () -> new SecondPage(navigationController).getRoot());
-        pages.put("Q3", () -> new FirstPage(navigationController).getRoot());
+        pages.put(thirdPage.getPageName(), () -> new ThirdPage(navigationController).getRoot());
         pages.put("Q4", () -> new FirstPage(navigationController).getRoot());
         pages.put("Q5", () -> new FirstPage(navigationController).getRoot());
     }

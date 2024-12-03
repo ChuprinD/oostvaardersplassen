@@ -1,4 +1,4 @@
-package controller;
+package com.group3.controller;
 
 import javafx.scene.Scene;
 import javafx.stage.Stage;
