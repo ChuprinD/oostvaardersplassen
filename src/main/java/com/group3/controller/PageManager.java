@@ -1,6 +1,5 @@
 package com.group3.controller;
 
-import javafx.scene.layout.Pane;
 import com.group3.view.Page;
 import com.group3.view.SecondPage;
 import com.group3.view.ThirdPage;
@@ -10,6 +9,8 @@ import com.group3.view.FirstPage;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
+
+import javafx.scene.layout.Pane;
 
 public class PageManager {
     private final NavigationController navigationController;

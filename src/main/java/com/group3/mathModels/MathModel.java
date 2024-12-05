@@ -1,3 +1,4 @@
+/* 
 package com.group3.mathModels;
 import org.apache.commons.math3.ode.FirstOrderDifferentialEquations;
 
@@ -61,4 +62,4 @@ double alphaD, double alphaC, double alphaH) {
         yDot[3] = alphaD * D * W + alphaC * C * W + alphaH * H * W - 0.1 * W;  // dW/dt
 
     }
-}
+}*/

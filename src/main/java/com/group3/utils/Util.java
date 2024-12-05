@@ -8,8 +8,6 @@ public class Util {
 
     static {
         voltaireFont = Font.loadFont(Util.class.getResourceAsStream("/fonts/Voltaire-Regular.ttf"), 20);
-        System.out.println(Util.class.getResource("/fonts/Voltaire-Regular.ttf"));
-
     }
 
     public static Font getVoltaireFont(double size) {

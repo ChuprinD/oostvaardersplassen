@@ -1,7 +1,13 @@
 package com.group3.view;
 
+import javax.swing.SwingUtilities;
+
 import com.group3.controller.NavigationController;
+import com.group3.mathModels.Graphs;
+import com.group3.utils.Util;
+
 import javafx.geometry.Pos;
+import javafx.embed.swing.SwingNode;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -14,7 +20,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
-import com.group3.utils.Util;
 import javafx.scene.control.ScrollPane;
 
 public class FirstPage implements Page {
@@ -41,10 +46,8 @@ public class FirstPage implements Page {
         // Scroll pane for the main content
         scrollPane = new ScrollPane();
         scrollPane.setContent(mainContent);
-        scrollPane.setFitToWidth(true);
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scrollPane.setStyle("-fx-focus-color: transparent; -fx-faint-focus-color: transparent;");
-
         root.setCenter(scrollPane);
     }
 
@@ -72,13 +75,13 @@ public class FirstPage implements Page {
         HBox titleBox = new HBox(graphTitle, spacer, downloadButton);
         titleBox.setAlignment(Pos.CENTER);
 
-        // Graph placeholder (Rectangle)
-        Rectangle graphImage = new Rectangle(windowWidth * 0.6, windowHeight * 0.5);
-        graphImage.setFill(Color.web("#808080"));
-        graphImage.setStroke(Color.BLACK);
-        graphImage.setStrokeWidth(1);
-
-        graphImage.setOnMouseClicked(e -> openGraphPopup(windowWidth, windowHeight));
+        // Graph 
+        SwingNode swingNode = new SwingNode();
+        Graphs preyPredatorGraph = new Graphs();
+        SwingUtilities.invokeLater(() -> {
+            swingNode.setContent(preyPredatorGraph.getPreyPredator(windowWidth * 0.6, windowHeight * 0.5));
+        });
+        
 
         // Info button ("i")
         Button infoButton = new Button("i");
@@ -98,10 +101,11 @@ public class FirstPage implements Page {
         });
         infoButton.setAlignment(Pos.CENTER);
 
-        HBox graphBox = new HBox(graphImage, infoButton);
+        HBox graphBox = new HBox(swingNode, infoButton);
         graphBox.setAlignment(Pos.BOTTOM_CENTER);
 
         VBox graphSection = new VBox(titleBox, graphBox);
+        graphSection.setPrefWidth(windowWidth);
         graphSection.setAlignment(Pos.CENTER);
         graphSection.setMinHeight(windowHeight - windowHeight * 0.07);
         graphSection.setStyle("-fx-background-color: #a8c28c;");
@@ -126,7 +130,7 @@ public class FirstPage implements Page {
         VBox.setMargin(descriptionText, new Insets(0, 0, 0, (windowWidth - windowWidth * 0.6) / 2));
 
         VBox descriptionSection = new VBox(descriptionTitle, descriptionText);
-        descriptionSection.setStyle("-fx-background-color: lightgray;");
+        descriptionSection.setStyle("-fx-background-color: white;");
         descriptionSection.setAlignment(Pos.CENTER_LEFT);
         descriptionSection.setMinHeight(windowHeight - windowHeight * 0.07);
         return descriptionSection;

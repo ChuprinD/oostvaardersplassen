@@ -1,10 +1,11 @@
+/* 
 package com.group3.mathModels;
 import org.apache.commons.math3.ode.FirstOrderDifferentialEquations;
 import org.apache.commons.math3.ode.FirstOrderIntegrator;
 import org.apache.commons.math3.ode.nonstiff.DormandPrince853Integrator;
 
 public class Threewaymodel {
-    
+
     public static void main(String[] args) {
         // Initial conditions: [Grass, Horses, Deer, Cattle, Wolves]
         double[] y = new double[] {40, 20, 30, 20, 3};
@@ -64,4 +65,4 @@ public class Threewaymodel {
             yDot[4] = delta * (H + D + C) * W - gamma * W;  // dW/dt
         }
     }
-}
+}*/

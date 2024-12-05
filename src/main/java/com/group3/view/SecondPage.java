@@ -1,6 +1,8 @@
 package com.group3.view;
 
 import com.group3.controller.NavigationController;
+import com.group3.utils.Util;
+
 import javafx.geometry.Pos;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -14,7 +16,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
-import com.group3.utils.Util;
 import javafx.scene.control.ScrollPane;
 
 public class SecondPage implements Page {
@@ -126,7 +127,7 @@ public class SecondPage implements Page {
         VBox.setMargin(descriptionText, new Insets(0, 0, 0, (windowWidth - windowWidth * 0.6) / 2));
 
         VBox descriptionSection = new VBox(descriptionTitle, descriptionText);
-        descriptionSection.setStyle("-fx-background-color: lightgray;");
+        descriptionSection.setStyle("-fx-background-color: white;");
         descriptionSection.setAlignment(Pos.CENTER_LEFT);
         descriptionSection.setMinHeight(windowHeight - windowHeight * 0.07);
         return descriptionSection;
