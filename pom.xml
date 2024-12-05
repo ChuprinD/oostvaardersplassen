@@ -14,6 +14,18 @@
     </properties>
 
     <dependencies>
+
+        <dependency>
+            <groupId>org.jfree</groupId>
+            <artifactId>jfreechart</artifactId>
+            <version>1.5.3</version>
+        </dependency>
+        <!-- Math -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-math3</artifactId>
+            <version>3.6.1</version>
+            </dependency>
         <!-- JavaFX Controls -->
         <dependency>
             <groupId>org.openjfx</groupId>

@@ -2,12 +2,28 @@
     "configurations": [
         {
             "type": "java",
+            "name": "PredatorPreyModel",
+            "request": "launch",
+            "mainClass": "com.group3.mathModels.PredatorPreyModel",
+            "projectName": "oostvaardersplassen"
+        },
+        {
+            "type": "java",
+            "name": "Threewaymodel",
+            "request": "launch",
+            "mainClass": "com.group3.mathModels.Threewaymodel",
+            "projectName": "oostvaardersplassen"
+        },
+        {
+            "type": "java",
             "name": "Main",
             "request": "launch",
             "mainClass": "com.group3.Main",
             "projectName": "oostvaardersplassen",
             "vmArgs": "--module-path C:/javafx-sdk-21.0.5/lib --add-modules javafx.controls,javafx.fxml",
-            "classPaths": ["dependencies/mysql-connector-j-9.1.0"]
+            "classPaths": [
+                "dependencies/mysql-connector-j-9.1.0"
+            ]
         }
     ]
   }
