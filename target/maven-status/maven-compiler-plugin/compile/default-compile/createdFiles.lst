@@ -1,0 +1,17 @@
+com\group3\database\DatabaseApp.class
+com\group3\mathModels\Threewaymodel.class
+com\group3\Main.class
+com\group3\mathModels\Threewaymodel$CombinedEquations.class
+com\group3\view\CommonComponents.class
+com\group3\view\Page.class
+com\group3\view\MainPage.class
+com\group3\view\SecondPage.class
+com\group3\mathModels\PredatorPreyModel.class
+com\group3\mathModels\MathModel.class
+com\group3\mathModels\PredatorPreyModel$PredatorPreyEquations.class
+com\group3\controller\NavigationController.class
+com\group3\mathModels\Graphs.class
+com\group3\controller\PageManager.class
+com\group3\utils\Util.class
+com\group3\view\ThirdPage.class
+com\group3\view\FirstPage.class

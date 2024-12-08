@@ -1,6 +1,8 @@
 package com.group3.view;
 
 import com.group3.controller.NavigationController;
+import com.group3.utils.Util;
+
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -12,7 +14,6 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import com.group3.utils.Util;
 
 public class MainPage implements Page {
     private final String pageName = "Main";
@@ -39,7 +40,7 @@ public class MainPage implements Page {
 
         mainContent.getChildren().addAll(sectionHome, sectionAboutPreserve, sectionAboutAnimals);
 
-        // Scroltlable pane for the main content
+        // Scrollable pane for the main content
         scrollPane = new ScrollPane();
         scrollPane.setContent(mainContent);
         scrollPane.setFitToWidth(true);
