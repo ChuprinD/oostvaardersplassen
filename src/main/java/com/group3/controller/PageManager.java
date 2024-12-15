@@ -1,8 +1,6 @@
 package com.group3.controller;
 
 import com.group3.view.Page;
-import com.group3.view.SecondPage;
-import com.group3.view.ThirdPage;
 import com.group3.view.MainPage;
 import com.group3.view.FirstPage;
 
@@ -31,15 +29,21 @@ public class PageManager {
 
         // Register pages
         Page firstPage = new FirstPage(navigationController);
-        Page secondPage = new SecondPage(navigationController);
-        Page thirdPage = new ThirdPage(navigationController);
         pages.put(firstPage.getPageName(), () -> new FirstPage(navigationController).getRoot());
-        pages.put(secondPage.getPageName(), () -> new SecondPage(navigationController).getRoot());
-        pages.put(thirdPage.getPageName(), () -> new ThirdPage(navigationController).getRoot());
-        pages.put("Q4", () -> new FirstPage(navigationController).getRoot());
-        pages.put("Q5", () -> new FirstPage(navigationController).getRoot());
+        pages.put(firstPage.getPageName(), () -> new FirstPage(navigationController).getRoot());
+        pages.put(firstPage.getPageName(), () -> new FirstPage(navigationController).getRoot());
+        pages.put(firstPage.getPageName(), () -> new FirstPage(navigationController).getRoot());
+        pages.put(firstPage.getPageName(), () -> new FirstPage(navigationController).getRoot());
     }
 
+    /**
+     * Gets the page with the given name. If the page does not exist, it throws an
+     * IllegalArgumentException.
+     *
+     * @param pageName the name of the page to retrieve
+     * @return the page with the given name
+     * @throws IllegalArgumentException if no page with the given name exists
+     */
     public Pane getPage(String pageName) {
         if (pages.containsKey(pageName)) {
             return pages.get(pageName).get();
@@ -47,6 +51,13 @@ public class PageManager {
         throw new IllegalArgumentException("Page not found: " + pageName);
     }
     
+    /**
+     * Registers a page with the given name and supplier. The supplier is used to create
+     * a new instance of the page whenever it is requested with getPage().
+     *
+     * @param pageName the name of the page to register
+     * @param pageSupplier a supplier that creates a new instance of the page
+     */
     public void addPage(String pageName, Supplier<Pane> pageSupplier) {
         pages.put(pageName, pageSupplier);
     }

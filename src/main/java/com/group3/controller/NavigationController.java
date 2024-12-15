@@ -12,6 +12,12 @@ public class NavigationController {
         this.pageManager = new PageManager(this);
     }
 
+    /**
+     * Shows a specific page in the primary stage by creating a new scene from it.
+     * The page is retrieved from the page manager using the given page name.
+     * The primary stage is set to fill the screen, and then is shown.
+     * @param pageName The name of the page to show
+     */
     public void showPage(String pageName) {
         // Create a new scene using the requested page
         Scene scene = new Scene(pageManager.getPage(pageName));
@@ -27,10 +33,20 @@ public class NavigationController {
         primaryStage.show();
     }
 
+    /**
+     * Gets the primary stage of the application. This is the stage that
+     * contains all the pages of the application.
+     * @return the primary stage of the application
+     */
     public Stage getPrimaryStage() {
         return primaryStage;
     }
 
+    /**
+     * Gets the page manager object. The page manager is responsible for
+     * initializing and retrieving all the pages of the application.
+     * @return the page manager object
+     */
     public PageManager getPageManager() {
         return pageManager;
     }

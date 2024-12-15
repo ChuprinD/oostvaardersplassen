@@ -23,11 +23,9 @@ DROP TABLE IF EXISTS `animal`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `animal` (
-  `ID` int unsigned NOT NULL AUTO_INCREMENT,
-  `Name` varchar(150) NOT NULL,
-  `Amount` int unsigned NOT NULL,
-  `Year` int unsigned NOT NULL,
-  PRIMARY KEY (`ID`)
+  `Year` int NOT NULL,
+  `Name` varchar(50) DEFAULT NULL,
+  `Amount` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -37,6 +35,7 @@ CREATE TABLE `animal` (
 
 LOCK TABLES `animal` WRITE;
 /*!40000 ALTER TABLE `animal` DISABLE KEYS */;
+INSERT INTO `animal` VALUES (1990,'Heck cattle',30),(1991,'Heck cattle',30),(1992,'Heck cattle',35),(1993,'Heck cattle',35),(1994,'Heck cattle',30),(1995,'Heck cattle',60),(1996,'Heck cattle',80),(1997,'Heck cattle',115),(1998,'Heck cattle',135),(1999,'Heck cattle',170),(2000,'Heck cattle',195),(2001,'Heck cattle',240),(2002,'Heck cattle',280),(2003,'Heck cattle',340),(2004,'Heck cattle',390),(2005,'Heck cattle',450),(2006,'Heck cattle',500),(2007,'Heck cattle',510),(2008,'Heck cattle',580),(2009,'Heck cattle',580),(2010,'Heck cattle',640),(2011,'Heck cattle',589),(2012,'Heck cattle',680),(2013,'Heck cattle',550),(2014,'Heck cattle',480),(2015,'Heck cattle',450),(2016,'Heck cattle',450),(2017,'Heck cattle',400),(2018,'Heck cattle',320),(2019,'Heck cattle',350),(2020,'Heck cattle',310),(2021,'Heck cattle',200),(2022,'Heck cattle',250),(1991,'Konik horses',20),(1992,'Konik horses',20),(1993,'Konik horses',20),(1994,'Konik horses',30),(1995,'Konik horses',35),(1996,'Konik horses',45),(1997,'Konik horses',55),(1998,'Konik horses',70),(1999,'Konik horses',85),(2000,'Konik horses',120),(2001,'Konik horses',160),(2002,'Konik horses',200),(2003,'Konik horses',240),(2004,'Konik horses',280),(2005,'Konik horses',330),(2006,'Konik horses',390),(2007,'Konik horses',450),(2008,'Konik horses',520),(2009,'Konik horses',610),(2010,'Konik horses',700),(2011,'Konik horses',800),(2012,'Konik horses',900),(2013,'Konik horses',950),(2014,'Konik horses',1000),(2015,'Konik horses',1100),(2016,'Konik horses',1150),(2017,'Konik horses',1150),(2018,'Konik horses',1050),(2019,'Konik horses',1150),(2020,'Konik horses',1150),(2021,'Konik horses',990),(2022,'Konik horses',1250),(1999,'Red deer',45),(2000,'Red deer',70),(2001,'Red deer',100),(2002,'Red deer',140),(2003,'Red deer',180),(2004,'Red deer',240),(2005,'Red deer',300),(2006,'Red deer',380),(2007,'Red deer',460),(2008,'Red deer',590),(2009,'Red deer',770),(2010,'Red deer',1000),(2011,'Red deer',1150),(2012,'Red deer',1400),(2013,'Red deer',1700),(2014,'Red deer',2000),(2015,'Red deer',2200),(2016,'Red deer',2700),(2017,'Red deer',3000),(2018,'Red deer',3050),(2019,'Red deer',3250),(2020,'Red deer',3200),(2021,'Red deer',2500),(2022,'Red deer',3200);
 /*!40000 ALTER TABLE `animal` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -198,4 +197,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-11-26  0:42:33
+-- Dump completed on 2024-12-05 18:55:59
