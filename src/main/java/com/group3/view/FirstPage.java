@@ -30,9 +30,9 @@ import javafx.util.Duration;
 
 public class FirstPage implements Page {
     private final String pageName = "Herbivore Competition";
-    private final BorderPane root;
-    private final VBox descriptionSection;
-    private final ScrollPane scrollPane;
+    private BorderPane root;
+    private VBox descriptionSection;
+    private ScrollPane scrollPane;
     private final double windowWidth;
     private final double windowHeight;
     private final NavigationController navigationController;
@@ -50,6 +50,7 @@ public class FirstPage implements Page {
         HBox headerContainer = new HBox(header);
         headerContainer.setMinWidth(windowWidth);
         headerContainer.setMaxHeight(windowHeight * 0.07);
+        headerContainer.setMinHeight(windowHeight * 0.07);
         headerContainer.setAlignment(Pos.CENTER);
         headerContainer.setStyle("-fx-background-color: transparent;");
         
@@ -83,6 +84,7 @@ public class FirstPage implements Page {
         scrollPane.setStyle("-fx-focus-color: transparent; -fx-faint-focus-color: transparent; -fx-background-color: transparent; -fx-border-width: 0; -fx-border-color: transparent; -fx-padding: 0;");
         scrollPane.setMaxWidth(windowWidth);
         scrollPane.setFitToWidth(true);
+        scrollPane.setPannable(true);
 
         StackPane stackPane = new StackPane();
         stackPane.setStyle("-fx-background-color: transparent;");
@@ -106,14 +108,14 @@ public class FirstPage implements Page {
         // Title for the graph section
         String graphTitleText = "Graph Title";
         Label graphTitle = new Label(graphTitleText);
-        graphTitle.setStyle("-fx-font-weight: bold;");
+        graphTitle.setStyle("-fx-font-weight: bold; -fx-font-size: " + Util.getTitleFontSize(windowWidth, windowHeight) + "px;");
         graphTitle.setFont(Util.getBoldFont(Util.getTitleFontSize(windowWidth, windowHeight)));
         graphTitle.setAlignment(Pos.TOP_LEFT);
 
         HBox titleBox = new HBox();
         titleBox.getChildren().add(graphTitle);
         titleBox.setAlignment(Pos.TOP_LEFT);
-        HBox.setMargin(graphTitle, new Insets(0, 0, windowHeight * 0.01, (windowWidth - windowWidth * 0.64) / 2));
+        HBox.setMargin(graphTitle, new Insets(0, 0, windowHeight * 0.02, (windowWidth - windowWidth * 0.64) / 2));
 
         // Graph 
         SwingNode swingNode = new SwingNode();
@@ -200,13 +202,13 @@ public class FirstPage implements Page {
     }
     
     /**
-     * Scrolls the scrollpane to the description section with an animation.
+     * Scrolls the scrollPane to the description section with an animation.
      * The scroll target is calculated by adding a fraction of the window height
      * to the Y position of the description section, and then dividing by the
-     * height of the content of the scrollpane.
+     * height of the content of the scrollPane.
      */
     private void scrollToDescription() {
-        double scrollTarget = (descriptionSection.getLayoutY() + windowHeight * 0.74) / scrollPane.getContent().getBoundsInLocal().getHeight();
+        double scrollTarget = (windowHeight + windowHeight * 0.75) / scrollPane.getContent().getBoundsInLocal().getHeight();
         Timeline timeline = new Timeline(
             new KeyFrame(Duration.ZERO, new KeyValue(scrollPane.vvalueProperty(), scrollPane.getVvalue())),
             new KeyFrame(Duration.seconds(1), new KeyValue(scrollPane.vvalueProperty(), scrollTarget))
@@ -214,14 +216,14 @@ public class FirstPage implements Page {
         timeline.play();
     }
     
+
     /**
-     * Creates a section containing a title and text description. The section
-     * is structured with a VBox containing the title and description. The
-     * description is displayed in a centered box with a semi-transparent
-     * background. The description is intended to be part of the main page
-     * layout.
+     * Creates a section containing the description text, including a title
+     * and description. The section is structured with a VBox for the title
+     * and description text, and is styled with specific fonts, colors, and
+     * dimensions. The section is also semi-transparent.
      *
-     * @return A VBox containing the styled description section.
+     * @return A VBox containing the description section.
      */
     private VBox createSectionDescription() {
         // Title for the description section

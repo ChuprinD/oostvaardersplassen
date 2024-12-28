@@ -24,12 +24,13 @@ import javafx.util.Duration;
 
 public class MainPage implements Page {
     private final String pageName = "Home";
-    private final BorderPane root;
+    private BorderPane root;
     private ScrollPane scrollPane;
-    private final HBox sectionAboutPreserve;
-    private final HBox sectionAboutAnimals;
+    private HBox sectionAboutPreserve;
+    private HBox sectionAboutAnimals;
     private final double windowWidth;
     private final double windowHeight;
+    private final double topBarHeight = 26;
 
     public MainPage(NavigationController navigationController) {
         root = new BorderPane();
@@ -69,6 +70,7 @@ public class MainPage implements Page {
         scrollPane.setStyle("-fx-focus-color: transparent; -fx-faint-focus-color: transparent; -fx-background-color: transparent; -fx-border-width: 0; -fx-border-color: transparent; -fx-padding: 0;");
         scrollPane.setMaxWidth(windowWidth);
         scrollPane.setFitToWidth(true);
+        scrollPane.setPannable(true);
 
         // Header  
         CommonComponents commonComponents = new CommonComponents(windowWidth, windowHeight, true, scrollPane, 0, 0);
@@ -76,6 +78,7 @@ public class MainPage implements Page {
         HBox headerContainer = new HBox(header);
         headerContainer.setMinWidth(windowWidth);
         headerContainer.setMaxHeight(windowHeight * 0.07);
+        headerContainer.setMinHeight(windowHeight * 0.07);
         headerContainer.setAlignment(Pos.CENTER);
         headerContainer.setStyle("-fx-background-color: transparent;");
 
@@ -87,9 +90,10 @@ public class MainPage implements Page {
         root.setCenter(stackPane);
 
         Platform.runLater(() -> {
-            commonComponents.setSectionsPosition(sectionAboutAnimals.getLayoutY() + windowHeight * 0.8, sectionAboutPreserve.getLayoutY() + windowHeight * 0.35);
+            double sectionAboutPreserveY = windowHeight + windowHeight * 0.35;
+            double sectionAboutAnimalsY = 2 * windowHeight + windowHeight * 0.7;
+            commonComponents.setSectionsPosition(sectionAboutPreserveY, sectionAboutAnimalsY);
         });
-        
     }
 
     /**
@@ -108,12 +112,12 @@ public class MainPage implements Page {
         javafx.application.Platform.runLater(() -> {
             double targetValue = 0;
             if ("About".equalsIgnoreCase(scrollToSection)) {
-                targetValue = (mainPage.sectionAboutPreserve.getLayoutY() + windowHeight * 0.35)
+                targetValue = (windowHeight + windowHeight * 0.35)
                         / mainPage.scrollPane.getContent().getBoundsInLocal().getHeight();
             }
 
             if ("Animals".equalsIgnoreCase(scrollToSection)) {
-                targetValue = (mainPage.sectionAboutAnimals.getLayoutY() + windowHeight * 0.8)
+                targetValue = (windowHeight + windowHeight * 0.7)
                         / mainPage.scrollPane.getContent().getBoundsInLocal().getHeight();
             }
 
@@ -172,8 +176,8 @@ public class MainPage implements Page {
                          "-fx-border-width: 2;" +
                          "-fx-border-radius: 6;" +
                          "-fx-background-radius: 6");
-        content.setMinHeight(windowHeight - windowHeight * 0.07 - 3 * windowHeight * 0.02 + 3);
-        content.setMaxHeight(windowHeight - windowHeight * 0.07 - 3 * windowHeight * 0.02 + 3);
+        content.setMinHeight(windowHeight - windowHeight * 0.07 - 2 * windowHeight * 0.02 - topBarHeight);
+        content.setMaxHeight(windowHeight - windowHeight * 0.07 - 2 * windowHeight * 0.02 - topBarHeight);
         content.setOpacity(0.9);
         return content;
     }
@@ -222,8 +226,8 @@ public class MainPage implements Page {
                          "-fx-border-width: 2;" +
                          "-fx-border-radius: 6;" +
                          "-fx-background-radius: 6");
-        content.setMinHeight(windowHeight - windowHeight * 0.07 - 3 * windowHeight * 0.02 + 3);
-        content.setMaxHeight(windowHeight - windowHeight * 0.07 - 3 * windowHeight * 0.02 + 3);
+        content.setMinHeight(windowHeight - windowHeight * 0.07 - 2 * windowHeight * 0.02 - topBarHeight);
+        content.setMaxHeight(windowHeight - windowHeight * 0.07 - 2 * windowHeight * 0.02 - topBarHeight);
         content.setOpacity(0.7);
         return content;
     }
@@ -269,13 +273,12 @@ public class MainPage implements Page {
             content.getChildren().add(animalBlock);
         }
 
-        content.setMinHeight(windowHeight - windowHeight * 0.07);
         content.setStyle("-fx-background-color: #a8c28c;" +
                          "-fx-border-width: 2;" +
                          "-fx-border-radius: 6;" +
                          "-fx-background-radius: 6");                
-        content.setMinHeight(windowHeight - windowHeight * 0.07 - 2 * windowHeight * 0.02 + 5);
-        content.setMaxHeight(windowHeight - windowHeight * 0.07 - 2 * windowHeight * 0.02 + 5);
+        content.setMinHeight(windowHeight - windowHeight * 0.07 - 2 * windowHeight * 0.02 - topBarHeight);
+        content.setMaxHeight(windowHeight - windowHeight * 0.07 - 2 * windowHeight * 0.02 - topBarHeight);
         content.setOpacity(0.9);
         return content;
     }

@@ -194,7 +194,7 @@ public class CommonComponents {
     }
 
     /**
-     * Scrolls the scrollpane to a specific position within its content.
+     * Scrolls the scrollPane to a specific position within its content.
      * @param targetPosition the vertical position within the content to scroll to
      */
     private void scrollToPosition(double targetPosition) {
@@ -423,7 +423,7 @@ public class CommonComponents {
      * @param sectionAboutAnimalsPosition The vertical position for the "About Animals" section.
      * @param sectionAboutPreservePosition The vertical position for the "About Preserve" section.
      */
-    public void setSectionsPosition(double sectionAboutAnimalsPosition, double sectionAboutPreservePosition) {
+    public void setSectionsPosition(double sectionAboutPreservePosition, double sectionAboutAnimalsPosition) {
         this.sectionAboutAnimalsPosition = sectionAboutAnimalsPosition;
         this.sectionAboutPreservePosition = sectionAboutPreservePosition;
     }

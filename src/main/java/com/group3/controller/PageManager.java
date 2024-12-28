@@ -30,10 +30,10 @@ public class PageManager {
         // Register pages
         Page firstPage = new FirstPage(navigationController);
         pages.put(firstPage.getPageName(), () -> new FirstPage(navigationController).getRoot());
-        pages.put(firstPage.getPageName(), () -> new FirstPage(navigationController).getRoot());
-        pages.put(firstPage.getPageName(), () -> new FirstPage(navigationController).getRoot());
-        pages.put(firstPage.getPageName(), () -> new FirstPage(navigationController).getRoot());
-        pages.put(firstPage.getPageName(), () -> new FirstPage(navigationController).getRoot());
+        //pages.put(firstPage.getPageName(), () -> new FirstPage(navigationController).getRoot());
+        //pages.put(firstPage.getPageName(), () -> new FirstPage(navigationController).getRoot());
+        //pages.put(firstPage.getPageName(), () -> new FirstPage(navigationController).getRoot());
+        //pages.put(firstPage.getPageName(), () -> new FirstPage(navigationController).getRoot());
     }
 
     /**
