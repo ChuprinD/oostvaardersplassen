@@ -78,6 +78,24 @@ public class CommonComponents {
     }
 
     /**
+     * Creates the footer at the bottom of the application window. The footer
+     * contains only an image of a white wolf.
+     *
+     * @return the footer as an HBox
+     */
+    public HBox createFooter() {
+        Image image = new Image(CommonComponents.class.getResourceAsStream("/images/logos/WhiteWolf.png"));
+        ImageView imageView = new ImageView(image);
+        imageView.setFitHeight(windowHeight * 0.1);
+        imageView.setPreserveRatio(true);
+
+        HBox bottomSpacer = new HBox(imageView);
+        bottomSpacer.setAlignment(Pos.BOTTOM_CENTER);
+        bottomSpacer.setPadding(new Insets(windowHeight * 0.02, 0, windowHeight * 0.02, 0));
+        return bottomSpacer;
+    }
+
+    /**
      * Creates a logo section for the header containing an image.
      * The image is scaled to fit a specific height while preserving its aspect ratio.
      * The logo section is left-aligned within its container.
@@ -85,7 +103,7 @@ public class CommonComponents {
      * @return An HBox containing the logo image.
      */
     private HBox createLogoSection() {
-        Image image = new Image(CommonComponents.class.getResourceAsStream("/images/Wolf1e4c40Opacity65.png"));
+        Image image = new Image(CommonComponents.class.getResourceAsStream("/images/logos/Wolf1e4c40Opacity65.png"));
         ImageView imageView = new ImageView(image);
         imageView.setFitHeight(windowHeight * 0.07);
         imageView.setPreserveRatio(true);
@@ -390,6 +408,7 @@ public class CommonComponents {
         root.getChildren().add(0, background);
 
         // Set the dialog scene
+        dialog.getIcons().add(new Image(NavigationController.class.getResourceAsStream("/images/icons/main-logo.png")));
         dialog.setScene(scene);
         dialog.showAndWait();
 
@@ -426,5 +445,9 @@ public class CommonComponents {
     public void setSectionsPosition(double sectionAboutPreservePosition, double sectionAboutAnimalsPosition) {
         this.sectionAboutAnimalsPosition = sectionAboutAnimalsPosition;
         this.sectionAboutPreservePosition = sectionAboutPreservePosition;
+    }
+
+    public void setScrollPane(ScrollPane scrollPane) {
+        this.scrollPane = scrollPane;
     }
 }

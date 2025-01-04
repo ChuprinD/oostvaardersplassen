@@ -1,8 +1,9 @@
 package com.group3.controller;
 
 import com.group3.view.Page;
+import com.group3.view.PageFactory;
 import com.group3.view.MainPage;
-import com.group3.view.FirstPage;
+import com.group3.view.AbstractPage;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,7 +20,15 @@ public class PageManager {
         initializePages();
     }
 
-    // Initialize and register all pages
+    
+    /**
+     * Initializes the pages of the application. This method is responsible for
+     * registering all the pages of the application in the page manager. The
+     * pages are registered with a unique name, and a supplier that creates the
+     * page when it is requested. The pages are also registered with a supplier
+     * for the scrollable version of the page, which is used when the user scrolls
+     * to a specific section of the page.
+     */
     private void initializePages() {
         // Register the main page
         Page mainPage = new MainPage(navigationController);
@@ -28,8 +37,8 @@ public class PageManager {
         pages.put(mainPage.getPageName() + ".Animals", () -> MainPage.createPageAndScroll(navigationController, "Animals").getRoot());
 
         // Register pages
-        Page firstPage = new FirstPage(navigationController);
-        pages.put(firstPage.getPageName(), () -> new FirstPage(navigationController).getRoot());
+        AbstractPage firstPage = PageFactory.createPage("Herbivore", navigationController);
+        pages.put(firstPage.getPageName(), () -> PageFactory.createPage("Herbivore", navigationController).getRoot());
         //pages.put(firstPage.getPageName(), () -> new FirstPage(navigationController).getRoot());
         //pages.put(firstPage.getPageName(), () -> new FirstPage(navigationController).getRoot());
         //pages.put(firstPage.getPageName(), () -> new FirstPage(navigationController).getRoot());

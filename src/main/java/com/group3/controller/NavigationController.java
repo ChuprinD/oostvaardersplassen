@@ -1,6 +1,7 @@
 package com.group3.controller;
 
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 public class NavigationController {
@@ -22,6 +23,9 @@ public class NavigationController {
         // Create a new scene using the requested page
         Scene scene = new Scene(pageManager.getPage(pageName));
         primaryStage.setScene(scene);
+        
+        // Set the application icon
+        primaryStage.getIcons().add(new Image(NavigationController.class.getResourceAsStream("/images/icons/main-logo.png")));
 
         // Set the primary stage size to match the screen dimensions
         primaryStage.setWidth(javafx.stage.Screen.getPrimary().getBounds().getWidth());

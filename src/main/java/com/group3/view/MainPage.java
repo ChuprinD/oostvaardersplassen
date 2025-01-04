@@ -1,5 +1,7 @@
 package com.group3.view;
 
+import java.util.HashMap;
+
 import com.group3.controller.NavigationController;
 import com.group3.utils.Util;
 
@@ -38,6 +40,8 @@ public class MainPage implements Page {
         windowWidth = javafx.stage.Screen.getPrimary().getVisualBounds().getWidth();
         windowHeight = javafx.stage.Screen.getPrimary().getVisualBounds().getHeight();
 
+        CommonComponents commonComponents = new CommonComponents(windowWidth, windowHeight, true, scrollPane, 0, 0);
+
         // Main content sections
         VBox mainContent = new VBox(windowHeight * 0.02);
         mainContent.setStyle("-fx-background-color: linear-gradient(to bottom, #1e4c40, #a8c28c); -fx-border-width: 0; -fx-border-color: transparent;");
@@ -52,15 +56,9 @@ public class MainPage implements Page {
         spacer.setMaxHeight(windowHeight * 0.07);
         spacer.setStyle("-fx-background-color: transparent;");
 
-        Image image = new Image(CommonComponents.class.getResourceAsStream("/images/WhiteWolf.png"));
-        ImageView imageView = new ImageView(image);
-        imageView.setFitHeight(windowHeight * 0.1);
-        imageView.setPreserveRatio(true);
-        HBox bottomSpacer = new HBox(imageView);
-        bottomSpacer.setAlignment(Pos.BOTTOM_CENTER);
-        bottomSpacer.setPadding(new Insets(windowHeight * 0.02, 0, windowHeight * 0.02, 0));
+        HBox footer = commonComponents.createFooter();
 
-        mainContent.getChildren().addAll(spacer, sectionHome, sectionAboutPreserve, sectionAboutAnimals, bottomSpacer);
+        mainContent.getChildren().addAll(spacer, sectionHome, sectionAboutPreserve, sectionAboutAnimals, footer);
 
         // Scrollable pane for the main content
         scrollPane = new ScrollPane();
@@ -72,8 +70,9 @@ public class MainPage implements Page {
         scrollPane.setFitToWidth(true);
         scrollPane.setPannable(true);
 
-        // Header  
-        CommonComponents commonComponents = new CommonComponents(windowWidth, windowHeight, true, scrollPane, 0, 0);
+        commonComponents.setScrollPane(scrollPane);
+
+        // Header   
         HBox header = commonComponents.createHeader(pageName, navigationController);
         HBox headerContainer = new HBox(header);
         headerContainer.setMinWidth(windowWidth);
@@ -117,7 +116,7 @@ public class MainPage implements Page {
             }
 
             if ("Animals".equalsIgnoreCase(scrollToSection)) {
-                targetValue = (windowHeight + windowHeight * 0.7)
+                targetValue = (2 * windowHeight + windowHeight * 0.7)
                         / mainPage.scrollPane.getContent().getBoundsInLocal().getHeight();
             }
 
@@ -137,9 +136,9 @@ public class MainPage implements Page {
      * @return The newly created section.
      */
     private HBox createSectionHome() {
-        Image image = new Image(CommonComponents.class.getResourceAsStream("/images/Blank diagram-Page1.png"));
+        Image image = new Image(CommonComponents.class.getResourceAsStream("/images/pictures/grey-wolves-beringia.jpg"));
         ImageView imageView = new ImageView(image);
-        imageView.setFitHeight(windowHeight * 0.7);
+        imageView.setFitHeight(windowHeight * 0.4);
         imageView.setPreserveRatio(true);
 
 
@@ -153,11 +152,13 @@ public class MainPage implements Page {
         title.setFont(Util.getBoldFont(Util.getTitleFontSize(windowWidth, windowHeight)));
         title.setTextAlignment(TextAlignment.RIGHT);
 
-        Label description = new Label(
-                "Something Something Something\n"
-                        + "SomethingSomething Something\n"
-                        + "SomethingSomething Something\n"
-                        + "SomethingSomething Something");
+        Label description = new Label("Explore the delicate balance of life in the\n" +
+                                      "Oostvaardersplassen, where introducing\n" +
+                                      "grey wolves as a top predator could reshape\n" +
+                                      "the populations of deer, cattle, and horses.\n" +
+                                      "This interactive program delves into\n" +
+                                      "predator-prey dynamics, ecosystem shifts, and the\n" +
+                                      "challenges of managing enclosed natural preserves");
         
         description.setFont(Util.getRegularFont(Util.getRegularFontSize(windowWidth, windowHeight)));
         description.setStyle("-fx-font-size: " + Util.getRegularFontSize(windowWidth, windowHeight) + "px;");
@@ -199,11 +200,12 @@ public class MainPage implements Page {
         title.setTextAlignment(TextAlignment.LEFT);
         title.setStyle("-fx-font-weight: bold; -fx-font-size: " + Util.getTitleFontSize(windowWidth, windowHeight) + "px; -fx-text-fill: #82755b;");
 
-        Label description = new Label(
-                "Something Something Something\n"
-                        + "SomethingSomething Something\n"
-                        + "SomethingSomething Something\n"
-                        + "SomethingSomething Something");
+        Label description = new Label("Dive into the unique ecosystem of the Oostvaardersplassen,\n" +
+                                      "a 56 km² protected area in the Netherlands. This dynamic preserve,\n" +
+                                      "home to wild cattle, horses, deer, and diverse bird species,\n" +
+                                      "offers an unparalleled view of how nature evolves\n" +
+                                      "in a controlled environment. Discover its lush wetlands,\n" +
+                                      "open grasslands, and the intricate relationships between its flora and fauna");
         description.setFont(Util.getRegularFont(Util.getRegularFontSize(windowWidth, windowHeight)));
         description.setWrapText(true);
         description.setTextFill(Color.BLACK);
@@ -214,9 +216,9 @@ public class MainPage implements Page {
         textBlock.setAlignment(Pos.CENTER_LEFT);
         textBlock.setMinWidth(windowWidth / 2 - windowWidth * 0.05);
 
-        Image image = new Image(CommonComponents.class.getResourceAsStream("/images/Blank diagram-Page1(1).png"));
+        Image image = new Image(CommonComponents.class.getResourceAsStream("/images/pictures/oostvaarders-vierluik.jpg"));
         ImageView imageView = new ImageView(image);
-        imageView.setFitHeight(windowHeight * 0.7);
+        imageView.setFitHeight(windowHeight * 0.5);
         imageView.setPreserveRatio(true);
 
         // Combine text and image into one section
@@ -246,23 +248,35 @@ public class MainPage implements Page {
         HBox content = new HBox(windowWidth * 0.15);
         content.setAlignment(Pos.CENTER);
 
-        String[] animalNames = {"Animal1", "Animal2", "Animal3"};
+        String[] animalNames = { "Deer", "Cattle", "Horses" };
+        HashMap<String, String> animalDescription = new HashMap<>();
+        animalDescription.put("Deer", "Graceful grazers that play a vital\nrole in shaping vegetation\ndynamics");
+        animalDescription.put("Cattle", "Large herbivores influencing\ngrassland structure and nutrient\ncycles");
+        animalDescription.put("Horses", "Dynamic grazers maintaining\nopen landscapes and biodiversity");
+
+        HashMap<String, String> animalPictures = new HashMap<>();
+        animalPictures.put("Deer", "deer");
+        animalPictures.put("Cattle", "cattle");
+        animalPictures.put("Horses", "horses");
+
         for (String animalName : animalNames) {
             Label title = new Label(animalName);
             title.setFont(Util.getBoldFont(Util.getTitleFontSize(windowWidth, windowHeight)));
             title.setTextFill(Color.BLACK);
             title.setStyle("-fx-font-weight: bold; -fx-font-size: " + Util.getTitleFontSize(windowWidth, windowHeight) + "px;");
 
-            Label description = new Label("Something Something\nSomethingSomething\nSomethingSomething\nSomethingSomething");
+            Label description = new Label(animalDescription.get(animalName));
             description.setFont(Util.getRegularFont(Util.getRegularFontSize(windowWidth, windowHeight)));
             description.setWrapText(true);
             description.setTextFill(Color.BLACK);
             description.setStyle("-fx-font-size: " + Util.getRegularFontSize(windowWidth, windowHeight) + "px;");
+            description.setTextAlignment(TextAlignment.CENTER);
 
-            Image image = new Image(CommonComponents.class.getResourceAsStream("/images/Blank diagram-Page1.png"));
+            String imagePath = "/images/pictures/" + animalPictures.get(animalName) + ".jpg";
+            Image image = new Image(CommonComponents.class.getResourceAsStream(imagePath));
             ImageView imageView = new ImageView(image);
             imageView.setFitHeight(windowHeight * 0.3);
-            imageView.setPreserveRatio(true);
+            imageView.setFitWidth(windowHeight * 0.3);
 
             VBox textBox = new VBox(windowHeight * 0.001, title, description);
             textBox.setAlignment(Pos.CENTER);

@@ -142,6 +142,14 @@ public class Util {
             document.add(pageImage);
 
             document.close();
+             
+            File imageFile = new File(imagePath);
+            if (imageFile.exists()) {
+                boolean deleted = imageFile.delete();
+                if (!deleted) {
+                    System.err.println("Failed to delete the image file: " + imagePath);
+                }
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

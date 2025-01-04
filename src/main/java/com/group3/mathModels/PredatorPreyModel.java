@@ -1,10 +1,4 @@
- package com.group3.mathModels;
-import java.awt.GridLayout;
-
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
+package com.group3.mathModels;
 
 import org.apache.commons.math3.ode.FirstOrderDifferentialEquations;
 import org.apache.commons.math3.ode.FirstOrderIntegrator;
@@ -12,47 +6,87 @@ import org.apache.commons.math3.ode.nonstiff.DormandPrince853Integrator;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.ValueAxis;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
-import org.jfree.chart.ui.ApplicationFrame;
-import org.jfree.chart.ui.UIUtils;
+import org.jfree.chart.title.LegendTitle;
+import org.jfree.chart.ui.RectangleEdge;
+import org.jfree.chart.ui.RectangleInsets;
+import org.jfree.chart.ui.VerticalAlignment;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
-public class PredatorPreyModel extends ApplicationFrame {
+import java.awt.Font;
+import java.awt.BasicStroke;
+import java.awt.Color;
 
-    private static final double[] initialPopulations = {30, 20, 20, 3}; // Initial populations: [Deer, Cattle, Horses, Wolves]
+public class PredatorPreyModel implements MathModel{
 
-    public PredatorPreyModel(String title) {
-        super(title);
-        XYSeriesCollection dataset = createDataset();
-        for (int i = 0; i < dataset.getSeriesCount(); i++) {
-            XYSeries series = dataset.getSeries(i);
-            System.out.println("Series: " + series.getKey());
-            for (int j = 0; j < series.getItemCount(); j++) {
-                Number x = series.getX(j);
-                Number y = series.getY(j);
-                System.out.println("  (" + x + ", " + y + ")");
-            }
-        }
+    private double[] initialPopulations = { 30, 20, 20, 3 };
+    
+    @Override
+    public ChartPanel getGraph(double width, double height) {
+        initialPopulations = new double[] { 30, 20, 20, 3 };
+        //Predator-Prey Model: Deer-Cattle-Horses-Wolves
         JFreeChart xylineChart = ChartFactory.createXYLineChart(
-                "Predator-Prey Model: Deer-Cattle-Horses-Wolves",
+                "",
                 "Time",
                 "Population",
-                dataset,
+                createDataset(),
                 PlotOrientation.VERTICAL,
                 true, true, false);
 
+        xylineChart.setPadding(new RectangleInsets(20, 10, 10, 10));
+
         XYPlot plot = xylineChart.getXYPlot();
+        plot.setDomainGridlinesVisible(false);
+        plot.setRangeGridlinesVisible(false);
+        plot.setOutlinePaint(null);
+        plot.setBackgroundPaint(Color.WHITE); 
+        plot.setDomainGridlinePaint(Color.LIGHT_GRAY); 
+        plot.setRangeGridlinePaint(Color.LIGHT_GRAY);
+
+        ValueAxis xAxis = plot.getDomainAxis();
+        ValueAxis yAxis = plot.getRangeAxis();
+        xAxis.setLabelFont(new Font("Arial", Font.BOLD, 18));
+        yAxis.setLabelFont(new Font("Arial", Font.BOLD, 18));
+
         XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
+        renderer.setSeriesPaint(0, Color.RED); 
+        renderer.setSeriesPaint(1, Color.BLUE);
+        renderer.setSeriesPaint(2, Color.GREEN);
+        renderer.setSeriesPaint(3, Color.ORANGE);
+
+        renderer.setSeriesStroke(0, new BasicStroke(2.0f));
+        renderer.setSeriesStroke(1, new BasicStroke(2.0f));
+        renderer.setSeriesStroke(2, new BasicStroke(2.0f));
+        renderer.setSeriesStroke(3, new BasicStroke(2.0f));
+
+        renderer.setSeriesShapesVisible(0, false);
+        renderer.setSeriesShapesVisible(1, false);
+        renderer.setSeriesShapesVisible(2, false);
+        renderer.setSeriesShapesVisible(3, false);
         plot.setRenderer(renderer);
 
-        ChartPanel chartPanel = new ChartPanel(xylineChart);
-        chartPanel.setPreferredSize(new java.awt.Dimension(800, 600));
-        setContentPane(chartPanel);
-    }
+        LegendTitle legend = xylineChart.getLegend();
+        legend.setPosition(RectangleEdge.RIGHT);
+        legend.setBackgroundPaint(new Color(255, 255, 255, 200));
+        legend.setFrame(new org.jfree.chart.block.BlockBorder(Color.LIGHT_GRAY));
+        legend.setItemFont(new Font("Arial", Font.PLAIN, 16));
+        legend.setPadding(10, 10, 10, 10);
+        legend.setMargin(new RectangleInsets(0, 10, 10, 0)); 
+        legend.setVerticalAlignment(VerticalAlignment.TOP);
 
+        plot.getDomainAxis().setTickLabelFont(new Font("Arial", Font.PLAIN, 16));
+        plot.getRangeAxis().setTickLabelFont(new Font("Arial", Font.PLAIN, 16));
+        
+        ChartPanel chartPanel = new ChartPanel(xylineChart);
+        chartPanel.setPreferredSize(new java.awt.Dimension((int) width, (int) height));
+
+        return chartPanel;
+    }
+    
     private XYSeriesCollection createDataset() {
         double t0 = 0.0;
         double t1 = 10.0;
@@ -89,73 +123,6 @@ public class PredatorPreyModel extends ApplicationFrame {
         dataset.addSeries(wolvesSeries);
 
         return dataset;
-    }
-    
-public static void main(String[] args) {
-        /*
-        JTextField rDField = new JTextField(Double.toString(rD));
-        JTextField rCField = new JTextField(Double.toString(rC));
-        JTextField rHField = new JTextField(Double.toString(rH));
-        
-        JTextField KDField = new JTextField(Double.toString(KD));
-        JTextField KCField = new JTextField(Double.toString(KC));
-        JTextField KHField = new JTextField(Double.toString(KH));
-        
-        JTextField deerInitField = new JTextField(Double.toString(initialPopulations[0]));
-        JTextField cattleInitField = new JTextField(Double.toString(initialPopulations[1]));
-        JTextField horsesInitField = new JTextField(Double.toString(initialPopulations[2]));
-        JTextField wolvesInitField = new JTextField(Double.toString(initialPopulations[3]));
-        
-        JPanel panel = new JPanel(new GridLayout(8, 2));
-        panel.add(new JLabel("Growth rate of deer (rD):"));
-        panel.add(rDField);
-        panel.add(new JLabel("Growth rate of cattle (rC):"));
-        panel.add(rCField);
-        panel.add(new JLabel("Growth rate of horses (rH):"));
-        panel.add(rHField);
-        
-        panel.add(new JLabel("Carrying capacity of deer (KD):"));
-        panel.add(KDField);
-        panel.add(new JLabel("Carrying capacity of cattle (KC):"));
-        panel.add(KCField);
-        panel.add(new JLabel("Carrying capacity of horses (KH):"));
-        panel.add(KHField);
-        
-        panel.add(new JLabel("Initial population of deer:"));
-        panel.add(deerInitField);
-        panel.add(new JLabel("Initial population of cattle:"));
-        panel.add(cattleInitField);
-        panel.add(new JLabel("Initial population of horses:"));
-        panel.add(horsesInitField);
-        panel.add(new JLabel("Initial population of wolves:"));
-        panel.add(wolvesInitField);
-        
-        int result = JOptionPane.showConfirmDialog(null, panel, "Enter Model Parameters", JOptionPane.OK_CANCEL_OPTION);
-        if (result == JOptionPane.OK_OPTION) {
-            rD = Double.parseDouble(rDField.getText());
-            rC = Double.parseDouble(rCField.getText());
-            rH = Double.parseDouble(rHField.getText());
-        
-            KD = Double.parseDouble(KDField.getText());
-            KC = Double.parseDouble(KCField.getText());
-            KH = Double.parseDouble(KHField.getText());
-        
-            initialPopulations[0] = Double.parseDouble(deerInitField.getText());
-            initialPopulations[1] = Double.parseDouble(cattleInitField.getText());
-            initialPopulations[2] = Double.parseDouble(horsesInitField.getText());
-            initialPopulations[3] = Double.parseDouble(wolvesInitField.getText());
-        
-            PredatorPreyModel chart = new PredatorPreyModel("Predator-Prey Model");
-            chart.pack();
-            UIUtils.centerFrameOnScreen(chart);
-            chart.setVisible(true);
-        }
-        */
-        PredatorPreyModel chart = new PredatorPreyModel("Predator-Prey Model");
-        chart.pack();
-        UIUtils.centerFrameOnScreen(chart);
-        chart.setVisible(true);
-        
     }
 
     static class PredatorPreyEquations implements FirstOrderDifferentialEquations {
