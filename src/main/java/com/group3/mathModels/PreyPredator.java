@@ -182,15 +182,16 @@ public class PreyPredator implements MathModel {
 
         @Override
         public void computeDerivatives(double t, double[] y, double[] yDot) {
-            double deerPopulation = y[0];
-            double cattlePopulation = y[1];
+            double cattlePopulation  = y[0];
+            double deerPopulation = y[1];
             double horsePopulation = y[2];
             double wolfPopulation = y[3];
 
             yDot[0] = cattleGrowthRate * cattlePopulation * (1 - (cattlePopulation + competitionHorseOnCattle * horsePopulation + competitionDeerOnCattle * deerPopulation) / cattleCarryingCapacity) - predationRateWolvesOnCattle * wolfPopulation * cattlePopulation;
-            yDot[1] = rC * C * (1 - (C + A_CD * D + A_CH * H) / KC) - ALPHA_C * C * W;  // dC/dt
-            yDot[2] = rH * H * (1 - (H + A_HD * D + A_HC * C) / KH) - ALPHA_H * H * W;  // dH/dt
-            yDot[3] = ALPHA_D * D * W + ALPHA_C * C * W + ALPHA_H * H * W - 0.1 * W;  // dW/dt
+            yDot[1] = horseGrowthRate * horsePopulation * (1 - (horsePopulation + competitionCattleOnHorses * cattlePopulation  + competitionDeerOnHorses * deerPopulation) / horseCarryingCapacity) - predationRateWolvesOnHorses * wolfPopulation * horsePopulation;
+            yDot[2] =  deerGrowthRate * deerPopulation * (1 - (deerPopulation + competitionHorsesOnDeer * horsePopulation + competitionCattleOnDeer * cattlePopulation) / deerCarryingCapacity) - predationRateWolvesOnDeer * wolfPopulation * deerPopulation;
+            yDot[3] = wolfGrowthRate * wolfPopulation * (conversionEfficiencyCattleToWolves * cattlePopulation + conversionEfficiencyHorsesToWolves * horsePopulation + conversionEfficiencyDeerToWolves * deerPopulation - wolfCarryingCapacity) - wolfDeathRate * wolfPopulation;
+            // dW/dt
         }
     }
 }
