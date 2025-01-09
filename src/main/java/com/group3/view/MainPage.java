@@ -9,6 +9,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Group;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
@@ -32,7 +33,7 @@ public class MainPage implements Page {
     private HBox sectionAboutAnimals;
     private final double windowWidth;
     private final double windowHeight;
-    private final double topBarHeight = 26;
+    private final double topBarHeight = 23;
 
     public MainPage(NavigationController navigationController) {
         root = new BorderPane();
@@ -40,20 +41,23 @@ public class MainPage implements Page {
         windowWidth = javafx.stage.Screen.getPrimary().getVisualBounds().getWidth();
         windowHeight = javafx.stage.Screen.getPrimary().getVisualBounds().getHeight();
 
-        CommonComponents commonComponents = new CommonComponents(windowWidth, windowHeight, true, scrollPane, 0, 0);
+        CommonComponents commonComponents = new CommonComponents(windowWidth, windowHeight, true, scrollPane, null, null);
 
         // Main content sections
-        VBox mainContent = new VBox(windowHeight * 0.02);
+        double verticalGapBetweenSections = windowHeight * 0.03;
+        double horizontalGap = windowWidth * 0.02;
+
+        VBox mainContent = new VBox(verticalGapBetweenSections);
         mainContent.setStyle("-fx-background-color: linear-gradient(to bottom, #1e4c40, #a8c28c); -fx-border-width: 0; -fx-border-color: transparent;");
         mainContent.setMinWidth(windowWidth);
-        mainContent.setPadding(new Insets(0, windowWidth * 0.01, 0, windowWidth * 0.01));
-        HBox sectionHome = createSectionHome();
-        sectionAboutPreserve = createSectionAboutPreserve();
-        sectionAboutAnimals = createSectionAboutAnimals();
+        mainContent.setPadding(new Insets(0, horizontalGap, 0, horizontalGap));
+        HBox sectionHome = createSectionHome(verticalGapBetweenSections, horizontalGap, commonComponents.getHeaderHeight());
+        sectionAboutPreserve = createSectionAboutPreserve(verticalGapBetweenSections, horizontalGap, commonComponents.getHeaderHeight());
+        sectionAboutAnimals = createSectionAboutAnimals(verticalGapBetweenSections, horizontalGap, commonComponents.getHeaderHeight());
 
         Region spacer = new Region();
-        spacer.setMinHeight(windowHeight * 0.07);
-        spacer.setMaxHeight(windowHeight * 0.07);
+        spacer.setMinHeight(commonComponents.getHeaderHeight());
+        spacer.setMaxHeight(commonComponents.getHeaderHeight());
         spacer.setStyle("-fx-background-color: transparent;");
 
         HBox footer = commonComponents.createFooter();
@@ -67,17 +71,19 @@ public class MainPage implements Page {
         scrollPane.setContent(mainContent);
         scrollPane.setStyle("-fx-focus-color: transparent; -fx-faint-focus-color: transparent; -fx-background-color: transparent; -fx-border-width: 0; -fx-border-color: transparent; -fx-padding: 0;");
         scrollPane.setMaxWidth(windowWidth);
-        scrollPane.setFitToWidth(true);
+        scrollPane.setMinWidth(windowWidth);
         scrollPane.setPannable(true);
+        scrollPane.layout();
 
         commonComponents.setScrollPane(scrollPane);
 
         // Header   
-        HBox header = commonComponents.createHeader(pageName, navigationController);
+        HBox header = commonComponents.createHeader(pageName, navigationController, horizontalGap);
         HBox headerContainer = new HBox(header);
-        headerContainer.setMinWidth(windowWidth);
-        headerContainer.setMaxHeight(windowHeight * 0.07);
-        headerContainer.setMinHeight(windowHeight * 0.07);
+        headerContainer.setMinWidth(windowWidth - horizontalGap * 2);
+        headerContainer.setMaxWidth(windowWidth - horizontalGap * 2);
+        headerContainer.setMaxHeight(commonComponents.getHeaderHeight());
+        headerContainer.setMinHeight(commonComponents.getHeaderHeight());
         headerContainer.setAlignment(Pos.CENTER);
         headerContainer.setStyle("-fx-background-color: transparent;");
 
@@ -89,9 +95,7 @@ public class MainPage implements Page {
         root.setCenter(stackPane);
 
         Platform.runLater(() -> {
-            double sectionAboutPreserveY = windowHeight + windowHeight * 0.35;
-            double sectionAboutAnimalsY = 2 * windowHeight + windowHeight * 0.7;
-            commonComponents.setSectionsPosition(sectionAboutPreserveY, sectionAboutAnimalsY);
+            commonComponents.setSectionsPosition(sectionAboutPreserve, sectionAboutAnimals);
         });
     }
 
@@ -109,17 +113,24 @@ public class MainPage implements Page {
         double windowHeight = javafx.stage.Screen.getPrimary().getBounds().getHeight();
     
         javafx.application.Platform.runLater(() -> {
-            double targetValue = 0;
+            double targetCenterY = 0;
+            double contentHeight = mainPage.scrollPane.getContent().getBoundsInLocal().getHeight();
+            double viewportHeight = mainPage.scrollPane.getViewportBounds().getHeight();
+
             if ("About".equalsIgnoreCase(scrollToSection)) {
-                targetValue = (windowHeight + windowHeight * 0.35)
-                        / mainPage.scrollPane.getContent().getBoundsInLocal().getHeight();
+                double targetY = mainPage.sectionAboutPreserve.getBoundsInParent().getMinY();
+                targetCenterY = targetY - (viewportHeight / 2)
+                        + (mainPage.sectionAboutPreserve.getBoundsInLocal().getHeight() / 2) - windowHeight * 0.07 / 2;
             }
 
             if ("Animals".equalsIgnoreCase(scrollToSection)) {
-                targetValue = (2 * windowHeight + windowHeight * 0.7)
-                        / mainPage.scrollPane.getContent().getBoundsInLocal().getHeight();
+                double targetY = mainPage.sectionAboutAnimals.getBoundsInParent().getMinY();
+                targetCenterY = targetY - (viewportHeight / 2)
+                        + (mainPage.sectionAboutAnimals.getBoundsInLocal().getHeight() / 2) - windowHeight * 0.07 / 2;
             }
-
+            
+            double targetValue = targetCenterY / (contentHeight - viewportHeight);
+            targetValue = Math.max(0, Math.min(1, targetValue));
             double currentValue = mainPage.scrollPane.getVvalue();
             Timeline timeline = new Timeline(new KeyFrame(Duration.ZERO, new KeyValue(mainPage.scrollPane.vvalueProperty(), currentValue)),
                                              new KeyFrame(Duration.seconds(1), new KeyValue(mainPage.scrollPane.vvalueProperty(), targetValue)));
@@ -135,10 +146,10 @@ public class MainPage implements Page {
      * in a preserve.
      * @return The newly created section.
      */
-    private HBox createSectionHome() {
-        Image image = new Image(CommonComponents.class.getResourceAsStream("/images/pictures/grey-wolves-beringia.jpg"));
+    private HBox createSectionHome(double verticalGapBetweenSections, double horizontalGap, double headerHeight) {
+        Image image = new Image(CommonComponents.class.getResourceAsStream("/images/pictures/Page1.png"));
         ImageView imageView = new ImageView(image);
-        imageView.setFitHeight(windowHeight * 0.4);
+        imageView.setFitHeight(windowHeight * 0.7);
         imageView.setPreserveRatio(true);
 
 
@@ -146,10 +157,10 @@ public class MainPage implements Page {
                                 "Introducing Grey Wolves on\n" +
                                 "Deer, Cattle, and Horse\n" +
                                 "Populations in a Preserve");
+        title.setFont(Util.getBoldFont(Util.getTitleFontSize(windowWidth, windowHeight)));
         title.setStyle("-fx-font-weight: bold; -fx-font-size: " + Util.getTitleFontSize(windowWidth, windowHeight) + "px;");
         title.setTextFill(Color.BLACK);
-        title.setWrapText(true);
-        title.setFont(Util.getBoldFont(Util.getTitleFontSize(windowWidth, windowHeight)));
+        title.setWrapText(true); 
         title.setTextAlignment(TextAlignment.RIGHT);
 
         Label description = new Label("Explore the delicate balance of life in the\n" +
@@ -176,9 +187,11 @@ public class MainPage implements Page {
         content.setStyle("-fx-background-color: #a8c28c;" +
                          "-fx-border-width: 2;" +
                          "-fx-border-radius: 6;" +
-                         "-fx-background-radius: 6");
-        content.setMinHeight(windowHeight - windowHeight * 0.07 - 2 * windowHeight * 0.02 - topBarHeight);
-        content.setMaxHeight(windowHeight - windowHeight * 0.07 - 2 * windowHeight * 0.02 - topBarHeight);
+                "-fx-background-radius: 6");
+        content.setMaxWidth(windowWidth - 2 * horizontalGap);
+        content.setMinWidth(windowWidth - 2 * horizontalGap);
+        content.setMinHeight(windowHeight - headerHeight - 2 * verticalGapBetweenSections - topBarHeight);
+        content.setMaxHeight(windowHeight - headerHeight - 2 * verticalGapBetweenSections - topBarHeight);
         content.setOpacity(0.9);
         return content;
     }
@@ -192,20 +205,23 @@ public class MainPage implements Page {
      * @return An HBox containing the styled title, description, and image representing
      *         the Oostvaarderplassen nature preserve.
      */
-    public HBox createSectionAboutPreserve() {
+    public HBox createSectionAboutPreserve(double verticalGapBetweenSections, double horizontalGap, double headerHeight) {
         Label title = new Label("Oostvaarderplassen nature\n" + "preserve");
         title.setFont(Util.getBoldFont(Util.getTitleFontSize(windowWidth, windowHeight)));
         title.setTextFill(Color.BLACK);
         title.setWrapText(true);
         title.setTextAlignment(TextAlignment.LEFT);
-        title.setStyle("-fx-font-weight: bold; -fx-font-size: " + Util.getTitleFontSize(windowWidth, windowHeight) + "px; -fx-text-fill: #82755b;");
+        title.setStyle("-fx-font-weight: bold; -fx-font-size: " + Util.getTitleFontSize(windowWidth, windowHeight)
+                + "px; -fx-text-fill: #82755b;");
 
-        Label description = new Label("Dive into the unique ecosystem of the Oostvaardersplassen,\n" +
-                                      "a 56 km² protected area in the Netherlands. This dynamic preserve,\n" +
-                                      "home to wild cattle, horses, deer, and diverse bird species,\n" +
-                                      "offers an unparalleled view of how nature evolves\n" +
-                                      "in a controlled environment. Discover its lush wetlands,\n" +
-                                      "open grasslands, and the intricate relationships between its flora and fauna");
+        Label description = new Label("Dive into the unique ecosystem of the\n" +
+                                      "Oostvaardersplassen, a 56 km² protected area\n" +
+                                      "in the Netherlands. This dynamic preserve,\n" +
+                                      "home to wild cattle, horses, deer, and\n" +
+                                      "diverse bird species, offers an unparalleled view\n" +
+                                      "of how nature evolves in a controlled environment.\n" +
+                                      "Discover its lush wetlands, open grasslands,\n" +
+                                      "and the intricate relationships between its flora and fauna");
         description.setFont(Util.getRegularFont(Util.getRegularFontSize(windowWidth, windowHeight)));
         description.setWrapText(true);
         description.setTextFill(Color.BLACK);
@@ -216,9 +232,9 @@ public class MainPage implements Page {
         textBlock.setAlignment(Pos.CENTER_LEFT);
         textBlock.setMinWidth(windowWidth / 2 - windowWidth * 0.05);
 
-        Image image = new Image(CommonComponents.class.getResourceAsStream("/images/pictures/oostvaarders-vierluik.jpg"));
+        Image image = new Image(CommonComponents.class.getResourceAsStream("/images/pictures/Page2.png"));
         ImageView imageView = new ImageView(image);
-        imageView.setFitHeight(windowHeight * 0.5);
+        imageView.setFitHeight(windowHeight * 0.7);
         imageView.setPreserveRatio(true);
 
         // Combine text and image into one section
@@ -228,8 +244,10 @@ public class MainPage implements Page {
                          "-fx-border-width: 2;" +
                          "-fx-border-radius: 6;" +
                          "-fx-background-radius: 6");
-        content.setMinHeight(windowHeight - windowHeight * 0.07 - 2 * windowHeight * 0.02 - topBarHeight);
-        content.setMaxHeight(windowHeight - windowHeight * 0.07 - 2 * windowHeight * 0.02 - topBarHeight);
+        content.setMaxWidth(windowWidth - 2 * horizontalGap);
+        content.setMinWidth(windowWidth - 2 * horizontalGap);
+        content.setMinHeight(windowHeight - headerHeight - 2 * verticalGapBetweenSections - topBarHeight);
+        content.setMaxHeight(windowHeight - headerHeight - 2 * verticalGapBetweenSections- topBarHeight);
         content.setOpacity(0.7);
         return content;
     }
@@ -244,8 +262,8 @@ public class MainPage implements Page {
      *
      * @return An HBox containing the styled representation of each animal.
      */
-    private HBox createSectionAboutAnimals() {
-        HBox content = new HBox(windowWidth * 0.15);
+    private HBox createSectionAboutAnimals(double verticalGapBetweenSections, double horizontalGap, double headerHeight) {
+        HBox content = new HBox(windowWidth * 0.1);
         content.setAlignment(Pos.CENTER);
 
         String[] animalNames = { "Deer", "Cattle", "Horses" };
@@ -255,15 +273,15 @@ public class MainPage implements Page {
         animalDescription.put("Horses", "Dynamic grazers maintaining\nopen landscapes and biodiversity");
 
         HashMap<String, String> animalPictures = new HashMap<>();
-        animalPictures.put("Deer", "deer");
-        animalPictures.put("Cattle", "cattle");
-        animalPictures.put("Horses", "horses");
+        animalPictures.put("Deer", "Deer");
+        animalPictures.put("Cattle", "Cattle");
+        animalPictures.put("Horses", "Horse");
 
         for (String animalName : animalNames) {
             Label title = new Label(animalName);
             title.setFont(Util.getBoldFont(Util.getTitleFontSize(windowWidth, windowHeight)));
             title.setTextFill(Color.BLACK);
-            title.setStyle("-fx-font-weight: bold; -fx-font-size: " + Util.getTitleFontSize(windowWidth, windowHeight) + "px;");
+            title.setStyle("-fx-font-weight: bold; -fx-font-size: " + Util.getTitleFontSize(windowWidth, windowHeight)+ "px;");
 
             Label description = new Label(animalDescription.get(animalName));
             description.setFont(Util.getRegularFont(Util.getRegularFontSize(windowWidth, windowHeight)));
@@ -272,7 +290,7 @@ public class MainPage implements Page {
             description.setStyle("-fx-font-size: " + Util.getRegularFontSize(windowWidth, windowHeight) + "px;");
             description.setTextAlignment(TextAlignment.CENTER);
 
-            String imagePath = "/images/pictures/" + animalPictures.get(animalName) + ".jpg";
+            String imagePath = "/images/pictures/" + animalPictures.get(animalName) + ".png";
             Image image = new Image(CommonComponents.class.getResourceAsStream(imagePath));
             ImageView imageView = new ImageView(image);
             imageView.setFitHeight(windowHeight * 0.3);
@@ -290,9 +308,12 @@ public class MainPage implements Page {
         content.setStyle("-fx-background-color: #a8c28c;" +
                          "-fx-border-width: 2;" +
                          "-fx-border-radius: 6;" +
-                         "-fx-background-radius: 6");                
-        content.setMinHeight(windowHeight - windowHeight * 0.07 - 2 * windowHeight * 0.02 - topBarHeight);
-        content.setMaxHeight(windowHeight - windowHeight * 0.07 - 2 * windowHeight * 0.02 - topBarHeight);
+                         "-fx-background-radius: 6");
+        content.setAlignment(Pos.CENTER);
+        content.setMaxWidth(windowWidth - 2 * horizontalGap);
+        content.setMinWidth(windowWidth - 2 * horizontalGap);              
+        content.setMinHeight(windowHeight - headerHeight - 2 * verticalGapBetweenSections- topBarHeight);
+        content.setMaxHeight(windowHeight - headerHeight - 2 * verticalGapBetweenSections - topBarHeight);
         content.setOpacity(0.9);
         return content;
     }

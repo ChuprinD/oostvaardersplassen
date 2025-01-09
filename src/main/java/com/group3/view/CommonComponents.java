@@ -33,20 +33,22 @@ import javafx.util.Duration;
 public class CommonComponents {
     private ScrollPane scrollPane;
     private boolean isItMain = false;
-    private double sectionAboutPreservePosition;
-    private double sectionAboutAnimalsPosition;
+    private HBox sectionAboutPreservePosition;
+    private HBox sectionAboutAnimalsPosition;
     private double windowWidth;
     private double windowHeight;
+
+    private double headerHeight;
 
     public CommonComponents(double windowWidth, double windowHeight) {
         this.windowWidth = windowWidth;
         this.windowHeight = windowHeight;
+        headerHeight = windowHeight * 0.07;
     }
 
     public CommonComponents(double windowWidth, double windowHeight, boolean isItMain, ScrollPane scrollPane,
-            double sectionAboutPreservePosition, double sectionAboutAnimalsPosition) {
-        this.windowHeight = windowHeight;
-        this.windowWidth = windowWidth;
+            HBox sectionAboutPreservePosition, HBox sectionAboutAnimalsPosition) {
+        this(windowWidth, windowHeight);
         this.isItMain = isItMain;
         this.scrollPane = scrollPane;
         this.sectionAboutPreservePosition = sectionAboutPreservePosition;
@@ -62,16 +64,18 @@ public class CommonComponents {
      * @param navigationController the object that handles navigation
      * @return the header bar as an HBox
      */
-    public HBox createHeader(String pageName, NavigationController navigationController) {
+    public HBox createHeader(String pageName, NavigationController navigationController, double horizontalGap) {
         HBox leftBox = createLogoSection();
         HBox centerBox = createButtons(navigationController);
         HBox rightBox = createDropdownMenu(navigationController);
+        rightBox.setTranslateX(-windowWidth * 0.03);
 
         HBox header = new HBox();
         header.setStyle("-fx-background-color: #a8c28c;");
-        header.setMinHeight(windowHeight * 0.07);
-        header.setMinWidth(windowWidth - 2 * windowWidth * 0.01);
-        header.setMaxWidth(windowWidth - 2 * windowWidth * 0.01);
+        header.setMinHeight(headerHeight);
+        header.setMaxHeight(headerHeight);
+        header.setMinWidth(windowWidth - 2 * horizontalGap);
+        header.setMaxWidth(windowWidth - 2 * horizontalGap);
         header.getChildren().addAll(leftBox, centerBox, rightBox);
 
         return header;
@@ -105,10 +109,12 @@ public class CommonComponents {
     private HBox createLogoSection() {
         Image image = new Image(CommonComponents.class.getResourceAsStream("/images/logos/Wolf1e4c40Opacity65.png"));
         ImageView imageView = new ImageView(image);
-        imageView.setFitHeight(windowHeight * 0.07);
+        imageView.setFitHeight(headerHeight);
         imageView.setPreserveRatio(true);
 
         HBox leftBox = new HBox(imageView);
+        leftBox.setMinHeight(headerHeight);
+        leftBox.setMaxHeight(headerHeight);
         leftBox.setMinWidth(windowWidth / 3);
         leftBox.setAlignment(Pos.CENTER_LEFT);
         leftBox.setPadding(new Insets(0, 0, 0, windowWidth * 0.07));
@@ -138,6 +144,8 @@ public class CommonComponents {
         HBox centerBox = new HBox(windowWidth * 0.02, homeButton, aboutButton, speciesButton);
         centerBox.setAlignment(Pos.CENTER);
         centerBox.setMinWidth(windowWidth / 3);
+        centerBox.setMinHeight(headerHeight);
+        centerBox.setMaxHeight(headerHeight);
 
         return centerBox;
     }
@@ -179,7 +187,7 @@ public class CommonComponents {
 
     private void navigateToHome(NavigationController navigationController) {
         if (isItMain) {
-            scrollToPosition(0);
+            scrollToPosition(0, 0);
         } else {
             navigationController.showPage("Home");
         }
@@ -192,7 +200,7 @@ public class CommonComponents {
      */
     private void navigateToAbout(NavigationController navigationController) {
         if (isItMain) {
-            scrollToPosition(sectionAboutPreservePosition);
+            scrollToPosition(sectionAboutPreservePosition.getBoundsInParent().getMinY(), sectionAboutPreservePosition.getBoundsInLocal().getHeight());
         } else {
             navigationController.showPage("Home.About");
         }
@@ -205,7 +213,7 @@ public class CommonComponents {
      */
     private void navigateToSpecies(NavigationController navigationController) {
         if (isItMain) {
-            scrollToPosition(sectionAboutAnimalsPosition);
+            scrollToPosition(sectionAboutAnimalsPosition.getBoundsInParent().getMinY(), sectionAboutAnimalsPosition.getBoundsInLocal().getHeight());
         } else {
             navigationController.showPage("Home.Animals");
         }
@@ -215,16 +223,24 @@ public class CommonComponents {
      * Scrolls the scrollPane to a specific position within its content.
      * @param targetPosition the vertical position within the content to scroll to
      */
-    private void scrollToPosition(double targetPosition) {
+    private void scrollToPosition(double targetPosition, double targetSectionSize) {
         double contentHeight = scrollPane.getContent().getBoundsInLocal().getHeight();
-        double targetValue = targetPosition / contentHeight;
-        double currentValue = scrollPane.getVvalue();
+        double viewportHeight = scrollPane.getViewportBounds().getHeight();
 
+        double targetCenterY = targetPosition - (viewportHeight / 2) + (targetSectionSize / 2) - headerHeight / 2;
+        
+        double targetValue = targetCenterY / (contentHeight - viewportHeight);
+        targetValue = Math.max(0, Math.min(1, targetValue));
+        double currentValue = scrollPane.getVvalue();
+         
         Timeline timeline = new Timeline(
             new KeyFrame(Duration.ZERO, new KeyValue(scrollPane.vvalueProperty(), currentValue)),
             new KeyFrame(Duration.seconds(1), new KeyValue(scrollPane.vvalueProperty(), targetValue))
         );
         timeline.play();
+        
+
+        //scrollPane.setVvalue(targetValue);
     }
 
     /**
@@ -239,9 +255,8 @@ public class CommonComponents {
     private HBox createDropdownMenu(NavigationController navigationController) {
         ComboBox<String> dropdownMenu = new ComboBox<>();
         dropdownMenu.setFocusTraversable(false);
-        dropdownMenu.getItems().addAll(
-            "Home", "Herbivore Competition", "Predator-Prey Dynamics", "Species-Specific Reactions", "Climate and Population Trends"
-        );
+        String[] dropdownElements = {"Home", "Herbivore Competition", "Predator-Prey Dynamics", "Species-Specific Reactions", "Climate and Population Trends"};
+        dropdownMenu.getItems().addAll(dropdownElements);
         dropdownMenu.setOnAction(e -> navigationController.showPage(dropdownMenu.getValue()));
         dropdownMenu.setValue("Choose Analysis Focus");
 
@@ -263,7 +278,8 @@ public class CommonComponents {
                     setText(null);
                     setGraphic(null);
                 } else {
-                    setGraphic(buildLayout(item, fontSize));
+                    VBox currentVBox = buildLayout(item, fontSize);
+                    setGraphic(currentVBox);
                     setStyle("-fx-background-color: #1e4c40; -fx-font-weight: normal; -fx-text-fill: white;");
                 }
             }
@@ -280,7 +296,10 @@ public class CommonComponents {
             }
         });
 
-        dropdownMenu.setMinSize(windowWidth * 0.06, windowHeight * 0.03);
+        double dropdownMenuWidth = Util.getMaxItemWidth(dropdownElements, fontSize, windowWidth);
+
+        dropdownMenu.setMinWidth(dropdownMenuWidth);
+        //dropdownMenu.setMaxWidth(dropdownMenuWidth);
 
         Platform.runLater(() -> {
             dropdownMenu.show();
@@ -291,6 +310,8 @@ public class CommonComponents {
         HBox rightBox = new HBox(dropdownMenu);
         rightBox.setAlignment(Pos.CENTER);
         rightBox.setMinWidth(windowWidth / 3);
+        rightBox.setMinHeight(headerHeight);
+        rightBox.setMaxHeight(headerHeight);
 
         return rightBox;
     }
@@ -347,7 +368,7 @@ public class CommonComponents {
 
         // Add a title to the dialog
         Label dialogTitle = new Label(message);
-        dialogTitle.setStyle("-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #000000;");
+        dialogTitle.setStyle("-fx-font-size: 15px; -fx-font-weight: bold; -fx-text-fill: #000000;");
         dialogTitle.setFont(Util.getBoldFont(Util.getTitleFontSize(windowWidth, windowHeight)));
         dialogTitle.setWrapText(true);
         dialogTitle.setAlignment(Pos.CENTER);
@@ -358,7 +379,7 @@ public class CommonComponents {
         yesButton.setStyle("-fx-background-color: #1E4C40;" +
                            "-fx-font-family: " + Util.getBoldFont(14).getFamily() + ";" +
                            "-fx-text-fill: white;" +
-                           "-fx-font-size: 10px;" +
+                           "-fx-font-size: 14px;" +
                            "-fx-font-weight: bold;" +
                            " -fx-padding: 10;"+
                            "-fx-background-radius: 5;");
@@ -369,7 +390,7 @@ public class CommonComponents {
         noButton.setStyle("-fx-background-color: #E07A5F;" +
                           "-fx-font-family: " + Util.getBoldFont(14).getFamily() + ";" +
                           "-fx-text-fill: white;" +
-                          "-fx-font-size: 10px;" +
+                          "-fx-font-size: 14px;" +
                           "-fx-font-weight: bold;" +
                           " -fx-padding: 10;"+
                           "-fx-background-radius: 5;");
@@ -396,16 +417,10 @@ public class CommonComponents {
 
         // Create a Scene with a custom layout
         StackPane root = new StackPane();
-        root.setStyle("-fx-background-color: rgba(0, 0, 0, 0.3);"); // Semi-transparent background
+        root.setStyle("-fx-background-color: #ffffff;");
         root.getChildren().add(dialogContent);
-        Scene scene = new Scene(root, 300, 150);
-
-        // Add rounded rectangle for visual styling
-        Rectangle background = new Rectangle(300, 150);
-        background.setArcWidth(20);
-        background.setArcHeight(20);
-        background.setFill(Color.WHITE);
-        root.getChildren().add(0, background);
+        root.setPadding(new Insets(20, 20, 20, 20));
+        Scene scene = new Scene(root);
 
         // Set the dialog scene
         dialog.getIcons().add(new Image(NavigationController.class.getResourceAsStream("/images/icons/main-logo.png")));
@@ -442,12 +457,16 @@ public class CommonComponents {
      * @param sectionAboutAnimalsPosition The vertical position for the "About Animals" section.
      * @param sectionAboutPreservePosition The vertical position for the "About Preserve" section.
      */
-    public void setSectionsPosition(double sectionAboutPreservePosition, double sectionAboutAnimalsPosition) {
+    public void setSectionsPosition(HBox sectionAboutPreservePosition, HBox sectionAboutAnimalsPosition) {
         this.sectionAboutAnimalsPosition = sectionAboutAnimalsPosition;
         this.sectionAboutPreservePosition = sectionAboutPreservePosition;
     }
 
     public void setScrollPane(ScrollPane scrollPane) {
         this.scrollPane = scrollPane;
+    }
+
+    public double getHeaderHeight() {
+        return headerHeight;
     }
 }

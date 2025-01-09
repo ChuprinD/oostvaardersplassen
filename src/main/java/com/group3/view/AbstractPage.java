@@ -11,8 +11,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
@@ -31,8 +29,6 @@ import java.io.File;
 
 import javax.swing.SwingUtilities;
 
-import org.bouncycastle.pqc.jcajce.provider.xmss.XMSSMTSignatureSpi.withSha256andPrehash;
-
 import com.group3.controller.NavigationController;
 import com.group3.mathModels.MathModel;
 import com.group3.utils.Util;
@@ -48,6 +44,8 @@ public abstract class AbstractPage implements Page {
     protected VBox descriptionSection; // Description section of the page
     protected VBox graphSection; // Graph section of the page
     protected ScrollPane scrollPane; // Scrollable area
+
+    private final double topBarHeight = 23;
 
     public AbstractPage(String pageName, String graphTitle, NavigationController navigationController) {
         this.pageName = pageName;
@@ -72,30 +70,33 @@ public abstract class AbstractPage implements Page {
      * scrolled to view more content than can fit on the screen.
      */
     private void setupPage() {
+        double verticalGapBetweenSections = windowHeight * 0.03;
+        double horizontalGap = windowWidth * 0.02;
         // Page header
         CommonComponents commonComponents = new CommonComponents(windowWidth, windowHeight);
-        HBox header = commonComponents.createHeader(pageName, navigationController);
+        HBox header = commonComponents.createHeader(pageName, navigationController, horizontalGap);
         HBox headerContainer = new HBox(header);
         headerContainer.setMinWidth(windowWidth);
         headerContainer.setMaxWidth(windowWidth);
-        headerContainer.setMaxHeight(windowHeight * 0.07);
-        headerContainer.setMinHeight(windowHeight * 0.07);
+        headerContainer.setMaxHeight(commonComponents.getHeaderHeight());
+        headerContainer.setMinHeight(commonComponents.getHeaderHeight());
         headerContainer.setAlignment(Pos.CENTER);
         headerContainer.setStyle("-fx-background-color: transparent;");
 
         // Main content area
-        VBox mainContent = new VBox(windowHeight * 0.02);
+        VBox mainContent = new VBox(verticalGapBetweenSections);
         mainContent.setStyle("-fx-background-color: linear-gradient(to bottom, #1e4c40, #a8c28c); -fx-border-width: 0; -fx-border-color: transparent;");
         mainContent.setMinWidth(windowWidth);
-        mainContent.setPadding(new Insets(0, windowWidth * 0.01, 0, windowWidth * 0.01));
+        mainContent.setMaxWidth(windowWidth);
+        mainContent.setPadding(new Insets(0, horizontalGap, 0, horizontalGap));
         
         // Add sections
         graphSection = createSectionGraph();
         descriptionSection = createSectionDescription();
 
         Region spacer = new Region();
-        spacer.setMinHeight(windowHeight * 0.07);
-        spacer.setMaxHeight(windowHeight * 0.07);
+        spacer.setMinHeight(commonComponents.getHeaderHeight());
+        spacer.setMaxHeight(commonComponents.getHeaderHeight());
         spacer.setStyle("-fx-background-color: transparent;");
 
         HBox footer = commonComponents.createFooter();
@@ -143,28 +144,28 @@ public abstract class AbstractPage implements Page {
     protected VBox createSectionGraph(String title, MathModel graphGenerator) {
         // Title for the graph section
         Label graphTitle = new Label(this.graphTitle);
-        graphTitle.setStyle("-fx-font-weight: bold; -fx-font-size: " + Util.getTitleFontSize(windowWidth, windowHeight) + "px;");
+        graphTitle.setStyle("-fx-font-weight: bold; -fx-font-size: " + Util.getTitleFontSize(windowWidth, windowHeight) + "px; -fx-text-fill: #000000;");
         graphTitle.setFont(Util.getBoldFont(Util.getTitleFontSize(windowWidth, windowHeight)));
-        graphTitle.setAlignment(Pos.TOP_LEFT);
-
-        HBox titleBox = new HBox();
-        titleBox.getChildren().add(graphTitle);
-        titleBox.setAlignment(Pos.TOP_LEFT);
-        HBox.setMargin(graphTitle, new Insets(0, 0, windowHeight * 0.02, (windowWidth - windowWidth * 0.64) / 2));
+        graphTitle.setAlignment(Pos.TOP_CENTER);
 
         // Graph 
+        StackPane graphContainer = new StackPane();
+        graphContainer.setStyle("-fx-background-color: #ffffff; -fx-border-radius: 6; -fx-background-radius: 6;");
+        graphContainer.setPadding(new Insets(5));
         SwingNode swingNode = new SwingNode();
         SwingUtilities.invokeLater(() -> {
             swingNode.setContent(graphGenerator.getGraph( windowWidth * 0.6, windowHeight * 0.5));
         });
-
+        graphContainer.getChildren().add(swingNode);
+        graphContainer.setMaxWidth(windowWidth * 0.9);
+        graphContainer.setOnMouseClicked(event -> openGraphPopup(title, graphGenerator));
         swingNode.setOnMouseClicked(event -> openGraphPopup(title, graphGenerator));
 
         // Info button ("i")
         Image imageInfoButton = new Image(CommonComponents.class.getResourceAsStream("/images/icons/infoButton.png"));
         ImageView infoButton = new ImageView(imageInfoButton);
-        infoButton.setFitHeight(windowHeight * 0.035);
-        infoButton.setFitWidth(windowWidth * 0.035);
+        infoButton.setFitHeight(windowHeight * 0.04);
+        infoButton.setFitWidth(windowWidth * 0.04);
         infoButton.setPreserveRatio(true);
         infoButton.setOnMouseClicked(e -> {
             javafx.application.Platform.runLater(() -> {
@@ -175,8 +176,8 @@ public abstract class AbstractPage implements Page {
         // Download button
         Image imageDownloadButton = new Image(CommonComponents.class.getResourceAsStream("/images/icons/downloadButton.png"));
         ImageView downloadButton = new ImageView(imageDownloadButton);
-        downloadButton.setFitHeight(windowHeight * 0.035);
-        downloadButton.setFitWidth(windowWidth * 0.035);
+        downloadButton.setFitHeight(windowHeight * 0.04);
+        downloadButton.setFitWidth(windowWidth * 0.04);
         downloadButton.setPreserveRatio(true);
         downloadButton.setOnMouseClicked(e -> {
             handleDownloadAction(this.graphTitle);
@@ -185,8 +186,8 @@ public abstract class AbstractPage implements Page {
         // Settings button
         Image imageSettingsButton = new Image(CommonComponents.class.getResourceAsStream("/images/icons/settingsButton.png"));
         ImageView settingsButton = new ImageView(imageSettingsButton);
-        settingsButton.setFitHeight(windowHeight * 0.035);
-        settingsButton.setFitWidth(windowWidth * 0.035);
+        settingsButton.setFitHeight(windowHeight * 0.04);
+        settingsButton.setFitWidth(windowWidth * 0.04);
         settingsButton.setPreserveRatio(true);
         settingsButton.setOnMouseClicked(e -> {
             openSettings();
@@ -197,17 +198,17 @@ public abstract class AbstractPage implements Page {
         buttons.setAlignment(Pos.BOTTOM_LEFT);
 
         HBox graphBox = new HBox(windowWidth * 0.007);
-        graphBox.getChildren().addAll(swingNode, buttons);
+        graphBox.getChildren().addAll(graphContainer, buttons);
         graphBox.setAlignment(Pos.BOTTOM_CENTER);
 
-        VBox graphSection = new VBox(titleBox, graphBox);
+        VBox graphSection = new VBox(windowHeight * 0.02,graphTitle, graphBox);
         graphSection.setPrefWidth(windowWidth);
         graphSection.setAlignment(Pos.CENTER);
         graphSection.setStyle("-fx-background-color: #a8c28c;" +
                 "-fx-border-width: 2;" +
                 "-fx-border-radius: 6;" +
                 "-fx-background-radius: 6");
-        graphSection.setMinHeight(windowHeight - windowHeight * 0.07 - 3 * windowHeight * 0.02 + 3);
+        graphSection.setMinHeight(windowHeight - windowHeight * 0.07 - 2 * windowHeight * 0.03 - topBarHeight);
         graphSection.setOpacity(0.9);
         return graphSection;
     }
@@ -239,7 +240,7 @@ public abstract class AbstractPage implements Page {
                          "-fx-border-width: 2;" +
                          "-fx-border-radius: 6;" +
                          "-fx-background-radius: 6");
-        descriptionSection.setMinHeight(windowHeight - windowHeight * 0.07 - 3 * windowHeight * 0.02 + 3);
+        descriptionSection.setMinHeight(windowHeight - windowHeight * 0.07 - 2 * windowHeight * 0.03 - topBarHeight);
         descriptionSection.setOpacity(0.7);
         return descriptionSection;
     }
@@ -257,7 +258,7 @@ public abstract class AbstractPage implements Page {
 
         // Graph container with padding and background style
         StackPane graphContainer = new StackPane();
-        graphContainer.setStyle("-fx-background-color: #f7f7f7; -fx-border-radius: 6; -fx-background-radius: 6;");
+        graphContainer.setStyle("-fx-background-color: #ffffff; -fx-border-radius: 6; -fx-background-radius: 6;");
         graphContainer.setPadding(new Insets(20));
 
         // Add SwingNode with graph content
@@ -298,7 +299,7 @@ public abstract class AbstractPage implements Page {
         popupContent.getChildren().addAll(titleContainer, graphContainer, closeButton);
         popupContent.setAlignment(Pos.CENTER);
         //popupContent.setPadding(new Insets(20));
-        popupContent.setStyle("-fx-background-color: #a8c28c; -fx-background-radius: 10; -fx-border-radius: 10;");
+        popupContent.setStyle("-fx-background-color: #a8c28c;");
 
         // Set the scene and show the stage
         Scene popupScene = new Scene(popupContent, windowWidth * 0.9, windowHeight * 0.9);
@@ -315,11 +316,19 @@ public abstract class AbstractPage implements Page {
      */
     
     private void scrollToDescription() {
-        double scrollTarget = (windowHeight + windowHeight * 0.75)
-                / scrollPane.getContent().getBoundsInLocal().getHeight();
+
+        double targetPosition = descriptionSection.getBoundsInParent().getMinY();
+        double contentHeight = scrollPane.getContent().getBoundsInLocal().getHeight();
+        double viewportHeight = scrollPane.getViewportBounds().getHeight();
+
+        double targetCenterY = targetPosition - (viewportHeight / 2) + (descriptionSection.getBoundsInParent().getHeight() / 2) - windowHeight * 0.07 / 2;
+        
+        double targetValue = targetCenterY / (contentHeight - viewportHeight);
+        targetValue = Math.max(0, Math.min(1, targetValue));
+        
         Timeline timeline = new Timeline(
                 new KeyFrame(Duration.ZERO, new KeyValue(scrollPane.vvalueProperty(), scrollPane.getVvalue())),
-                new KeyFrame(Duration.seconds(1), new KeyValue(scrollPane.vvalueProperty(), scrollTarget)));
+                new KeyFrame(Duration.seconds(1), new KeyValue(scrollPane.vvalueProperty(), targetValue)));
         timeline.play();
     }
     
@@ -334,7 +343,7 @@ public abstract class AbstractPage implements Page {
     private void handleDownloadAction(String graphTitle) {
         try {
             boolean isConfirmed = CommonComponents.showConfirmationDialog("Download Confirmation",
-                    "Would you like to download\n" + graphTitle + " as a PDF?", windowWidth, windowHeight);
+                    "Would you like to download\n" + graphTitle + "\nas a PDF?", windowWidth, windowHeight);
             if (isConfirmed) {
                 String imagePath = Util.capturePageAsImage(root);
                 if (imagePath == null) {
@@ -371,8 +380,8 @@ public abstract class AbstractPage implements Page {
         // Input fields
         GridPane gridPane = new GridPane();
         gridPane.setAlignment(Pos.CENTER);
-        gridPane.setHgap(20); // Horizontal gap between columns
-        gridPane.setVgap(10); // Vertical gap between rows
+        gridPane.setHgap(windowWidth * 0.02); // Horizontal gap between columns
+        gridPane.setVgap(windowHeight * 0.02); // Vertical gap between rows
 
         TextField[] inputFields = new TextField[6];
 
@@ -388,7 +397,7 @@ public abstract class AbstractPage implements Page {
             label.setTextAlignment(TextAlignment.CENTER);
     
             TextField textField = new TextField();
-            textField.setPrefWidth(windowWidth * 0.15); 
+            textField.setMaxWidth(windowWidth * 0.2); 
             inputFields[i] = textField;
     
             // Add Label and TextField to the VBox
@@ -437,7 +446,7 @@ public abstract class AbstractPage implements Page {
         root.getChildren().add(dialogContent);
 
         // Set the scene
-        Scene scene = new Scene(root, windowWidth * 0.2, windowHeight * 0.2);
+        Scene scene = new Scene(root);
         dialog.getIcons().add(new Image(NavigationController.class.getResourceAsStream("/images/icons/main-logo.png")));
         dialog.setScene(scene);
         dialog.showAndWait();

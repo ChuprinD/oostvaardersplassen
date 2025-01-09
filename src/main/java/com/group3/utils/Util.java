@@ -5,9 +5,11 @@ import java.io.File;
 import javax.imageio.ImageIO;
 
 import javafx.embed.swing.SwingFXUtils;
+import javafx.scene.control.ComboBox;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 
 import com.itextpdf.kernel.geom.PageSize;
@@ -59,7 +61,7 @@ public class Util {
      * @return the font size of the regular font in the page
      */
     public static int getRegularFontSize(double screenWidth, double screenHeight) {
-        int baseFontSize = 16;
+        int baseFontSize = 14;
         int fontSize = (int) (baseFontSize + Math.min(screenWidth, screenHeight) * 0.01);
         return fontSize;
     }
@@ -168,9 +170,23 @@ public class Util {
     public static File chooseFile(String extensionDescription, String extension) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add(
-            new FileChooser.ExtensionFilter(extensionDescription, extension)
-        );
-        return fileChooser.showSaveDialog(null); 
+                new FileChooser.ExtensionFilter(extensionDescription, extension));
+        return fileChooser.showSaveDialog(null);
     }
+    
+    public static double getMaxItemWidth(String[] items, int fontSize, double windowWidth) {
+        Text textHelper = new Text();
+        textHelper.setFont(Util.getBoldFont(fontSize)); 
+        double maxWidth = 0;
+
+        for (String item : items) {
+            textHelper.setText(item);
+            double width = textHelper.getBoundsInLocal().getWidth(); 
+            maxWidth = Math.max(maxWidth, width); 
+        }
+
+        return maxWidth + windowWidth * 0.025;
+    }
+
 }
 
