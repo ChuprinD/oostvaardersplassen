@@ -1,40 +1,42 @@
 package com.group3.mathModels;
 
+import com.group3.database.DatabaseApp;
+
 public class LotkaVolterra {
 
     // Parameters
-    private static final double cattleGrowthRate = 0.1; // Intrinsic growth rate of cattle
-    private static final double cattleCarryingCapacity = 1000; // Carrying capacity for cattle
-    private static final double horseGrowthRate = 0.1; // Intrinsic growth rate of horses
-    private static final double horseCarryingCapacity = 1000; // Carrying capacity for horses
-    private static final double deerGrowthRate = 0.1; // Intrinsic growth rate of deer
-    private static final double deerCarryingCapacity = 1000; // Carrying capacity for deer
-    private static final double wolfGrowthRate = 0.1; // Intrinsic growth rate of wolves
-    private static final double wolfCarryingCapacity = 1000; // Carrying capacity for wolves
-    private static final double grassGrowthRate = 0.1; // Intrinsic growth rate of grass
-    private static final double grassCarryingCapacity = 1000; // Carrying capacity for grass
-    private static final double competitionHorseOnCattle = 0.1; // Competition coefficient horses on cattle
-    private static final double competitionDeerOnCattle = 0.1; // Competition coefficient deer on cattle
-    private static final double competitionCattleOnHorses = 0.1; // Competition coefficient cattle on horses
-    private static final double competitionDeerOnHorses = 0.1; // Competition coefficient deer on horses
-    private static final double competitionHorsesOnDeer = 0.1; // Competition coefficient horses on deer
-    private static final double competitionCattleOnDeer = 0.1; // Competition coefficient cattle on deer
-    private static final double predationRateWolvesOnCattle = 0.01; // Predation rate of wolves on cattle
-    private static final double predationRateWolvesOnHorses = 0.01; // Predation rate of wolves on horses
-    private static final double predationRateWolvesOnDeer = 0.01; // Predation rate of wolves on deer
-    private static final double conversionEfficiencyCattleToWolves = 0.1; // Conversion efficiency of cattle into wolf offspring
-    private static final double conversionEfficiencyHorsesToWolves = 0.1; // Conversion efficiency of horses into wolf offspring
-    private static final double conversionEfficiencyDeerToWolves = 0.1; // Conversion efficiency of deer into wolf offspring
-    private static final double grassConsumptionRateCattle = 0.01; // Consumption rate of grass by cattle
-    private static final double grassConsumptionRateHorses = 0.01; // Consumption rate of grass by horses
-    private static final double grassConsumptionRateDeer = 0.01; // Consumption rate of grass by deer
+    private static final double cattleGrowthRate = 0.1; // Intrinsic growth rate of cattle MySQL DB
+    private static final double cattleCarryingCapacity = 1000; // Carrying capacity for cattle  static
+    private static final double horseGrowthRate = 0.1; // Intrinsic growth rate of horses MySQL DB
+    private static final double horseCarryingCapacity = 1000; // Carrying capacity for horses  static
+    private static final double deerGrowthRate = 0.1; // Intrinsic growth rate of deer MySQL DB
+    private static final double deerCarryingCapacity = 1000; // Carrying capacity for deer static
+    private static final double wolfGrowthRate = 0.1; // Intrinsic growth rate of wolves static
+    private static final double wolfCarryingCapacity = 1000; // Carrying capacity for wolvs static
+    private static final double grassGrowthRate = 0.1; // Intrinsic growth rate of grass MySQl DB
+    private static final double grassCarryingCapacity = 1000; // Carrying capacity for grass static
+    private static final double competitionHorseOnCattle = 0.1; // Competition coefficient horses on cattle static
+    private static final double competitionDeerOnCattle = 0.1; // Competition coefficient deer on cattle static 
+    private static final double competitionCattleOnHorses = 0.1; // Competition coefficient cattle on horses static
+    private static final double competitionDeerOnHorses = 0.1; // Competition coefficient deer on horses static
+    private static final double competitionHorsesOnDeer = 0.1; // Competition coefficient horses on deer static
+    private static final double competitionCattleOnDeer = 0.1; // Competition coefficient cattle on deer static
+    private static final double predationRateWolvesOnCattle = 0.01; // Predation rate of wolves on cattle static
+    private static final double predationRateWolvesOnHorses = 0.01; // Predation rate of wolves on horses static
+    private static final double predationRateWolvesOnDeer = 0.01; // Predation rate of wolves on deer static
+    private static final double conversionEfficiencyCattleToWolves = 0.1; // Conversion efficiency of cattle into wolf offspring static
+    private static final double conversionEfficiencyHorsesToWolves = 0.1; // Conversion efficiency of horses into wolf offspring static
+    private static final double conversionEfficiencyDeerToWolves = 0.1; // Conversion efficiency of deer into wolf offspring static
+    private static final double grassConsumptionRateCattle = 0.01; // Consumption rate of grass by cattle static
+    private static final double grassConsumptionRateHorses = 0.01; // Consumption rate of grass by horses static
+    private static final double grassConsumptionRateDeer = 0.01; // Consumption rate of grass by deer static
 
     // Initial populations
-    private static double cattlePopulation = 500;
-    private static double horsePopulation = 500;
-    private static double deerPopulation = 500;
-    private static double wolfPopulation = 50;
-    private static double grassBiomass = 1000;
+    private static double cattlePopulation = DatabaseApp.getInitialPopulation("cattle");
+    private static double horsePopulation = DatabaseApp.getInitialPopulation("horse");
+    private static double deerPopulation = DatabaseApp.getInitialPopulation("deer");
+    private static double wolfPopulation = 50; // 
+    private static double grassBiomass = DatabaseApp.getInitialPopulation("grass");
 
     // Time step for the simulation
     private static final double timeStep = 0.1;
