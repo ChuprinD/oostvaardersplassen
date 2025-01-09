@@ -6,15 +6,15 @@ import com.group3.controller.NavigationController;
 import com.group3.mathModels.HerbivoreCompetition;
 import com.group3.mathModels.PredatorPreyModel;
 
-public class HerbivorePage extends AbstractPage {
+public class PreyPredator extends AbstractPage {
 
-    public HerbivorePage(NavigationController navigationController) {
-        super("Herbivore Competition", "Herbivore Competition", navigationController);
+    public PreyPredator(NavigationController navigationController) {
+        super("Predator-Prey Dynamics", "Predator-Prey Model: Deer-Cattle-Horses-Wolves", navigationController);
     }
 
     @Override
     protected VBox createSectionGraph() {
-        return createSectionGraph("Herbivore Competition", new HerbivoreCompetition());
+        return createSectionGraph("Herbivore Competition", new PredatorPreyModel());
     }
 
     @Override

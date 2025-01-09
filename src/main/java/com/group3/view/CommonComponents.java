@@ -24,7 +24,6 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -255,7 +254,7 @@ public class CommonComponents {
     private HBox createDropdownMenu(NavigationController navigationController) {
         ComboBox<String> dropdownMenu = new ComboBox<>();
         dropdownMenu.setFocusTraversable(false);
-        String[] dropdownElements = {"Home", "Herbivore Competition", "Predator-Prey Dynamics", "Species-Specific Reactions", "Climate and Population Trends"};
+        String[] dropdownElements = {"Home", "Herbivore Competition", "Predator-Prey Dynamics", "Total Simulation"};
         dropdownMenu.getItems().addAll(dropdownElements);
         dropdownMenu.setOnAction(e -> navigationController.showPage(dropdownMenu.getValue()));
         dropdownMenu.setValue("Choose Analysis Focus");

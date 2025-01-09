@@ -64,8 +64,6 @@ public class LotkaVolterra {
             grassBiomass += deltaGrass * timeStep;
         }
 
-        
-
     }
 
     public static double getCattleGrowthRate() {
