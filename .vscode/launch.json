@@ -2,6 +2,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "LotkaVolterra",
+            "request": "launch",
+            "mainClass": "com.group3.mathModels.LotkaVolterra",
+            "projectName": "oostvaardersplassen"
+        },
+        {
+            "type": "java",
             "name": "Main",
             "request": "launch",
             "mainClass": "com.group3.Main",
