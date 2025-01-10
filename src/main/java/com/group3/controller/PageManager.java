@@ -9,6 +9,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
+import org.apache.commons.math3.analysis.function.Abs;
+
 import javafx.scene.layout.Pane;
 
 public class PageManager {
@@ -38,7 +40,9 @@ public class PageManager {
 
         // Register pages
         AbstractPage firstPage = PageFactory.createPage("Herbivore", navigationController);
+        AbstractPage secondPage = PageFactory.createPage("Predator-Prey Dynamics", navigationController);
         pages.put(firstPage.getPageName(), () -> PageFactory.createPage("Herbivore", navigationController).getRoot());
+        pages.put(secondPage.getPageName(), () -> PageFactory.createPage("Predator-Prey Dynamics", navigationController).getRoot());
         //pages.put(firstPage.getPageName(), () -> new FirstPage(navigationController).getRoot());
         //pages.put(firstPage.getPageName(), () -> new FirstPage(navigationController).getRoot());
         //pages.put(firstPage.getPageName(), () -> new FirstPage(navigationController).getRoot());

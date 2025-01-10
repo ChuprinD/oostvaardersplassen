@@ -3,8 +3,7 @@ package com.group3.view;
 import javafx.scene.layout.VBox;
 
 import com.group3.controller.NavigationController;
-import com.group3.mathModels.HerbivoreCompetition;
-import com.group3.mathModels.PredatorPreyModel;
+import com.group3.mathModels.HerbivoreCompetitionModel;
 
 public class HerbivorePage extends AbstractPage {
 
@@ -14,7 +13,7 @@ public class HerbivorePage extends AbstractPage {
 
     @Override
     protected VBox createSectionGraph() {
-        return createSectionGraph("Herbivore Competition", new HerbivoreCompetition());
+        return createSectionGraph("Herbivore Competition", new HerbivoreCompetitionModel());
     }
 
     @Override

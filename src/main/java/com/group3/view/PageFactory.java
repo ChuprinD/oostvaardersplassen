@@ -15,6 +15,8 @@ public class PageFactory {
         switch (pageType) {
             case "Herbivore":
                 return new HerbivorePage(navigationController);
+            case "Predator-Prey Dynamics":
+                return new PreyPredator(navigationController);
             default:
                 throw new IllegalArgumentException("Unknown page type: " + pageType);
         }

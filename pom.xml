@@ -21,24 +21,28 @@
             <artifactId>jfreechart</artifactId>
             <version>1.5.3</version>
         </dependency>
+
         <!-- Math -->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-math3</artifactId>
             <version>3.6.1</version>
         </dependency>
+
         <!-- JavaFX Controls -->
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
             <version>21.0.5</version> 
         </dependency>
+
         <!-- JavaFX FXML -->
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
             <version>21.0.5</version>
         </dependency>
+
         <!-- JavaFX Swing -->
         <dependency>
             <groupId>org.openjfx</groupId>
@@ -46,6 +50,7 @@
             <version>21.0.5</version>
             <classifier>win</classifier>
         </dependency>
+
         <!-- https://mvnrepository.com/artifact/com.itextpdf/itext7-core -->
         <dependency>
             <groupId>com.itextpdf</groupId>
@@ -67,6 +72,15 @@
             <artifactId>logback-classic</artifactId>
             <version>1.4.11</version>
         </dependency>
+
+        <!-- Lombok (Annotation Processor and Code Generation) -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.28</version>
+            <scope>provided</scope>
+        </dependency>
+
 
     </dependencies> 
 
