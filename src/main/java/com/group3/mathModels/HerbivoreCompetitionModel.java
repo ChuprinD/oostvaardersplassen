@@ -26,8 +26,6 @@ import java.awt.Color;
 public class HerbivoreCompetitionModel implements MathModel {
     FormulaVariables formulaVariables;
     public XYSeriesCollection calculateData() {
-        FormulaVariables formulaVariables = new FormulaVariables();
-
         double t0 = 0.0;
         double t1 = 10.0;
         double dt = 0.1;

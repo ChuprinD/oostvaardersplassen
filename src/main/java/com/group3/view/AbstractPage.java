@@ -405,7 +405,7 @@ public abstract class AbstractPage implements Page {
             TextField textField = new TextField();
             textField.setMaxWidth(windowWidth * 0.2);
             textField.setText(String.valueOf(currentValue[i]));
-            inputFields[i] = textField;
+            inputFields[i] = textField;   
     
             // Add Label and TextField to the VBox
             fieldBox.getChildren().addAll(label, textField);
@@ -425,6 +425,12 @@ public abstract class AbstractPage implements Page {
                               "-fx-background-radius: 5;");
         submitButton.setOnAction(e -> {
             // Handle the input data
+            for (int i = 0; i < 5; i++) {
+                if (Double.parseDouble(inputFields[i].getText()) > maxValue[i]) {
+                    inputFields[i].setText(String.valueOf(maxValue[i]));  
+                }
+            }
+
             formulaVariables.setCattleInitialPopulation(Double.parseDouble(inputFields[0].getText()));
             formulaVariables.setHorseInitialPopulation(Double.parseDouble(inputFields[1].getText()));
             formulaVariables.setDeerInitialPopulation(Double.parseDouble(inputFields[2].getText()));
