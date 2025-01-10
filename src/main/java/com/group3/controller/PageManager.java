@@ -39,14 +39,13 @@ public class PageManager {
         pages.put(mainPage.getPageName() + ".Animals", () -> MainPage.createPageAndScroll(navigationController, "Animals").getRoot());
 
         // Register pages
-        AbstractPage firstPage = PageFactory.createPage("Herbivore", navigationController);
+        AbstractPage firstPage = PageFactory.createPage("Herbivore Competition", navigationController);
         AbstractPage secondPage = PageFactory.createPage("Predator-Prey Dynamics", navigationController);
+        AbstractPage thirdPage = PageFactory.createPage("Total Simulation", navigationController);
+        
         pages.put(firstPage.getPageName(), () -> PageFactory.createPage("Herbivore", navigationController).getRoot());
         pages.put(secondPage.getPageName(), () -> PageFactory.createPage("Predator-Prey Dynamics", navigationController).getRoot());
-        //pages.put(firstPage.getPageName(), () -> new FirstPage(navigationController).getRoot());
-        //pages.put(firstPage.getPageName(), () -> new FirstPage(navigationController).getRoot());
-        //pages.put(firstPage.getPageName(), () -> new FirstPage(navigationController).getRoot());
-        //pages.put(firstPage.getPageName(), () -> new FirstPage(navigationController).getRoot());
+        pages.put(thirdPage.getPageName(), () -> PageFactory.createPage("Total Simulation", navigationController).getRoot());
     }
 
     /**

@@ -83,7 +83,6 @@ public class PreyPredatorModel implements MathModel {
 
     @Override
     public ChartPanel getGraph(double width, double height) {
-        //Predator-Prey Model: Deer-Cattle-Horses-Wolves
         JFreeChart xylineChart = ChartFactory.createXYLineChart(
                 "",
                 "Time",

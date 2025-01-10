@@ -13,10 +13,12 @@ public class PageFactory {
      */
     public static AbstractPage createPage(String pageType, NavigationController navigationController) {
         switch (pageType) {
-            case "Herbivore":
+            case "Herbivore Competition":
                 return new HerbivorePage(navigationController);
             case "Predator-Prey Dynamics":
                 return new PreyPredator(navigationController);
+            case "Total Simulation":
+                return new TotalSimulation(navigationController);
             default:
                 throw new IllegalArgumentException("Unknown page type: " + pageType);
         }

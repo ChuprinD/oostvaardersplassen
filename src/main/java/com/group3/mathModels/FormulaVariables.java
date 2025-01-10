@@ -10,6 +10,7 @@ public class FormulaVariables {
     private double horseInitialPopulation = 70; // Initial population of horses
     private double deerInitialPopulation = 50; // Initial population of deer
     private double wolfInitialPopulation = 50; // Initial population of wolves
+    private double grassInitialBiomass = 1000; // Initial biomass of grass
 
     private double wolfDeathRate = 0.01;
 
