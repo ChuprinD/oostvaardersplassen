@@ -2,6 +2,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "DatabaseApp",
+            "request": "launch",
+            "mainClass": "com.group3.database.DatabaseApp",
+            "projectName": "oostvaardersplassen"
+        },
+        {
+            "type": "java",
             "name": "LotkaVolterra",
             "request": "launch",
             "mainClass": "com.group3.mathModels.LotkaVolterra",

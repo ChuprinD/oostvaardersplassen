@@ -40,6 +40,54 @@ INSERT INTO `animal` VALUES (1990,'Heck cattle',30),(1991,'Heck cattle',30),(199
 UNLOCK TABLES;
 
 --
+-- Table structure for table `animal_birth`
+--
+
+DROP TABLE IF EXISTS `animal_birth`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `animal_birth` (
+  `Year` int NOT NULL,
+  `Name` varchar(50) NOT NULL,
+  `Amount` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `animal_birth`
+--
+
+LOCK TABLES `animal_birth` WRITE;
+/*!40000 ALTER TABLE `animal_birth` DISABLE KEYS */;
+INSERT INTO `animal_birth` VALUES (1990,'Heck cattle',0),(1990,'Konik horses',0),(1990,'Red deer',0),(1991,'Heck cattle',0),(1991,'Konik horses',0),(1991,'Red deer',0),(1992,'Heck cattle',10),(1992,'Konik horses',0),(1992,'Red deer',0),(1993,'Heck cattle',15),(1993,'Konik horses',5),(1993,'Red deer',0),(1994,'Heck cattle',5),(1994,'Konik horses',5),(1994,'Red deer',0),(1995,'Heck cattle',5),(1995,'Konik horses',0),(1995,'Red deer',0),(1996,'Heck cattle',10),(1996,'Konik horses',0),(1996,'Red deer',0),(1997,'Heck cattle',10),(1997,'Konik horses',0),(1997,'Red deer',0),(1998,'Heck cattle',10),(1998,'Konik horses',5),(1998,'Red deer',0),(1999,'Heck cattle',15),(1999,'Konik horses',10),(1999,'Red deer',5),(2000,'Heck cattle',15),(2000,'Konik horses',5),(2000,'Red deer',5),(2001,'Heck cattle',30),(2001,'Konik horses',15),(2001,'Red deer',0),(2002,'Heck cattle',10),(2002,'Konik horses',0),(2002,'Red deer',5),(2003,'Heck cattle',25),(2003,'Konik horses',15),(2003,'Red deer',5),(2004,'Heck cattle',45),(2004,'Konik horses',10),(2004,'Red deer',10),(2005,'Heck cattle',45),(2005,'Konik horses',15),(2005,'Red deer',0),(2006,'Heck cattle',95),(2006,'Konik horses',20),(2006,'Red deer',15),(2007,'Heck cattle',45),(2007,'Konik horses',10),(2007,'Red deer',15),(2008,'Heck cattle',115),(2008,'Konik horses',30),(2008,'Red deer',25),(2009,'Heck cattle',65),(2009,'Konik horses',45),(2009,'Red deer',25),(2010,'Heck cattle',165),(2010,'Konik horses',80),(2010,'Red deer',135),(2011,'Heck cattle',45),(2011,'Konik horses',110),(2011,'Red deer',125),(2012,'Heck cattle',270),(2012,'Konik horses',150),(2012,'Red deer',500),(2013,'Heck cattle',240),(2013,'Konik horses',330),(2013,'Red deer',500),(2014,'Heck cattle',150),(2014,'Konik horses',444),(2014,'Red deer',550),(2015,'Heck cattle',80),(2015,'Konik horses',300),(2015,'Red deer',580),(2016,'Heck cattle',220),(2016,'Konik horses',500),(2016,'Red deer',950),(2017,'Heck cattle',230),(2017,'Konik horses',530),(2017,'Red deer',1050),(2018,'Heck cattle',100),(2018,'Konik horses',275),(2018,'Red deer',1200),(2019,'Heck cattle',200),(2019,'Konik horses',600),(2019,'Red deer',1850),(2020,'Heck cattle',230),(2020,'Konik horses',530),(2020,'Red deer',2100),(2021,'Heck cattle',0),(2021,'Konik horses',15),(2021,'Red deer',200),(2022,'Heck cattle',80),(2022,'Konik horses',380),(2022,'Red deer',970);
+/*!40000 ALTER TABLE `animal_birth` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `animal_mortality`
+--
+
+DROP TABLE IF EXISTS `animal_mortality`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `animal_mortality` (
+  `Year` int NOT NULL,
+  `Name` varchar(50) NOT NULL,
+  `Amount` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `animal_mortality`
+--
+
+LOCK TABLES `animal_mortality` WRITE;
+/*!40000 ALTER TABLE `animal_mortality` DISABLE KEYS */;
+INSERT INTO `animal_mortality` VALUES (1990,'Heck cattle',0),(1990,'Konik horses',0),(1990,'Red deer',0),(1991,'Heck cattle',0),(1991,'Konik horses',0),(1991,'Red deer',0),(1992,'Heck cattle',10),(1992,'Konik horses',0),(1992,'Red deer',0),(1993,'Heck cattle',15),(1993,'Konik horses',5),(1993,'Red deer',0),(1994,'Heck cattle',5),(1994,'Konik horses',5),(1994,'Red deer',0),(1995,'Heck cattle',5),(1995,'Konik horses',0),(1995,'Red deer',0),(1996,'Heck cattle',10),(1996,'Konik horses',0),(1996,'Red deer',0),(1997,'Heck cattle',10),(1997,'Konik horses',0),(1997,'Red deer',0),(1998,'Heck cattle',10),(1998,'Konik horses',5),(1998,'Red deer',0),(1999,'Heck cattle',15),(1999,'Konik horses',10),(1999,'Red deer',5),(2000,'Heck cattle',15),(2000,'Konik horses',5),(2000,'Red deer',5),(2001,'Heck cattle',30),(2001,'Konik horses',15),(2001,'Red deer',0),(2002,'Heck cattle',10),(2002,'Konik horses',0),(2002,'Red deer',5),(2003,'Heck cattle',25),(2003,'Konik horses',15),(2003,'Red deer',5),(2004,'Heck cattle',45),(2004,'Konik horses',10),(2004,'Red deer',10),(2005,'Heck cattle',45),(2005,'Konik horses',15),(2005,'Red deer',0),(2006,'Heck cattle',95),(2006,'Konik horses',20),(2006,'Red deer',15),(2007,'Heck cattle',45),(2007,'Konik horses',10),(2007,'Red deer',15),(2008,'Heck cattle',115),(2008,'Konik horses',30),(2008,'Red deer',25),(2009,'Heck cattle',65),(2009,'Konik horses',45),(2009,'Red deer',25),(2010,'Heck cattle',165),(2010,'Konik horses',80),(2010,'Red deer',135),(2011,'Heck cattle',45),(2011,'Konik horses',110),(2011,'Red deer',125),(2012,'Heck cattle',270),(2012,'Konik horses',150),(2012,'Red deer',500),(2013,'Heck cattle',240),(2013,'Konik horses',330),(2013,'Red deer',500),(2014,'Heck cattle',150),(2014,'Konik horses',444),(2014,'Red deer',550),(2015,'Heck cattle',80),(2015,'Konik horses',300),(2015,'Red deer',580),(2016,'Heck cattle',220),(2016,'Konik horses',500),(2016,'Red deer',950),(2017,'Heck cattle',230),(2017,'Konik horses',530),(2017,'Red deer',1050),(2018,'Heck cattle',100),(2018,'Konik horses',275),(2018,'Red deer',1200),(2019,'Heck cattle',200),(2019,'Konik horses',600),(2019,'Red deer',1850),(2020,'Heck cattle',230),(2020,'Konik horses',530),(2020,'Red deer',2100),(2021,'Heck cattle',0),(2021,'Konik horses',15),(2021,'Red deer',200),(2022,'Heck cattle',80),(2022,'Konik horses',380),(2022,'Red deer',970);
+/*!40000 ALTER TABLE `animal_mortality` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `designation`
 --
 
@@ -97,7 +145,7 @@ DROP TABLE IF EXISTS `grass`;
 CREATE TABLE `grass` (
   `id` int NOT NULL AUTO_INCREMENT,
   `Year` int DEFAULT NULL,
-  `Grass_height_cm_on_August_1st` float DEFAULT NULL,
+  `Height_CM` float DEFAULT NULL,
   `Name` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -197,4 +245,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-12-05 18:55:59
+-- Dump completed on 2025-01-09 19:16:02
