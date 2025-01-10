@@ -3,22 +3,25 @@ package com.group3.controller;
 import com.group3.view.Page;
 import com.group3.view.PageFactory;
 import com.group3.view.MainPage;
+import com.group3.mathModels.FormulaVariables;
 import com.group3.view.AbstractPage;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
-import org.apache.commons.math3.analysis.function.Abs;
+import org.apache.commons.math3.optim.nonlinear.scalar.gradient.NonLinearConjugateGradientOptimizer.Formula;
 
 import javafx.scene.layout.Pane;
 
 public class PageManager {
     private final NavigationController navigationController;
     private final Map<String, Supplier<Pane>> pages = new HashMap<>();
+    private FormulaVariables formulaVariables;
 
     public PageManager(NavigationController navigationController) {
         this.navigationController = navigationController;
+        this.formulaVariables = new FormulaVariables();
         initializePages();
     }
 
@@ -39,13 +42,13 @@ public class PageManager {
         pages.put(mainPage.getPageName() + ".Animals", () -> MainPage.createPageAndScroll(navigationController, "Animals").getRoot());
 
         // Register pages
-        AbstractPage firstPage = PageFactory.createPage("Herbivore Competition", navigationController);
-        AbstractPage secondPage = PageFactory.createPage("Predator-Prey Dynamics", navigationController);
-        AbstractPage thirdPage = PageFactory.createPage("Total Simulation", navigationController);
-        
-        pages.put(firstPage.getPageName(), () -> PageFactory.createPage("Herbivore", navigationController).getRoot());
-        pages.put(secondPage.getPageName(), () -> PageFactory.createPage("Predator-Prey Dynamics", navigationController).getRoot());
-        pages.put(thirdPage.getPageName(), () -> PageFactory.createPage("Total Simulation", navigationController).getRoot());
+        AbstractPage firstPage = PageFactory.createPage("Herbivore Competition", navigationController, formulaVariables);
+        AbstractPage secondPage = PageFactory.createPage("Predator-Prey Dynamics", navigationController, formulaVariables);
+        AbstractPage thirdPage = PageFactory.createPage("Total Simulation", navigationController, formulaVariables);
+
+        pages.put(firstPage.getPageName(), () -> PageFactory.createPage("Herbivore Competition", navigationController, formulaVariables).getRoot());
+        pages.put(secondPage.getPageName(), () -> PageFactory.createPage("Predator-Prey Dynamics", navigationController, formulaVariables).getRoot());
+        pages.put(thirdPage.getPageName(), () -> PageFactory.createPage("Total Simulation", navigationController, formulaVariables).getRoot());
     }
 
     /**

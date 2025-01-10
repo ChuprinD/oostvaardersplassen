@@ -30,6 +30,7 @@ import java.io.File;
 import javax.swing.SwingUtilities;
 
 import com.group3.controller.NavigationController;
+import com.group3.mathModels.FormulaVariables;
 import com.group3.mathModels.MathModel;
 import com.group3.utils.Util;
 
@@ -44,13 +45,15 @@ public abstract class AbstractPage implements Page {
     protected VBox descriptionSection; // Description section of the page
     protected VBox graphSection; // Graph section of the page
     protected ScrollPane scrollPane; // Scrollable area
+    protected FormulaVariables formulaVariables;
 
     private final double topBarHeight = 23;
 
-    public AbstractPage(String pageName, String graphTitle, NavigationController navigationController) {
+    public AbstractPage(String pageName, String graphTitle, NavigationController navigationController, FormulaVariables formulaVariables) {
         this.pageName = pageName;
         this.navigationController = navigationController;
         this.graphTitle = graphTitle;
+        this.formulaVariables = formulaVariables;
 
         // Determine screen dimensions
         this.windowWidth = Screen.getPrimary().getVisualBounds().getWidth();
@@ -154,7 +157,7 @@ public abstract class AbstractPage implements Page {
         graphContainer.setPadding(new Insets(5));
         SwingNode swingNode = new SwingNode();
         SwingUtilities.invokeLater(() -> {
-            swingNode.setContent(graphGenerator.getGraph( windowWidth * 0.6, windowHeight * 0.5));
+            swingNode.setContent(graphGenerator.getGraph(windowWidth * 0.6, windowHeight * 0.5, formulaVariables));
         });
         graphContainer.getChildren().add(swingNode);
         graphContainer.setMaxWidth(windowWidth * 0.9);
@@ -264,7 +267,7 @@ public abstract class AbstractPage implements Page {
         // Add SwingNode with graph content
         SwingNode enlargedGraph = new SwingNode();
         SwingUtilities.invokeLater(() -> {
-            enlargedGraph.setContent(graphGenerator.getGraph(windowWidth * 0.9, windowHeight * 0.8));
+            enlargedGraph.setContent(graphGenerator.getGraph(windowWidth * 0.9, windowHeight * 0.8, formulaVariables));
         });
         graphContainer.getChildren().add(enlargedGraph);
         graphContainer.setMaxWidth(windowWidth * 0.9);
@@ -385,19 +388,23 @@ public abstract class AbstractPage implements Page {
 
         TextField[] inputFields = new TextField[6];
 
+        String[] variableNames = new String[]{"Cattle Initial Population", "Horse Initial Population", "Deer Initial Population", "Wolf Initial Population", "Grass Initial Biomass"};
+        double[] currentValue = new double[]{formulaVariables.getCattleInitialPopulation(), formulaVariables.getHorseInitialPopulation(), formulaVariables.getDeerInitialPopulation(), formulaVariables.getWolfInitialPopulation(), formulaVariables.getGrassInitialBiomass()};
+        double[] maxValue = new double[]{formulaVariables.getMaxCattlePopulation(), formulaVariables.getMaxHorsePopulation(), formulaVariables.getMaxDeerPopulation(), formulaVariables.getMaxWolfPopulation(), formulaVariables.getMaxGrassBiomass()};
         // Adding fields and labels to the grid
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < 5; i++) {
             // Create a VBox to stack Label and TextField vertically
             VBox fieldBox = new VBox(5); // Space between label and text field
             fieldBox.setAlignment(Pos.CENTER); // Center align both Label and TextField
     
-            Label label = new Label("Variable " + (i + 1) + " (Limit):");
+            Label label = new Label(variableNames[i] + " (Limit):" + maxValue[i]);
             label.setStyle("-fx-text-fill: #000000;");
             label.setFont(Util.getRegularFont(16));
             label.setTextAlignment(TextAlignment.CENTER);
     
             TextField textField = new TextField();
-            textField.setMaxWidth(windowWidth * 0.2); 
+            textField.setMaxWidth(windowWidth * 0.2);
+            textField.setText(String.valueOf(currentValue[i]));
             inputFields[i] = textField;
     
             // Add Label and TextField to the VBox
@@ -418,9 +425,18 @@ public abstract class AbstractPage implements Page {
                               "-fx-background-radius: 5;");
         submitButton.setOnAction(e -> {
             // Handle the input data
-            for (int i = 0; i < inputFields.length; i++) {
-                System.out.println("Variable " + (i + 1) + ": " + inputFields[i].getText());
-            }
+            formulaVariables.setCattleInitialPopulation(Double.parseDouble(inputFields[0].getText()));
+            formulaVariables.setHorseInitialPopulation(Double.parseDouble(inputFields[1].getText()));
+            formulaVariables.setDeerInitialPopulation(Double.parseDouble(inputFields[2].getText()));
+            formulaVariables.setWolfInitialPopulation(Double.parseDouble(inputFields[3].getText()));
+            formulaVariables.setGrassInitialBiomass(Double.parseDouble(inputFields[4].getText()));
+
+            VBox newGraphSection = createSectionGraph();
+
+            int graphIndex = ((VBox) scrollPane.getContent()).getChildren().indexOf(graphSection);
+            ((VBox) scrollPane.getContent()).getChildren().set(graphIndex, newGraphSection);
+
+            graphSection = newGraphSection;
             dialog.close();
         });
 

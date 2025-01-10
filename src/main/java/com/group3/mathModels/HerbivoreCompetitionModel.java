@@ -24,6 +24,7 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 
 public class HerbivoreCompetitionModel implements MathModel {
+    FormulaVariables formulaVariables;
     public XYSeriesCollection calculateData() {
         FormulaVariables formulaVariables = new FormulaVariables();
 
@@ -50,7 +51,7 @@ public class HerbivoreCompetitionModel implements MathModel {
         for (int i = 1; i < steps; i++) {
             seriesTime.add(seriesTime.get(0) + i * dt);
 
-            integrator.integrate(new HerbivoreCompetitionEquations(), t0, initialPopulations, seriesTime.get(i), initialPopulations);
+            integrator.integrate(new HerbivoreCompetitionEquations(formulaVariables), t0, initialPopulations, seriesTime.get(i), initialPopulations);
 
             seriesCattle.add(initialPopulations[0]);
             seriesHorse.add(initialPopulations[1]);
@@ -76,7 +77,8 @@ public class HerbivoreCompetitionModel implements MathModel {
     }
 
     @Override
-    public ChartPanel getGraph(double width, double height) {
+    public ChartPanel getGraph(double width, double height, FormulaVariables formulaVariables) {
+        this.formulaVariables = formulaVariables;
         JFreeChart xylineChart = ChartFactory.createXYLineChart(
                 "",
                 "Time",
@@ -133,9 +135,14 @@ public class HerbivoreCompetitionModel implements MathModel {
     }
     
     static class HerbivoreCompetitionEquations implements FirstOrderDifferentialEquations {
+        FormulaVariables formulaVariables;
         @Override
         public int getDimension() {
             return 3;
+        }
+
+        public HerbivoreCompetitionEquations(FormulaVariables formulaVariables) {
+            this.formulaVariables = formulaVariables;
         }
 
         @Override

@@ -1,13 +1,14 @@
 package com.group3.view;
 
 import com.group3.controller.NavigationController;
+import com.group3.mathModels.FormulaVariables;
 import com.group3.mathModels.TotalSimulationModel;
 
 import javafx.scene.layout.VBox;
 
 public class TotalSimulation extends AbstractPage {
-    public TotalSimulation(NavigationController navigationController) {
-        super("Total Simulation", "Total Simulation", navigationController);
+    public TotalSimulation(NavigationController navigationController, FormulaVariables formulaVariables) {
+        super("Total Simulation", "Total Simulation", navigationController, formulaVariables);
     }
 
     @Override

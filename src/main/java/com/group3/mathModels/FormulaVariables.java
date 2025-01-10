@@ -6,6 +6,12 @@ import lombok.Setter;
 @Getter
 @Setter
 public class FormulaVariables {
+    private final double maxCattlePopulation = 1000; // Maximum population of cattle
+    private final double maxHorsePopulation = 1000; // Maximum population of horses
+    private final double maxDeerPopulation = 1000; // Maximum population of deer
+    private final double maxWolfPopulation = 1000; // Maximum population of wolves
+    private final double maxGrassBiomass = 1000; // Maximum biomass of grass
+
     private double cattleInitialPopulation = 80; // Initial population of cattle
     private double horseInitialPopulation = 70; // Initial population of horses
     private double deerInitialPopulation = 50; // Initial population of deer

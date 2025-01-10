@@ -3,12 +3,13 @@ package com.group3.view;
 import javafx.scene.layout.VBox;
 
 import com.group3.controller.NavigationController;
+import com.group3.mathModels.FormulaVariables;
 import com.group3.mathModels.HerbivoreCompetitionModel;
 
 public class HerbivorePage extends AbstractPage {
 
-    public HerbivorePage(NavigationController navigationController) {
-        super("Herbivore Competition", "Herbivore Competition", navigationController);
+    public HerbivorePage(NavigationController navigationController, FormulaVariables formulaVariables) {
+        super("Herbivore Competition", "Herbivore Competition", navigationController, formulaVariables);
     }
 
     @Override

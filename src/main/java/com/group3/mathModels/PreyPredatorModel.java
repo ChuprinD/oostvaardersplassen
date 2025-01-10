@@ -24,8 +24,9 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 
 public class PreyPredatorModel implements MathModel {
+    FormulaVariables formulaVariables;
+
     public XYSeriesCollection calculateData() {
-        FormulaVariables formulaVariables = new FormulaVariables();
         double t0 = 0.0;
         double t1 = 10.0;
         double dt = 0.1;
@@ -51,7 +52,7 @@ public class PreyPredatorModel implements MathModel {
         FirstOrderIntegrator integrator = new DormandPrince853Integrator(1.0e-8, 100.0, 1.0e-10, 1.0e-10);
         for (int i = 1; i < steps; i++) {
             seriesTime.add(t0 + i * dt);
-            integrator.integrate(new PredatorPreyEquations(), t0, initialPopulations, seriesTime.get(i),
+            integrator.integrate(new PredatorPreyEquations(formulaVariables), t0, initialPopulations, seriesTime.get(i),
                     initialPopulations);
 
             seriesCattle.add(initialPopulations[0]);
@@ -82,7 +83,8 @@ public class PreyPredatorModel implements MathModel {
     }
 
     @Override
-    public ChartPanel getGraph(double width, double height) {
+    public ChartPanel getGraph(double width, double height, FormulaVariables formulaVariables) {
+        this.formulaVariables = formulaVariables;
         JFreeChart xylineChart = ChartFactory.createXYLineChart(
                 "",
                 "Time",
@@ -142,9 +144,14 @@ public class PreyPredatorModel implements MathModel {
     }
     
     static class PredatorPreyEquations implements FirstOrderDifferentialEquations {
+        FormulaVariables formulaVariables;
         @Override
         public int getDimension() {
             return 4;
+        }
+
+        public PredatorPreyEquations(FormulaVariables formulaVariables) {
+            this.formulaVariables = formulaVariables;
         }
 
         @Override

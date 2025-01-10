@@ -24,8 +24,8 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 
 public class TotalSimulationModel implements MathModel {
+    FormulaVariables formulaVariables;
     public XYSeriesCollection calculateData() {
-        FormulaVariables formulaVariables = new FormulaVariables();
         double t0 = 0.0;
         double t1 = 10.0;
         double dt = 0.1;
@@ -54,7 +54,7 @@ public class TotalSimulationModel implements MathModel {
         FirstOrderIntegrator integrator = new DormandPrince853Integrator(1.0e-8, 100.0, 1.0e-10, 1.0e-10);
         for (int i = 1; i < steps; i++) {
             seriesTime.add(t0 + i * dt);
-            integrator.integrate(new PredatorPreyEquations(), t0, initialPopulations, seriesTime.get(i),
+            integrator.integrate(new PredatorPreyEquations(formulaVariables), t0, initialPopulations, seriesTime.get(i),
                     initialPopulations);
 
             seriesCattle.add(initialPopulations[0]);
@@ -86,7 +86,8 @@ public class TotalSimulationModel implements MathModel {
     }
 
     @Override
-    public ChartPanel getGraph(double width, double height) {
+    public ChartPanel getGraph(double width, double height, FormulaVariables formulaVariables) {
+        this.formulaVariables = formulaVariables;
         JFreeChart xylineChart = ChartFactory.createXYLineChart(
                 "",
                 "Time",
@@ -146,14 +147,19 @@ public class TotalSimulationModel implements MathModel {
     }
     
     static class PredatorPreyEquations implements FirstOrderDifferentialEquations {
+        FormulaVariables formulaVariables;
+        
         @Override
         public int getDimension() {
             return 5;
         }
 
+        public PredatorPreyEquations(FormulaVariables formulaVariables) {
+            this.formulaVariables = formulaVariables;
+        }
+
         @Override
         public void computeDerivatives(double t, double[] y, double[] yDot) {
-            FormulaVariables formulaVariables = new FormulaVariables();
             double cattlePopulation = y[0];
             double horsePopulation = y[1];
             double deerPopulation = y[2];
