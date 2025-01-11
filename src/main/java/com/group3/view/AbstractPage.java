@@ -23,6 +23,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.embed.swing.SwingNode;
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 
 import java.io.File;
@@ -400,9 +401,9 @@ public abstract class AbstractPage implements Page {
 
         TextField[] inputFields = new TextField[6];
 
-        String[] variableNames = new String[]{"Cattle Initial Population", "Horse Initial Population", "Deer Initial Population", "Wolf Initial Population", "Grass Initial Biomass"};
-        double[] currentValue = new double[]{formulaVariables.getCattleInitialPopulation(), formulaVariables.getHorseInitialPopulation(), formulaVariables.getDeerInitialPopulation(), formulaVariables.getWolfInitialPopulation(), formulaVariables.getGrassInitialBiomass()};
-        double[] maxValue = new double[]{formulaVariables.getMaxCattlePopulation(), formulaVariables.getMaxHorsePopulation(), formulaVariables.getMaxDeerPopulation(), formulaVariables.getMaxWolfPopulation(), formulaVariables.getMaxGrassBiomass()};
+        String[] variableNames = new String[]{"Cattle Initial Population", "Horse Initial Population", "Deer Initial Population", "Grass Initial Biomass", "Wolf Initial Population"};
+        double[] currentValue = new double[]{formulaVariables.getCattleInitialPopulation(), formulaVariables.getHorseInitialPopulation(), formulaVariables.getDeerInitialPopulation(), formulaVariables.getGrassInitialBiomass(), formulaVariables.getWolfInitialPopulation()};
+        double[] maxValue = new double[]{formulaVariables.getMaxCattlePopulation(), formulaVariables.getMaxHorsePopulation(), formulaVariables.getMaxDeerPopulation(), formulaVariables.getMaxGrassBiomass(), formulaVariables.getMaxWolfPopulation()};
         // Adding fields and labels to the grid
         for (int i = 0; i < 5; i++) {
             // Create a VBox to stack Label and TextField vertically
@@ -415,7 +416,7 @@ public abstract class AbstractPage implements Page {
             label.setTextAlignment(TextAlignment.CENTER);
     
             TextField textField = new TextField();
-            textField.setMaxWidth(windowWidth * 0.2);
+            textField.setMaxWidth(windowWidth * 0.1);
             textField.setText(String.valueOf(currentValue[i]));
             inputFields[i] = textField;   
     
@@ -423,11 +424,18 @@ public abstract class AbstractPage implements Page {
             fieldBox.getChildren().addAll(label, textField);
     
             // Add the VBox to the GridPane
-            gridPane.add(fieldBox, i % 2, i / 2); // Place in a 2-column layout
+            if (i == 4) {
+                // Place the 5th element in the center of the window
+                gridPane.add(fieldBox, 0, 2, 2, 1); // Place in the 3rd row, span 2 columns
+                GridPane.setHalignment(fieldBox, HPos.CENTER); // Align the VBox horizontally in the center
+            } else {
+                gridPane.add(fieldBox, i % 2, i / 2); // Place in a 2-column layout
+            }
         }
 
         // "SUBMIT" and "CLOSE" buttons
         Button submitButton = new Button("SUBMIT");
+        submitButton.setMinWidth(windowWidth * 0.05);
         submitButton.setStyle("-fx-background-color: #1E4C40;" +
                               "-fx-font-family: " + Util.getBoldFont(14).getFamily() + ";" +
                               "-fx-text-fill: white;" +
@@ -458,7 +466,36 @@ public abstract class AbstractPage implements Page {
             dialog.close();
         });
 
+        Button resetButton = new Button("RESET");
+        resetButton.setMinWidth(windowWidth * 0.05);
+        resetButton.setStyle("-fx-background-color:rgb(143, 134, 16);" +
+                             "-fx-font-family: " + Util.getBoldFont(14).getFamily() + ";" +
+                             "-fx-text-fill: white;" +
+                             "-fx-font-size: 14px;" +
+                             "-fx-font-weight: bold;" +
+                             "-fx-padding: 10;" +
+                             "-fx-background-radius: 5;");
+                            
+        resetButton.setOnAction(e -> {
+            formulaVariables.setDefaultInitialPopulations();
+            inputFields[0].setText(String.valueOf(formulaVariables.getCattleInitialPopulation()));
+            inputFields[1].setText(String.valueOf(formulaVariables.getHorseInitialPopulation()));
+            inputFields[2].setText(String.valueOf(formulaVariables.getDeerInitialPopulation()));
+            inputFields[3].setText(String.valueOf(formulaVariables.getWolfInitialPopulation()));
+            inputFields[4].setText(String.valueOf(formulaVariables.getGrassInitialBiomass()));
+
+            VBox newGraphSection = createSectionGraph();
+
+            int graphIndex = ((VBox) scrollPane.getContent()).getChildren().indexOf(graphSection);
+            ((VBox) scrollPane.getContent()).getChildren().set(graphIndex, newGraphSection);
+
+            graphSection = newGraphSection;
+
+            dialog.close();
+        });                     
+
         Button closeButton = new Button("CLOSE");
+        closeButton.setMinWidth(windowWidth * 0.05);
         closeButton.setStyle("-fx-background-color: #E07A5F;" +
                              "-fx-font-family: " + Util.getBoldFont(14).getFamily() + ";" +
                              "-fx-text-fill: white;" +
@@ -468,7 +505,7 @@ public abstract class AbstractPage implements Page {
                              "-fx-background-radius: 5;");
         closeButton.setOnAction(e -> dialog.close());
 
-        HBox buttonBox = new HBox(20, submitButton, closeButton);
+        HBox buttonBox = new HBox(20, submitButton, resetButton, closeButton);
         buttonBox.setAlignment(Pos.CENTER);
 
         // Combine all components

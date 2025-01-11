@@ -89,4 +89,11 @@ public class FormulaVariables {
     public void setGrassInitialBiomass(double grassInitialBiomass) {
         FormulaVariables.grassInitialBiomass = grassInitialBiomass;
     }
+
+    public void setDefaultInitialPopulations() {
+        FormulaVariables.cattleInitialPopulation = DatabaseApp.getInitialPopulation("Heck cattle"); // Initial population of cattle
+        FormulaVariables.horseInitialPopulation = DatabaseApp.getInitialPopulation("Konik horses"); // Initial population of horses
+        FormulaVariables.deerInitialPopulation = DatabaseApp.getInitialPopulation("Red deer"); // Initial population of deer
+        FormulaVariables.grassInitialBiomass = DatabaseApp.getInitialGrass(2022); // Initial biomass of grass
+    }
 }
