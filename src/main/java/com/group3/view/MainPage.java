@@ -98,14 +98,13 @@ public class MainPage implements Page {
         });
     }
 
+    
     /**
-     * Creates a new MainPage, and then scrolls to a specific section based on the parameter given.
-     * The section parameter should be either "About" or "Animals", and the method will scroll to the
-     * About section or Animals section respectively. If the parameter is not one of the above values,
-     * it will not scroll to any section.
-     * @param navigationController The NavigationController that will be used to navigate from this page.
-     * @param scrollToSection The section to scroll to. Must be either "About" or "Animals".
-     * @return The newly created MainPage.
+     * Creates a new MainPage and scrolls to the given section.
+     * 
+     * @param navigationController the NavigationController that will be used to navigate from this page.
+     * @param scrollToSection the name of the section to scroll to. Must be "About" or "Animals".
+     * @return the newly created page.
      */
     public static MainPage createPageAndScroll(NavigationController navigationController, String scrollToSection) {
         MainPage mainPage = new MainPage(navigationController);
@@ -140,10 +139,18 @@ public class MainPage implements Page {
     }
 
     /**
-     * Creates the home section of the main page, containing a title and description for the
-     * ecological consequences of introducing grey wolves on deer, cattle, and horse populations
-     * in a preserve.
-     * @return The newly created section.
+     * Creates the "Home" section for the main page, featuring an image and text
+     * content that introduces the ecological balance initiative in the
+     * Oostvaardepreserve. The section highlights the reintroduction of gray wolves and
+     * its impact on predator-prey dynamics, particularly concerning deer, cattle, and
+     * horse populations. The layout consists of an HBox containing an ImageView and
+     * a VBox with the title and description labels, styled with specific fonts, colors,
+     * and dimensions.
+     *
+     * @param verticalGapBetweenSections The vertical gap between sections.
+     * @param horizontalGap The horizontal gap between elements.
+     * @param headerHeight The height of the header.
+     * @return An HBox containing the image and text content for the home section.
      */
     private HBox createSectionHome(double verticalGapBetweenSections, double horizontalGap, double headerHeight) {
         Image image = new Image(CommonComponents.class.getResourceAsStream("/images/pictures/Page1.png"));
@@ -151,41 +158,49 @@ public class MainPage implements Page {
         imageView.setFitHeight(windowHeight * 0.7);
         imageView.setPreserveRatio(true);
 
-
-        Label title = new Label("Ecological Consequences of\n" +
-                                "Introducing Grey Wolves on\n" +
-                                "Deer, Cattle, and Horse\n" +
-                                "Populations in a Preserve");
-        title.setFont(Util.getBoldFont(Util.getTitleFontSize(windowWidth, windowHeight)));
-        title.setStyle("-fx-font-weight: bold; -fx-font-size: " + Util.getTitleFontSize(windowWidth, windowHeight) + "px;");
+        Label title = new Label("Ecological Balance in the Oostvaardepreserve:\n" +
+                "Introducing Grey Wolves");
+        title.setFont(Util.getBoldFont(Util.getTitleFontSize(windowWidth)));
+        title.setStyle("-fx-font-weight: bold; -fx-font-size: " + Util.getTitleFontSize(windowWidth) + "px;");
         title.setTextFill(Color.BLACK);
-        title.setWrapText(true); 
+        title.setWrapText(true);
         title.setTextAlignment(TextAlignment.RIGHT);
 
-        Label description = new Label("Explore the delicate balance of life in the\n" +
-                                      "Oostvaardersplassen, where introducing\n" +
-                                      "grey wolves as a top predator could reshape\n" +
-                                      "the populations of deer, cattle, and horses.\n" +
-                                      "This interactive program delves into\n" +
-                                      "predator-prey dynamics, ecosystem shifts, and the\n" +
-                                      "challenges of managing enclosed natural preserves");
-        
-        description.setFont(Util.getRegularFont(Util.getRegularFontSize(windowWidth, windowHeight)));
-        description.setStyle("-fx-font-size: " + Util.getRegularFontSize(windowWidth, windowHeight) + "px;");
-        description.setWrapText(true);
-        description.setTextFill(Color.BLACK);
-        description.setTextAlignment(TextAlignment.RIGHT);
+        Label descriptionFirst = new Label("Exploring the impacts of predator-prey dynamics on\n" +
+                "deer, cattle, and horse populations within a preserved ecosystem");
+        descriptionFirst.setFont(Util.getBoldFont(Util.getRegularFontSize(windowWidth)));
+        descriptionFirst
+                .setStyle("-fx-font-weight: bold; -fx-font-size: " + Util.getRegularFontSize(windowWidth) + "px;");
+        descriptionFirst.setTextFill(Color.BLACK);
+        descriptionFirst.setWrapText(true);
+        descriptionFirst.setTextAlignment(TextAlignment.RIGHT);
 
-        VBox textBlock = new VBox(windowHeight * 0.02, title, description);
+        Label descriptionSecond = new Label("The Oostvaardepreserve is embarking on a groundbreaking initiative\n" +
+                "to reintroduce gray wolves as a means of restoring natural balance\n" +
+                "within its diverse ecosystem. By examining the interactions between\n" +
+                "predators and prey, this project aims to foster biodiversity, stabilize\n" +
+                "population dynamics, and ensure long-term ecological health for species\n" +
+                "such as deer, cattle, and horses");
+
+        descriptionSecond.setFont(Util.getRegularFont(Util.getRegularFontSize(windowWidth)));
+        descriptionSecond.setStyle("-fx-font-size: " + Util.getRegularFontSize(windowWidth) + "px;");
+        descriptionSecond.setWrapText(true);
+        descriptionSecond.setTextFill(Color.BLACK);
+        descriptionSecond.setTextAlignment(TextAlignment.RIGHT);
+
+        VBox descriptionBox = new VBox(windowHeight * 0.001, descriptionFirst, descriptionSecond);
+        descriptionBox.setAlignment(Pos.CENTER_RIGHT);
+
+        VBox textBlock = new VBox(windowHeight * 0.02, title, descriptionBox);
         textBlock.setAlignment(Pos.CENTER_RIGHT);
         textBlock.setPadding(new Insets(0, 0, 0, windowWidth * 0.05));
         textBlock.setMinWidth(windowWidth / 2 - windowWidth * 0.05);
 
-        HBox content = new HBox(windowWidth * 0.05, imageView, textBlock);
+        HBox content = new HBox(imageView, textBlock);
         content.setAlignment(Pos.CENTER);
         content.setStyle("-fx-background-color: #a8c28c;" +
-                         "-fx-border-width: 2;" +
-                         "-fx-border-radius: 6;" +
+                "-fx-border-width: 2;" +
+                "-fx-border-radius: 6;" +
                 "-fx-background-radius: 6");
         content.setMaxWidth(windowWidth - 2 * horizontalGap);
         content.setMinWidth(windowWidth - 2 * horizontalGap);
@@ -194,40 +209,56 @@ public class MainPage implements Page {
         content.setOpacity(0.9);
         return content;
     }
-
+    
     /**
-     * Creates a section titled "Oostvaarderplassen nature preserve" with a styled title,
-     * description, and image. The section is visually structured with a VBox for text content
-     * and an ImageView for the image, all contained within an HBox. The section is styled with
-     * specific fonts, colors, and dimensions, and is intended to be part of the main page layout.
+     * Creates the "About Preserve" section for the main page, featuring an
+     * image and text content that highlights the ecological significance and
+     * biodiversity of the Oostvaardersplassen Nature Preserve. The section
+     * includes descriptive labels covering the preserve's wetlands, grasslands,
+     * and forests, emphasizing its role as a sanctuary for diverse flora and fauna.
+     * The layout consists of an HBox containing a VBox with the title and 
+     * description labels and an ImageView, styled with specific fonts, colors, 
+     * and dimensions.
      *
-     * @return An HBox containing the styled title, description, and image representing
-     *         the Oostvaarderplassen nature preserve.
+     * @param verticalGapBetweenSections The vertical gap between sections.
+     * @param horizontalGap The horizontal gap between elements.
+     * @param headerHeight The height of the header.
+     * @return An HBox containing the image and text content for the "About Preserve" section.
      */
     public HBox createSectionAboutPreserve(double verticalGapBetweenSections, double horizontalGap, double headerHeight) {
-        Label title = new Label("Oostvaarderplassen nature\n" + "preserve");
-        title.setFont(Util.getBoldFont(Util.getTitleFontSize(windowWidth, windowHeight)));
+        Label title = new Label("Oostvaardersplassen Nature Preserve:\n" + "A Unique Haven for Wildlife");
+        title.setFont(Util.getBoldFont(Util.getTitleFontSize(windowWidth)));
         title.setTextFill(Color.BLACK);
         title.setWrapText(true);
         title.setTextAlignment(TextAlignment.LEFT);
-        title.setStyle("-fx-font-weight: bold; -fx-font-size: " + Util.getTitleFontSize(windowWidth, windowHeight)
+        title.setStyle("-fx-font-weight: bold; -fx-font-size: " + Util.getTitleFontSize(windowWidth)
                 + "px; -fx-text-fill: #82755b;");
 
-        Label description = new Label("Dive into the unique ecosystem of the\n" +
-                                      "Oostvaardersplassen, a 56 km² protected area\n" +
-                                      "in the Netherlands. This dynamic preserve,\n" +
-                                      "home to wild cattle, horses, deer, and\n" +
-                                      "diverse bird species, offers an unparalleled view\n" +
-                                      "of how nature evolves in a controlled environment.\n" +
-                                      "Discover its lush wetlands, open grasslands,\n" +
-                                      "and the intricate relationships between its flora and fauna");
-        description.setFont(Util.getRegularFont(Util.getRegularFontSize(windowWidth, windowHeight)));
-        description.setWrapText(true);
-        description.setTextFill(Color.BLACK);
-        description.setStyle("-fx-font-size: " + Util.getRegularFontSize(windowWidth, windowHeight) + "px; -fx-text-fill: #82755b;");
-        description.setTextAlignment(TextAlignment.LEFT);
+        Label descriptionFirst = new Label("A protected area showcasing the delicate interplay\n" +
+                                           "of wetlands, grasslands, and forests, supporting diverse flora and fauna");
+        descriptionFirst.setFont(Util.getBoldFont(Util.getRegularFontSize(windowWidth)));
+        descriptionFirst.setStyle("-fx-font-weight: bold;  -fx-text-fill: #82755b; -fx-font-size: " + Util.getRegularFontSize(windowWidth) + "px;");
+        descriptionFirst.setWrapText(true);
+        descriptionFirst.setTextAlignment(TextAlignment.LEFT);
+        
+        Label descriptionSecond = new Label("The Oostvaardersplassen nature preserve is a remarkable\n" +
+                                            "sanctuary in the Netherlands, celebrated for its rich\n" +
+                                            "biodiversity and ecological significance. Spanning expansive\n" +
+                                            "wetlands, open grasslands, and dense forests, it provides\n " +
+                                            "a vital habitat for numerous species, including deer, wild horses,\n" +
+                                            "and a wide variety of bird-life. This preserve serves as a\n" +
+                                            "living example of natural processes in action, offering\n" +
+                                            "insights into conservation and rewilding efforts");
+        
+        descriptionSecond.setFont(Util.getRegularFont(Util.getRegularFontSize(windowWidth)));
+        descriptionSecond.setWrapText(true);
+        descriptionSecond.setStyle("-fx-font-size: " + Util.getRegularFontSize(windowWidth) + "px; -fx-text-fill: #82755b;");
+        descriptionSecond.setTextAlignment(TextAlignment.LEFT);
 
-        VBox textBlock = new VBox(windowHeight * 0.02, title, description);
+        VBox descriptionBox = new VBox(windowHeight * 0.001, descriptionFirst, descriptionSecond);
+        descriptionBox.setAlignment(Pos.CENTER_LEFT);
+
+        VBox textBlock = new VBox(windowHeight * 0.02, title, descriptionBox);
         textBlock.setAlignment(Pos.CENTER_LEFT);
         textBlock.setMinWidth(windowWidth / 2 - windowWidth * 0.05);
 
@@ -237,7 +268,7 @@ public class MainPage implements Page {
         imageView.setPreserveRatio(true);
 
         // Combine text and image into one section
-        HBox content = new HBox(windowWidth * 0.05, textBlock, imageView);
+        HBox content = new HBox(windowWidth * 0.01, textBlock, imageView);
         content.setAlignment(Pos.CENTER);
         content.setStyle("-fx-background-color: #ffffff;" +
                          "-fx-border-width: 2;" +
@@ -251,25 +282,42 @@ public class MainPage implements Page {
         return content;
     }
 
-    
     /**
-     * Creates a section displaying information about different animals. Each animal
-     * is represented with an image, a title, and a description. The layout consists
-     * of a horizontally arranged box containing vertically aligned blocks for each
-     * animal. The section is styled with specific fonts, colors, and dimensions,
-     * and has a semi-transparent background.
+     * Creates the section about the animals in the Oostvaardersplassen
+     * preserve. The section contains three blocks, each describing a
+     * different species (deer, cattle, horses) and featuring an image.
+     * The section is styled with a specific width, height, and padding,
+     * and the text is aligned to the center.
      *
-     * @return An HBox containing the styled representation of each animal.
+     * @param verticalGapBetweenSections The vertical gap between sections.
+     * @param horizontalGap The horizontal gap between elements.
+     * @param headerHeight The height of the header.
+     * @return An HBox containing the section about the animals.
      */
     private HBox createSectionAboutAnimals(double verticalGapBetweenSections, double horizontalGap, double headerHeight) {
-        HBox content = new HBox(windowWidth * 0.1);
+        HBox content = new HBox(windowWidth * 0.03);
         content.setAlignment(Pos.CENTER);
 
         String[] animalNames = { "Deer", "Cattle", "Horses" };
         HashMap<String, String> animalDescription = new HashMap<>();
-        animalDescription.put("Deer", "Graceful grazers that play a vital\nrole in shaping vegetation\ndynamics");
-        animalDescription.put("Cattle", "Large herbivores influencing\ngrassland structure and nutrient\ncycles");
-        animalDescription.put("Horses", "Dynamic grazers maintaining\nopen landscapes and biodiversity");
+        animalDescription.put("Deer", "Deer are key herbivores in the Oostvaardersplassen,\n" +
+                                          "contributing to the natural dynamics of the preserve.\n" +
+                                          "Their grazing influences vegetation structure, while\n" +
+                                          "their movements and behavior enrich the soil and\n" +
+                                          "provide essential resources for other organisms in the\n" +
+                                          "ecosystem");
+        animalDescription.put("Cattle", "The cattle in the Oostvaardersplassen serve as\n" +
+                                            "natural landscapers, grazing on grasses and shrubs\n" +
+                                            "to prevent overgrowth. Their presence helps maintain\n" +
+                                            "open habitats, encouraging the proliferation of plant\n" +
+                                            "and insect species and supporting a wide range of\n" +
+                                            "wildlife");
+        animalDescription.put("Horses", "Wild horses are a cornerstone of the\n" +
+                                            "Oostvaardersplassen ecosystem, shaping the\n" +
+                                            "environment through their grazing patterns. By\n" +
+                                            "selectively feeding on grasses and other vegetation,\n" +
+                                            "they promote habitat diversity, enabling the\n" +
+                                            "coexistence of multiple plant and animal species");
 
         HashMap<String, String> animalPictures = new HashMap<>();
         animalPictures.put("Deer", "Deer");
@@ -278,15 +326,15 @@ public class MainPage implements Page {
 
         for (String animalName : animalNames) {
             Label title = new Label(animalName);
-            title.setFont(Util.getBoldFont(Util.getTitleFontSize(windowWidth, windowHeight)));
+            title.setFont(Util.getBoldFont(Util.getTitleFontSize(windowWidth)));
             title.setTextFill(Color.BLACK);
-            title.setStyle("-fx-font-weight: bold; -fx-font-size: " + Util.getTitleFontSize(windowWidth, windowHeight)+ "px;");
+            title.setStyle("-fx-font-weight: bold; -fx-font-size: " + Util.getTitleFontSize(windowWidth)+ "px;");
 
             Label description = new Label(animalDescription.get(animalName));
-            description.setFont(Util.getRegularFont(Util.getRegularFontSize(windowWidth, windowHeight)));
+            description.setFont(Util.getRegularFont(Util.getRegularFontSize(windowWidth)));
             description.setWrapText(true);
             description.setTextFill(Color.BLACK);
-            description.setStyle("-fx-font-size: " + Util.getRegularFontSize(windowWidth, windowHeight) + "px;");
+            description.setStyle("-fx-font-size: " + Util.getRegularFontSize(windowWidth) + "px;");
             description.setTextAlignment(TextAlignment.CENTER);
 
             String imagePath = "/images/pictures/" + animalPictures.get(animalName) + ".png";
@@ -316,7 +364,6 @@ public class MainPage implements Page {
         content.setOpacity(0.9);
         return content;
     }
-
 
     /**
      * Returns the root of the page, which is a BorderPane containing all the page's content.

@@ -1,7 +1,5 @@
 package com.group3.mathModels;
 
-import java.util.ArrayList;
-
 import org.apache.commons.math3.ode.FirstOrderDifferentialEquations;
 import org.apache.commons.math3.ode.FirstOrderIntegrator;
 import org.apache.commons.math3.ode.nonstiff.DormandPrince853Integrator;
@@ -34,31 +32,32 @@ public class PreyPredatorModel implements MathModel {
 
         double[] initialPopulations = { formulaVariables.getCattleInitialPopulation(), formulaVariables.getHorseInitialPopulation(), formulaVariables.getDeerInitialPopulation(), formulaVariables.getWolfInitialPopulation() };
         
-        ArrayList<Double> seriesCattle = new ArrayList<Double>();
-        seriesCattle.add(formulaVariables.getCattleInitialPopulation());
+        double[] seriesCattle = new double[steps];
+        double[] seriesHorse = new double[steps];
+        double[] seriesDeer = new double[steps];
+        double[] seriesWolf = new double[steps];
+        double[] seriesTime = new double[steps];
+        
+        seriesCattle[0] = formulaVariables.getCattleInitialPopulation();
+        seriesHorse[0] = formulaVariables.getHorseInitialPopulation();
+        seriesDeer[0] = formulaVariables.getDeerInitialPopulation();
+        seriesWolf[0] = formulaVariables.getWolfInitialPopulation();
+        seriesTime[0] = 0.0;
 
-        ArrayList<Double> seriesHorse = new ArrayList<Double>();
-        seriesHorse.add(formulaVariables.getHorseInitialPopulation());
-
-        ArrayList<Double>  seriesDeer = new ArrayList<Double>();
-        seriesDeer.add(formulaVariables.getDeerInitialPopulation());
-
-        ArrayList<Double> seriesWolf = new ArrayList<Double>();
-        seriesWolf.add(formulaVariables.getWolfInitialPopulation());
-
-        ArrayList<Double> seriesTime = new ArrayList<Double>();
-        seriesTime.add(0.0);
+        for (int i = 1; i < steps; i++) {
+            seriesTime[i] = i * dt;
+        }
 
         FirstOrderIntegrator integrator = new DormandPrince853Integrator(1.0e-8, 100.0, 1.0e-10, 1.0e-10);
+        double[] currentState = initialPopulations.clone();
         for (int i = 1; i < steps; i++) {
-            seriesTime.add(t0 + i * dt);
-            integrator.integrate(new PredatorPreyEquations(formulaVariables), t0, initialPopulations, seriesTime.get(i),
-                    initialPopulations);
+            integrator.integrate(new PredatorPreyEquations(formulaVariables), t0, currentState, t0 + dt, currentState);
 
-            seriesCattle.add(initialPopulations[0]);
-            seriesHorse.add(initialPopulations[1]);
-            seriesDeer.add(initialPopulations[2]);
-            seriesWolf.add(initialPopulations[3]);
+            seriesCattle[i] = currentState[0];
+            seriesHorse[i] = currentState[1];
+            seriesDeer[i] = currentState[2];
+            seriesWolf[i] = currentState[3];
+            t0 += dt;
         }
         
         XYSeries deerSeries = new XYSeries("Deer");
@@ -67,10 +66,10 @@ public class PreyPredatorModel implements MathModel {
         XYSeries wolfSeries = new XYSeries("Wolves");
 
         for (int i = 0; i < steps; i++) {
-            deerSeries.add(seriesTime.get(i), seriesDeer.get(i));
-            cattleSeries.add(seriesTime.get(i), seriesCattle.get(i));
-            horsesSeries.add(seriesTime.get(i), seriesHorse.get(i));
-            wolfSeries.add(seriesTime.get(i), seriesWolf.get(i));
+            deerSeries.add(seriesTime[i], seriesDeer[i]);
+            cattleSeries.add(seriesTime[i], seriesCattle[i]);
+            horsesSeries.add(seriesTime[i], seriesHorse[i]);
+            wolfSeries.add(seriesTime[i], seriesWolf[i]);
         }
 
         XYSeriesCollection dataset = new XYSeriesCollection();

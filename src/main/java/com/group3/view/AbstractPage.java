@@ -66,11 +66,9 @@ public abstract class AbstractPage implements Page {
     }
 
     /**
-     * Sets up the page layout by creating the page header, main content area, and
-     * scrollable area. The page header is a bar at the top of the page that contains
-     * the logo and navigation buttons. The main content area is where the graph and
-     * description sections are placed. The scrollable area is a window that can be
-     * scrolled to view more content than can fit on the screen.
+     * Sets up the page layout, which consists of a header bar, content section, and footer.
+     * The content section is divided into two parts: a graph section and a description section.
+     * The page is embedded within a scrollable area, which is necessary for smaller screens.
      */
     private void setupPage() {
         double verticalGapBetweenSections = windowHeight * 0.03;
@@ -132,23 +130,21 @@ public abstract class AbstractPage implements Page {
     protected abstract VBox createSectionGraph();
     protected abstract VBox createSectionDescription();
 
+
     /**
-     * Creates a section of the page containing a graph and buttons to download the graph and
-     * view the description of the graph. The section is visually structured with a title
-     * at the top, the graph in the middle, and the buttons at the bottom. The section is
-     * styled with specific fonts, colors, and dimensions, and is intended to be part of the
-     * main page layout.
+     * Creates a section containing a graph based on a MathModel object. The section
+     * includes a title, the graph itself, and buttons for downloading the graph, opening
+     * a settings popup, and scrolling to the description section.
      *
-     * @param title The title of the section
-     * @param graphGenerator The math model that generates the graph
-     * @return A VBox containing the styled title, graph, and buttons representing the
-     *         section of the page.
+     * @param title The title of the section.
+     * @param graphGenerator The MathModel object that generates the graph.
+     * @return A VBox containing the title, graph, and buttons.
      */
     protected VBox createSectionGraph(String title, MathModel graphGenerator) {
         // Title for the graph section
         Label graphTitle = new Label(this.graphTitle);
-        graphTitle.setStyle("-fx-font-weight: bold; -fx-font-size: " + Util.getTitleFontSize(windowWidth, windowHeight) + "px; -fx-text-fill: #000000;");
-        graphTitle.setFont(Util.getBoldFont(Util.getTitleFontSize(windowWidth, windowHeight)));
+        graphTitle.setStyle("-fx-font-weight: bold; -fx-font-size: " + Util.getTitleFontSize(windowWidth) + "px; -fx-text-fill: #000000;");
+        graphTitle.setFont(Util.getBoldFont(Util.getTitleFontSize(windowWidth)));
         graphTitle.setAlignment(Pos.TOP_CENTER);
 
         // Graph 
@@ -217,23 +213,26 @@ public abstract class AbstractPage implements Page {
     }
 
     /**
-     * Creates a section for the description of the graph, with a title and text describing the graph.
-     * The section is styled with specific fonts, colors, and dimensions, and is intended to be part of the main page layout.
+     * Creates a section containing a title and a description. The section has a transparent
+     * background, with the title and description aligned to the left. The title font is bold
+     * and the description font is regular. The text is wrapped if it exceeds the width of the
+     * section. The section's minimum height is set to the height of the window minus the height
+     * of the header and the height of the graph section.
      *
-     * @param title The title text for the description section.
-     * @param description The description text for the section.
-     * @return The newly created section.
+     * @param title The title of the section.
+     * @param description The description of the section.
+     * @return A VBox containing the title and description.
      */
     protected VBox createSectionDescription(String title, String description) {
         // Title for the description section
         Label descriptionTitle = new Label(title);
         descriptionTitle.setStyle(
-                "-fx-font-size: " + Util.getTitleFontSize(windowWidth, windowHeight) + "px; -fx-font-weight: bold; -fx-text-fill: #82755b;");
+                "-fx-font-size: " + Util.getTitleFontSize(windowWidth) + "px; -fx-font-weight: bold; -fx-text-fill: #82755b;");
         VBox.setMargin(descriptionTitle, new Insets(0, 0, 0, (windowWidth - windowWidth * 0.6) / 2));
 
         // Description text
         Label descriptionText = new Label(description);
-        descriptionText.setStyle("-fx-font-size: " + Util.getRegularFontSize(windowWidth, windowHeight) + "px; -fx-text-fill: #82755b;");
+        descriptionText.setStyle("-fx-font-size: " + Util.getRegularFontSize(windowWidth) + "px; -fx-text-fill: #82755b;");
         descriptionText.setWrapText(true);
         VBox.setMargin(descriptionText, new Insets(0, 0, 0, (windowWidth - windowWidth * 0.6) / 2));
 
@@ -249,10 +248,13 @@ public abstract class AbstractPage implements Page {
     }
 
     /**
-     * Opens a new popup window with a graph generated by the given MathModel.
+     * Opens a popup window with a graph, given by the MathModel implementation. The graph is
+     * displayed in a StackPane with a white background, and the title of the graph is aligned
+     * to the left. The popup window has a close button at the bottom. The popup window is
+     * maximized by default, and the graph is resized to fit the window.
      *
-     * @param title The title text for the popup window.
-     * @param graphGenerator The MathModel object to generate the graph content.
+     * @param title The title of the graph.
+     * @param graphGenerator The MathModel implementation that generates the graph.
      */
     private void openGraphPopup(String title, MathModel graphGenerator) {
         // Create a new stage for the popup
@@ -274,8 +276,8 @@ public abstract class AbstractPage implements Page {
 
         // Graph Title aligned with the graph
         Label graphTitle = new Label(this.graphTitle);
-        graphTitle.setStyle("-fx-font-size:" + Util.getTitleFontSize(windowWidth, windowHeight) + "px;" +
-                "-fx-font-family: " + Util.getBoldFont(Util.getTitleFontSize(windowWidth, windowHeight)).getFamily()
+        graphTitle.setStyle("-fx-font-size:" + Util.getTitleFontSize(windowWidth) + "px;" +
+                "-fx-font-family: " + Util.getBoldFont(Util.getTitleFontSize(windowWidth)).getFamily()
                 + ";" +
                 "-fx-font-weight: bold;" +
                 "-fx-text-fill: #000000;");
@@ -288,8 +290,8 @@ public abstract class AbstractPage implements Page {
 
         // Close button at the bottom
         Button closeButton = new Button("Close");
-        closeButton.setStyle("-fx-font-size:" + Util.getButtonFontSize(windowWidth, windowHeight) + "px;" +
-                "-fx-font-family: " + Util.getBoldFont(Util.getButtonFontSize(windowWidth, windowHeight)).getFamily()
+        closeButton.setStyle("-fx-font-size:" + Util.getButtonFontSize(windowWidth) + "px;" +
+                "-fx-font-family: " + Util.getBoldFont(Util.getButtonFontSize(windowWidth)).getFamily()
                 + ";" +
                 "-fx-background-color: #E07A5F;" +
                 "-fx-text-fill: white;" +
@@ -313,11 +315,11 @@ public abstract class AbstractPage implements Page {
     }
     
     /**
-     * Scrolls the content of the scrollPane to the description section.
-     * The target position is calculated as the window height plus 75% of the window height
-     * divided by the total height of the content.
+     * Smoothly scrolls the scroll pane to the description section of the page.
+     * Calculates the target vertical position to center the description section
+     * within the visible viewport, and animates the scroll to that position over
+     * one second.
      */
-    
     private void scrollToDescription() {
 
         double targetPosition = descriptionSection.getBoundsInParent().getMinY();
@@ -333,15 +335,16 @@ public abstract class AbstractPage implements Page {
                 new KeyFrame(Duration.ZERO, new KeyValue(scrollPane.vvalueProperty(), scrollPane.getVvalue())),
                 new KeyFrame(Duration.seconds(1), new KeyValue(scrollPane.vvalueProperty(), targetValue)));
         timeline.play();
-    }
+    } 
     
     /**
-     * Handles the download action for the page by showing a confirmation dialog
-     * to the user, capturing the page snapshot as a PNG image, and then saving
-     * the image as a PDF file to the user's chosen location using the iText PDF
-     * library. The page is then re-shown after the download action is completed.
-     * If any error occurs during the process, a notification is shown to the user.
-     * @param graphTitle the title of the graph to be saved
+     * Handles the action of downloading the current page view as a PDF.
+     * Displays a confirmation dialog to the user. If confirmed, it captures the current
+     * page as an image, prompts the user to choose a file location, and exports the image
+     * to a PDF file. Shows a success notification upon successful export, or an error
+     * notification if an exception occurs during the process.
+     *
+     * @param graphTitle the title of the graph to include in the confirmation dialog
      */
     private void handleDownloadAction(String graphTitle) {
         try {
@@ -369,6 +372,15 @@ public abstract class AbstractPage implements Page {
         }
     }
     
+    /**
+     * Opens a settings dialog window for configuring initial populations and biomass
+     * for various species in the simulation. The dialog allows the user to input
+     * values for cattle, horse, deer, wolf populations, and grass biomass, with
+     * limits displayed for each. A submit button updates the simulation state with
+     * the new values, while a close button exits the dialog without changes.
+     * The dialog is styled and centrally aligned, and upon submission, the graph
+     * section is refreshed to reflect the updated settings.
+     */
     private void openSettings() {
         // Create a new dialog window
         Stage dialog = new Stage();
@@ -474,11 +486,20 @@ public abstract class AbstractPage implements Page {
         dialog.showAndWait();
     }
 
+    /**
+     * Returns the root of the page, which is a BorderPane containing all the page's content.
+     * @return the root of the page
+     */
     @Override
     public BorderPane getRoot() {
         return root;
     }
 
+    /**
+     * Returns the name of the current page.
+     * 
+     * @return the name of the page as a string
+     */
     @Override
     public String getPageName() {
         return pageName;

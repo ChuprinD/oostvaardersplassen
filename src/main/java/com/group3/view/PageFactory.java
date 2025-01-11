@@ -4,13 +4,16 @@ import com.group3.controller.NavigationController;
 import com.group3.mathModels.FormulaVariables;
 
 public class PageFactory {
+    
     /**
-     * Creates a new page of the given type.
+     * Creates an instance of the page with the given type.
      * 
-     * @param pageType the type of page to create, must be one of the following: Herbivore
-     * @param navigationController the NavigationController that will be used to navigate from this page.
-     * @return the newly created page.
-     * @throws IllegalArgumentException if pageType is not one of the above values.
+     * @param pageType the type of page to create. Must be one of "Herbivore Competition",
+     *                 "Predator-Prey Dynamics", or "Total Simulation".
+     * @param navigationController the controller responsible for navigating between pages.
+     * @param formulaVariables the formula variables to use for the page.
+     * @return an instance of the page with the given type.
+     * @throws IllegalArgumentException if the page type is not recognized.
      */
     public static AbstractPage createPage(String pageType, NavigationController navigationController, FormulaVariables formulaVariables) {
         switch (pageType) {

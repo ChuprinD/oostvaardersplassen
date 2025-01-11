@@ -8,7 +8,8 @@ import java.sql.ResultSet;
 public class DatabaseApp {
     private static final String DB_URL = "jdbc:mysql://localhost:3306/oostvaardersplassen";
     private static final String USER = "root";
-    private static final String PASS = "12weuser321!";
+    private static final String PASS = "0525";
+    //private static final String PASS = "12weuser321!";
     
     private static Connection getConnection() throws Exception {
         Class.forName("com.mysql.cj.jdbc.Driver");
@@ -17,8 +18,7 @@ public class DatabaseApp {
 
     public static double getInitialPopulation(String species) {
         try (Connection conn = getConnection();
-             PreparedStatement stmt = conn.prepareStatement("SELECT Amount FROM animal WHERE Name = ? AND  Year = 2022")) {
-            
+            PreparedStatement stmt = conn.prepareStatement("SELECT Amount FROM animal WHERE Name = ? AND  Year = 2022")) {
             stmt.setString(1, species);
             ResultSet rs = stmt.executeQuery();
             

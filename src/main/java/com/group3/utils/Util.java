@@ -43,7 +43,6 @@ public class Util {
     /**
      * Returns a bold font with the specified size.
      * The font used is "Liberation Sans Bold".
-     * 
      * @param size the size of the font
      * @return a Font object with the specified size and bold style
      */
@@ -52,55 +51,52 @@ public class Util {
     }
 
     /**
-     * Returns the font size of the regular font in the page, given as follows.
-     * The font size is proportional to the minimum of the screen width and
-     * screen height. The base font size is 16.
+     * Returns the font size of the regular text in the page, given as follows.
+     * The font size is proportional to the width of the screen.
+     * The base font size is 4.
      * @param screenWidth the width of the screen
-     * @param screenHeight the height of the screen
-     * @return the font size of the regular font in the page
+     * @return the font size of the regular text in the page
      */
-    public static int getRegularFontSize(double screenWidth, double screenHeight) {
-        int baseFontSize = 14;
-        int fontSize = (int) (baseFontSize + Math.min(screenWidth, screenHeight) * 0.01);
+    public static int getRegularFontSize(double screenWidth) {
+        int baseFontSize = 4;
+        int fontSize = (int) (baseFontSize + screenWidth * 0.01);
         return fontSize;
     }
     
     /**
-     * Returns the font size of the title in the page, given as follows.
-     * The font size is proportional to the minimum of the screen width and
-     * screen height. The base font size is 30.
+     * Returns the font size of the title text in the page, given as follows.
+     * The font size is proportional to the width of the screen.
+     * The base font size is 12.
      * @param screenWidth the width of the screen
-     * @param screenHeight the height of the screen
-     * @return the font size of the title in the page
+     * @return the font size of the title text in the page
      */
-    public static int getTitleFontSize(double screenWidth, double screenHeight) {
-        int baseFontSize = 30;
-        int fontSize = (int) (baseFontSize + Math.min(screenWidth, screenHeight) * 0.01);
+    public static int getTitleFontSize(double screenWidth) {
+        int baseFontSize = 12;
+        int fontSize = (int) (baseFontSize + screenWidth * 0.01);
         return fontSize;
     }
     
     /**
-     * Returns the font size of the button in the page, given as follows.
-     * The font size is proportional to the minimum of the screen width and
-     * screen height. The base font size is 10.
+     * Returns the font size of the button text, calculated based on the screen width.
+     * The font size is proportional to the width of the screen.
+     * The base font size is 4.
      * @param screenWidth the width of the screen
-     * @param screenHeight the height of the screen
-     * @return the font size of the button in the page
+     * @return the font size of the button text
      */
-    public static int getButtonFontSize(double screenWidth, double screenHeight) {
-        int baseFontSize = 10;
-        int fontSize = (int) (baseFontSize + Math.min(screenWidth, screenHeight) * 0.01);
+    public static int getButtonFontSize(double screenWidth) {
+        int baseFontSize = 4;
+        int fontSize = (int) (baseFontSize + screenWidth * 0.01);
         return fontSize;
     }
 
     /**
-     * Captures the given page as a PNG image and saves it to a file named
-     * "page_snapshot.png". The image is saved to the same directory as the
-     * current Java application. The method returns the path of the saved image file
-     * if successful, or null if an error occurs.
-     * 
-     * @param root the root of the page to capture
-     * @return the path of the saved image file, or null if an error occurs
+     * Captures the current page displayed in the provided BorderPane as a PNG image.
+     * The image is saved to the file system with the name "page_snapshot.png".
+     * If the capture and save operation is successful, the method returns the path to the image.
+     * In case of an error, it prints the stack trace and returns null.
+     *
+     * @param root the BorderPane containing the current page layout to capture
+     * @return the file path of the saved image, or null if an error occurs
      */
     public static String capturePageAsImage(BorderPane root) {
         try {
@@ -118,11 +114,14 @@ public class Util {
     }
 
     /**
-     * Exports the current page as a PDF to the specified path.
-     * 
-     * @param imagePath the path to the image of the page to export
-     * @param pdfPath the path to export the PDF to
-     * @param windowWidth the width of the window
+     * Exports a given image file to a PDF document. The method uses the specified image path
+     * to read the image, scales it to fit the specified window width, and creates a PDF document
+     * at the provided PDF path. After successfully writing the PDF, the original image file is deleted.
+     * Any errors during the process are caught and printed to the stack trace.
+     *
+     * @param imagePath the file path of the image to be converted to a PDF
+     * @param pdfPath the file path where the resulting PDF should be saved
+     * @param windowWidth the width of the window, used to scale the image in the PDF
      */
     public static void exportToPDF(String imagePath, String pdfPath, double windowWidth) {
         try {
@@ -157,14 +156,11 @@ public class Util {
     }
     
     /**
-     * Opens a file chooser dialog for the user to select a file to save.
-     * The dialog is preconfigured with the given extension description and
-     * extension, and will only show files with that extension.
-     * The method returns the selected file, or null if the dialog was cancelled.
-     * 
-     * @param extensionDescription a description of the file extension, e.g. "PNG images"
-     * @param extension the file extension to filter by, e.g. "*.png"
-     * @return the selected file, or null if the dialog was cancelled
+     * Opens a file chooser dialog for the user to select a file to save to.
+     * The file chooser is pre-set to only allow files with the given extension to be selected.
+     * @param extensionDescription a human-readable description of the file extension (e.g. "PDF files")
+     * @param extension the extension itself (e.g. "*.pdf")
+     * @return the file chosen by the user, or null if the dialog was cancelled
      */
     public static File chooseFile(String extensionDescription, String extension) {
         FileChooser fileChooser = new FileChooser();
@@ -173,6 +169,16 @@ public class Util {
         return fileChooser.showSaveDialog(null);
     }
     
+    /**
+     * Calculates and returns the maximum width of a list of text items when rendered
+     * on the screen with a specified font size. The maximum width is influenced by
+     * the font size and the width of the screen.
+     *
+     * @param items an array of strings representing the text items to be measured
+     * @param fontSize the font size used for rendering the text
+     * @param windowWidth the width of the window, used to add a proportional padding to the calculated width
+     * @return the maximum width of the text items plus a small proportional padding based on the window width
+     */
     public static double getMaxItemWidth(String[] items, int fontSize, double windowWidth) {
         Text textHelper = new Text();
         textHelper.setFont(Util.getBoldFont(fontSize)); 

@@ -10,8 +10,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
-import org.apache.commons.math3.optim.nonlinear.scalar.gradient.NonLinearConjugateGradientOptimizer.Formula;
-
 import javafx.scene.layout.Pane;
 
 public class PageManager {
@@ -24,8 +22,7 @@ public class PageManager {
         this.formulaVariables = new FormulaVariables();
         initializePages();
     }
-
-    
+ 
     /**
      * Initializes the pages of the application. This method is responsible for
      * registering all the pages of the application in the page manager. The

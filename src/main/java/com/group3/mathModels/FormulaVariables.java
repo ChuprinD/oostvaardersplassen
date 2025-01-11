@@ -1,22 +1,24 @@
 package com.group3.mathModels;
 
+import com.group3.database.DatabaseApp;
+
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
 @Setter
+@Getter
 public class FormulaVariables {
-    private final double maxCattlePopulation = 1000; // Maximum population of cattle
-    private final double maxHorsePopulation = 1000; // Maximum population of horses
-    private final double maxDeerPopulation = 1000; // Maximum population of deer
-    private final double maxWolfPopulation = 1000; // Maximum population of wolves
-    private final double maxGrassBiomass = 1000; // Maximum biomass of grass
+    private final double maxCattlePopulation = 2000; // Maximum population of cattle
+    private final double maxHorsePopulation = 2000; // Maximum population of horses
+    private final double maxDeerPopulation = 4000; // Maximum population of deer
+    private final double maxWolfPopulation = 2000; // Maximum population of wolves
+    private final double maxGrassBiomass = 2000; // Maximum biomass of grass
 
-    private double cattleInitialPopulation = 80; // Initial population of cattle
-    private double horseInitialPopulation = 70; // Initial population of horses
-    private double deerInitialPopulation = 50; // Initial population of deer
+    private static double cattleInitialPopulation = DatabaseApp.getInitialPopulation("Heck cattle"); // Initial population of cattle
+    private static double horseInitialPopulation = DatabaseApp.getInitialPopulation("Konik horses"); // Initial population of horses
+    private static double deerInitialPopulation = DatabaseApp.getInitialPopulation("Red deer"); // Initial population of deer
     private double wolfInitialPopulation = 50; // Initial population of wolves
-    private double grassInitialBiomass = 1000; // Initial biomass of grass
+    private static double grassInitialBiomass = DatabaseApp.getInitialGrass(2022); // Initial biomass of grass
 
     private double wolfDeathRate = 0.01;
 
@@ -29,7 +31,7 @@ public class FormulaVariables {
     private double deerGrowthRate = 0.3; // Intrinsic growth rate of deer
     private double deerCarryingCapacity = 300; // Carrying capacity for deer
 
-    private double wolfGrowthRate = 0.1; // Intrinsic growth rate of wolves
+    private double wolfGrowthRate = 2; // Intrinsic growth rate of wolves
     private double wolfCarryingCapacity = 200; // Carrying capacity for wolves
 
     private double grassGrowthRate = 0.1; // Intrinsic growth rate of grass
@@ -55,4 +57,36 @@ public class FormulaVariables {
     private double grassConsumptionRateCattle = 0.01; // Consumption rate of grass by cattle
     private double grassConsumptionRateHorses = 0.01; // Consumption rate of grass by horses
     private double grassConsumptionRateDeer = 0.01; // Consumption rate of grass by deer
+    
+    public double getCattleInitialPopulation() {
+        return cattleInitialPopulation;
+    }
+
+    public double getHorseInitialPopulation() {
+        return horseInitialPopulation;
+    }
+
+    public double getDeerInitialPopulation() {
+        return deerInitialPopulation;
+    }
+
+    public double getGrassInitialBiomass() {
+        return grassInitialBiomass;
+    }
+
+    public void setCattleInitialPopulation(double cattleInitialPopulation) {
+        FormulaVariables.cattleInitialPopulation = cattleInitialPopulation;
+    }
+
+    public void setHorseInitialPopulation(double horseInitialPopulation) {
+        FormulaVariables.horseInitialPopulation = horseInitialPopulation;
+    }
+
+    public void setDeerInitialPopulation(double deerInitialPopulation) {
+        FormulaVariables.deerInitialPopulation = deerInitialPopulation;
+    }
+
+    public void setGrassInitialBiomass(double grassInitialBiomass) {
+        FormulaVariables.grassInitialBiomass = grassInitialBiomass;
+    }
 }

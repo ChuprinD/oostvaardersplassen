@@ -14,10 +14,13 @@ public class NavigationController {
     }
 
     /**
-     * Shows a specific page in the primary stage by creating a new scene from it.
-     * The page is retrieved from the page manager using the given page name.
-     * The primary stage is set to fill the screen, and then is shown.
-     * @param pageName The name of the page to show
+     * Shows the page with the given name in the main application window. The method
+     * creates a new scene with the requested page and sets it as the scene of the
+     * primary stage. It also sets the application icon and maximizes the stage
+     * to fill the screen.
+     * 
+     * @param pageName the name of the page to show. Must be one of the page names
+     *                 registered in the PageManager.
      */
     public void showPage(String pageName) {
         // Create a new scene using the requested page

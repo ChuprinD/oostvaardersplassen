@@ -32,7 +32,7 @@ public class LotkaVolterra {
     private static final double grassConsumptionRateDeer = 0.01; // Consumption rate of grass by deer static
 
     // Initial populations
-    private static double cattlePopulation = DatabaseApp.getInitialPopulation("cattle");
+    private static double cattlePopulation = 10;
     private static double horsePopulation = DatabaseApp.getInitialPopulation("horse");
     private static double deerPopulation = DatabaseApp.getInitialPopulation("deer");
     private static double wolfPopulation = 50; // 

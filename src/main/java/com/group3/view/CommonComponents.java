@@ -55,13 +55,14 @@ public class CommonComponents {
     }
 
     /**
-     * Creates the header bar at the top of the application window. The header
-     * bar contains the logo, navigation buttons, and a dropdown menu for
-     * navigating to different pages.
+     * Creates the header section at the top of the application window. The header
+     * consists of a left section with the logo, a center section with navigation
+     * buttons, and a right section with a dropdown menu.
      *
-     * @param pageName the name of the page to be displayed in the header
-     * @param navigationController the object that handles navigation
-     * @return the header bar as an HBox
+     * @param pageName the name of the page
+     * @param navigationController the navigation controller
+     * @param horizontalGap the horizontal gap between the header and the content
+     * @return the header as an HBox
      */
     public HBox createHeader(String pageName, NavigationController navigationController, double horizontalGap) {
         HBox leftBox = createLogoSection();
@@ -81,10 +82,12 @@ public class CommonComponents {
     }
 
     /**
-     * Creates the footer at the bottom of the application window. The footer
-     * contains only an image of a white wolf.
+     * Creates the footer section at the bottom of the application window.
+     * The footer consists of an image centered horizontally, with padding 
+     * applied to the top and bottom. The image is scaled to maintain its 
+     * aspect ratio and fits a specific height relative to the window height.
      *
-     * @return the footer as an HBox
+     * @return the footer as an HBox containing the centered image
      */
     public HBox createFooter() {
         Image image = new Image(CommonComponents.class.getResourceAsStream("/images/logos/WhiteWolf.png"));
@@ -99,11 +102,11 @@ public class CommonComponents {
     }
 
     /**
-     * Creates a logo section for the header containing an image.
-     * The image is scaled to fit a specific height while preserving its aspect ratio.
-     * The logo section is left-aligned within its container.
+     * Creates the left section of the header containing the Wolf logo.
+     * The logo is centered horizontally and scaled to fit the header height.
+     * The section is styled with a specific width and padding to the right.
      *
-     * @return An HBox containing the logo image.
+     * @return the left section of the header as an HBox
      */
     private HBox createLogoSection() {
         Image image = new Image(CommonComponents.class.getResourceAsStream("/images/logos/Wolf1e4c40Opacity65.png"));
@@ -121,20 +124,18 @@ public class CommonComponents {
         return leftBox;
     }
 
-    
     /**
-     * Creates a section containing navigation buttons for the header bar.
-     * The section is centered within its container and takes up one-third of the window width.
-     * Each button is created with a width and height proportional to the window size and a font size
-     * based on the window width. The buttons are also styled with a bold font and a background color.
+     * Creates the center section of the header containing buttons for navigation.
+     * The buttons are centered horizontally and styled with specific fonts, colors, and dimensions.
+     * The section is styled with a specific width and padding to the right.
      *
-     * @param navigationController the object that handles navigation
-     * @return the section containing the navigation buttons
+     * @param navigationController the object that handles navigation between different pages.
+     * @return the center section of the header as an HBox
      */
     private HBox createButtons(NavigationController navigationController) {
         double buttonWidth = windowWidth * 0.06;
         double buttonHeight = windowHeight * 0.03;
-        int fontSize = Util.getButtonFontSize(windowWidth, windowHeight);
+        int fontSize = Util.getButtonFontSize(windowWidth);
 
         Button homeButton = createButton("Home", fontSize, buttonWidth, buttonHeight, e -> navigateToHome(navigationController));
         Button aboutButton = createButton("About", fontSize, buttonWidth, buttonHeight, e -> navigateToAbout(navigationController));
@@ -149,18 +150,17 @@ public class CommonComponents {
         return centerBox;
     }
 
-    
     /**
-     * Creates a button with the given text, font size, width, height, and action.
-     * The button is also styled with a bold font and a background color.
-     * The button is also set to not be focus traversable.
+     * Creates a styled button with specified text, font size, dimensions, and action handler.
+     * The button is styled with a bold font, rounded corners, and specific color settings.
+     * It is intended to be used within a navigation header or other UI components.
      *
-     * @param text the text to display on the button
-     * @param fontSize the font size of the button text
-     * @param width the width of the button
-     * @param height the height of the button
-     * @param action the action to take when the button is clicked
-     * @return the button
+     * @param text The text to be displayed on the button.
+     * @param fontSize The font size of the button text.
+     * @param width The width of the button.
+     * @param height The height of the button.
+     * @param action The action to be executed when the button is clicked.
+     * @return A Button object with the specified properties and styling.
      */
     private Button createButton(String text, int fontSize, double width, double height, javafx.event.EventHandler<javafx.event.ActionEvent> action) {
         Button button = new Button(text);
@@ -177,13 +177,12 @@ public class CommonComponents {
         button.setFocusTraversable(false);
         return button;
     }
-
+  
     /**
      * Navigates to the home page if the navigation is not already on the home page.
      * If the navigation is on the home page, scrolls to the top of the page.
      * @param navigationController the object that handles navigation
      */
-
     private void navigateToHome(NavigationController navigationController) {
         if (isItMain) {
             scrollToPosition(0, 0);
@@ -191,10 +190,12 @@ public class CommonComponents {
             navigationController.showPage("Home");
         }
     }
-
+    
     /**
-     * Navigates to the about page if the navigation is not already on the about page.
-     * If the navigation is on the about page, scrolls to the section about the preserve.
+     * Navigates to the "About" section of the home page. If the current 
+     * page is the main page, it scrolls to the position of the "About" 
+     * section. Otherwise, it navigates to the "Home.About" page.
+     * 
      * @param navigationController the object that handles navigation
      */
     private void navigateToAbout(NavigationController navigationController) {
@@ -206,8 +207,10 @@ public class CommonComponents {
     }
 
     /**
-     * Navigates to the species page if the navigation is not already on the species page.
-     * If the navigation is on the species page, scrolls to the section about the animals.
+     * Navigates to the "Animals" section of the home page. If the current 
+     * page is the main page, it scrolls to the position of the "Animals" 
+     * section. Otherwise, it navigates to the "Home.Animals" page.
+     * 
      * @param navigationController the object that handles navigation
      */
     private void navigateToSpecies(NavigationController navigationController) {
@@ -219,8 +222,13 @@ public class CommonComponents {
     }
 
     /**
-     * Scrolls the scrollPane to a specific position within its content.
-     * @param targetPosition the vertical position within the content to scroll to
+     * Scrolls the scrollPane to the given target position, with a smooth animation
+     * over 1 second. The target position is given as a y-coordinate from the top of
+     * the content area. The targetSectionSize parameter is the height of the section
+     * to scroll to, and is used to calculate the center of the section within the
+     * viewport.
+     * @param targetPosition the y-coordinate of the target position to scroll to
+     * @param targetSectionSize the height of the section to scroll to
      */
     private void scrollToPosition(double targetPosition, double targetSectionSize) {
         double contentHeight = scrollPane.getContent().getBoundsInLocal().getHeight();
@@ -237,19 +245,16 @@ public class CommonComponents {
             new KeyFrame(Duration.seconds(1), new KeyValue(scrollPane.vvalueProperty(), targetValue))
         );
         timeline.play();
-        
-
-        //scrollPane.setVvalue(targetValue);
     }
 
     /**
-     * Creates a dropdown menu for the header bar, allowing navigation to different pages.
-     * The menu includes options such as "Home", "Herbivore Competition", "Predator-Prey Dynamics",
-     * "Species-Specific Reactions", and "Climate and Population Trends". The menu is styled with
-     * a specific font, background color, and size, and it triggers navigation actions upon selection.
+     * Creates a dropdown menu for navigation between different pages of the application.
+     * The dropdown menu includes options for "Home", "Herbivore Competition", "Predator-Prey Dynamics",
+     * and "Total Simulation". When an option is selected, the corresponding page is displayed.
+     * The dropdown is styled with specific fonts, colors, and dimensions to fit the application's theme.
      * 
-     * @param navigationController the object that handles navigation between different pages.
-     * @return An HBox containing the styled dropdown menu.
+     * @param navigationController the controller responsible for handling navigation between pages.
+     * @return an HBox containing the styled dropdown menu.
      */
     private HBox createDropdownMenu(NavigationController navigationController) {
         ComboBox<String> dropdownMenu = new ComboBox<>();
@@ -259,7 +264,7 @@ public class CommonComponents {
         dropdownMenu.setOnAction(e -> navigationController.showPage(dropdownMenu.getValue()));
         dropdownMenu.setValue("Choose Analysis Focus");
 
-        int fontSize = Util.getButtonFontSize(windowWidth, windowHeight);
+        int fontSize = Util.getButtonFontSize(windowWidth);
         dropdownMenu.setStyle("-fx-font-size: " + fontSize + "px;" +
                               "-fx-font-family: " + Util.getBoldFont(fontSize).getFamily() + ";" +
                               "-fx-text-fill: white;" +
@@ -298,7 +303,6 @@ public class CommonComponents {
         double dropdownMenuWidth = Util.getMaxItemWidth(dropdownElements, fontSize, windowWidth);
 
         dropdownMenu.setMinWidth(dropdownMenuWidth);
-        //dropdownMenu.setMaxWidth(dropdownMenuWidth);
 
         Platform.runLater(() -> {
             dropdownMenu.show();
@@ -314,15 +318,15 @@ public class CommonComponents {
 
         return rightBox;
     }
-
+    
     /**
-     * Builds a layout for a dropdown menu item containing a label with the given text.
-     * The layout is styled to have a white font, a background color of #82755b, and a
-     * font size of the given fontSize. The label is centered and has a maximum width of
-     * Double.MAX_VALUE, and the text is wrapped if it exceeds the maximum width.
-     * @param text the text to be displayed in the label
-     * @param fontSize the font size of the label
-     * @return a VBox containing the label with the given text
+     * Creates a VBox with a centered Label that displays the given text in
+     * the given font size. The Label is styled with a light brown background,
+     * white text, and a rounded corner. The VBox is set to expand to fill its
+     * parent container.
+     * @param text the text to display in the Label
+     * @param fontSize the font size of the Label
+     * @return a VBox containing the styled Label
      */
     private VBox buildLayout(String text, int fontSize) {
         Label labelName = new Label(text);
@@ -345,14 +349,15 @@ public class CommonComponents {
         return pane;
     }
 
-    
     /**
-     * Displays a confirmation dialog with the given title and message.
-     * The dialog displays a default OK and Cancel button, and will wait for
-     * the user to close it before allowing further interaction with the application.
-     * @param title the title to display in the dialog
-     * @param message the message to display in the dialog
-     * @return true if the user clicked OK, false if the user clicked Cancel
+     * Displays a confirmation dialog with "Yes" and "No" options, allowing the user to make a choice.
+     * The dialog is styled with a custom layout and appears as a modal window.
+     * 
+     * @param title       The title of the confirmation dialog.
+     * @param message     The message displayed inside the dialog.
+     * @param windowWidth The width of the window for styling purposes.
+     * @param windowHeight The height of the window for styling purposes.
+     * @return true if the user selects "Yes", false if the user selects "No".
      */
     public static boolean showConfirmationDialog(String title, String message, double windowWidth, double windowHeight) {
         // Create a new stage for the dialog
@@ -368,7 +373,7 @@ public class CommonComponents {
         // Add a title to the dialog
         Label dialogTitle = new Label(message);
         dialogTitle.setStyle("-fx-font-size: 15px; -fx-font-weight: bold; -fx-text-fill: #000000;");
-        dialogTitle.setFont(Util.getBoldFont(Util.getTitleFontSize(windowWidth, windowHeight)));
+        dialogTitle.setFont(Util.getBoldFont(Util.getTitleFontSize(windowWidth)));
         dialogTitle.setWrapText(true);
         dialogTitle.setAlignment(Pos.CENTER);
         dialogTitle.setTextAlignment(TextAlignment.CENTER);
@@ -430,13 +435,14 @@ public class CommonComponents {
         return userChoice[0];
     }
 
+    
     /**
-     * Displays an information alert with the specified title and message.
-     * The alert is blocking, meaning it will wait for the user to close it
-     * before allowing further interaction with the application.
+     * Displays an informational notification popup with a given title and message.
+     * The notification is styled as an Alert dialog of type INFORMATION and
+     * requires the user to dismiss it manually.
      *
-     * @param title the title of the alert dialog
-     * @param message the message content of the alert dialog
+     * @param title   The title of the notification dialog.
+     * @param message The message content displayed in the notification dialog.
      */
     public static void showNotification(String title, String message) {
         Alert alert = new Alert(AlertType.INFORMATION);
@@ -448,23 +454,32 @@ public class CommonComponents {
         alert.showAndWait();
     }
 
+    
     /**
-     * Sets the vertical positions for the sections "About Animals" and "About Preserve".
-     * This method updates the stored positions for these sections based on the provided
-     * parameters.
+     * Sets the positions for the sections about the preserve and animals.
      *
-     * @param sectionAboutAnimalsPosition The vertical position for the "About Animals" section.
-     * @param sectionAboutPreservePosition The vertical position for the "About Preserve" section.
+     * @param sectionAboutPreservePosition The HBox representing the position of the section about the preserve.
+     * @param sectionAboutAnimalsPosition The HBox representing the position of the section about animals.
      */
     public void setSectionsPosition(HBox sectionAboutPreservePosition, HBox sectionAboutAnimalsPosition) {
         this.sectionAboutAnimalsPosition = sectionAboutAnimalsPosition;
         this.sectionAboutPreservePosition = sectionAboutPreservePosition;
     }
 
+    /**
+     * Sets the scroll pane that is being used to display the content of the page.
+     * This is used to scroll the user to a specific section of the page.
+     * @param scrollPane The ScrollPane that is being used to display the content of the page.
+     */
     public void setScrollPane(ScrollPane scrollPane) {
         this.scrollPane = scrollPane;
     }
 
+    /**
+     * Returns the height of the header as a double value.
+     * 
+     * @return The height of the header.
+     */
     public double getHeaderHeight() {
         return headerHeight;
     }
