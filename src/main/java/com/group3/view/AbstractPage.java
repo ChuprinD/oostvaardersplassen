@@ -154,7 +154,7 @@ public abstract class AbstractPage implements Page {
         graphContainer.setPadding(new Insets(5));
         SwingNode swingNode = new SwingNode();
         SwingUtilities.invokeLater(() -> {
-            swingNode.setContent(graphGenerator.getGraph(windowWidth * 0.6, windowHeight * 0.5, formulaVariables));
+            swingNode.setContent(graphGenerator.getGraph(windowWidth * 0.7, windowHeight * 0.6, formulaVariables));
         });
         graphContainer.getChildren().add(swingNode);
         graphContainer.setMaxWidth(windowWidth * 0.9);
@@ -286,7 +286,7 @@ public abstract class AbstractPage implements Page {
         // Align the title to the left using HBox
         HBox titleContainer = new HBox();
         titleContainer.getChildren().add(graphTitle);
-        titleContainer.setAlignment(Pos.CENTER_LEFT); // Align content to the left
+        titleContainer.setAlignment(Pos.CENTER); // Align content to the left
         titleContainer.setPadding(new Insets(0, 0, 0, windowWidth * 0.05)); // Left padding matches graphContainer's padding
 
         // Close button at the bottom
@@ -296,12 +296,14 @@ public abstract class AbstractPage implements Page {
                 + ";" +
                 "-fx-background-color: #E07A5F;" +
                 "-fx-text-fill: white;" +
-                "-fx-padding: 10 20;");
+                "-fx-font-weight: bold;" +
+                "-fx-padding: 5;" +
+                "-fx-background-radius: 5;");
         closeButton.setOnAction(e -> popupStage.close());
-        closeButton.setMaxWidth(100);
+        closeButton.setMaxWidth(80);
 
         // Layout for popup content
-        VBox popupContent = new VBox(20);
+        VBox popupContent = new VBox(5);
         popupContent.getChildren().addAll(titleContainer, graphContainer, closeButton);
         popupContent.setAlignment(Pos.CENTER);
         //popupContent.setPadding(new Insets(20));
