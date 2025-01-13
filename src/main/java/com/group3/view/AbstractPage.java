@@ -291,8 +291,8 @@ public abstract class AbstractPage implements Page {
 
         // Close button at the bottom
         Button closeButton = new Button("Close");
-        closeButton.setStyle("-fx-font-size:" + Util.getButtonFontSize(windowWidth) + "px;" +
-                "-fx-font-family: " + Util.getBoldFont(Util.getButtonFontSize(windowWidth)).getFamily()
+        closeButton.setStyle("-fx-font-size:" + 18 + "px;" +
+                "-fx-font-family: " + Util.getBoldFont(18).getFamily()
                 + ";" +
                 "-fx-background-color: #E07A5F;" +
                 "-fx-text-fill: white;" +
@@ -456,8 +456,8 @@ public abstract class AbstractPage implements Page {
             formulaVariables.setCattleInitialPopulation(Double.parseDouble(inputFields[0].getText()));
             formulaVariables.setHorseInitialPopulation(Double.parseDouble(inputFields[1].getText()));
             formulaVariables.setDeerInitialPopulation(Double.parseDouble(inputFields[2].getText()));
-            formulaVariables.setWolfInitialPopulation(Double.parseDouble(inputFields[3].getText()));
-            formulaVariables.setGrassInitialBiomass(Double.parseDouble(inputFields[4].getText()));
+            formulaVariables.setGrassInitialBiomass(Double.parseDouble(inputFields[3].getText()));
+            formulaVariables.setWolfInitialPopulation(Double.parseDouble(inputFields[4].getText()));
 
             VBox newGraphSection = createSectionGraph();
 

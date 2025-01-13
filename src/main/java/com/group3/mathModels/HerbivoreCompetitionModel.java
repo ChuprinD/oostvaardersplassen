@@ -53,7 +53,6 @@ public class HerbivoreCompetitionModel implements MathModel {
         for (int i = 1; i < steps; i++) {
             integrator.integrate(new HerbivoreCompetitionEquations(formulaVariables), t0, currentState, t0 + dt,
                     currentState);
-            
             seriesCattle[i] = currentState[0];
             seriesHorse[i] = currentState[1];
             seriesDeer[i] = currentState[2];

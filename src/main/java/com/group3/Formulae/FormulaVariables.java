@@ -12,7 +12,7 @@ public class FormulaVariables {
     private final double maxHorsePopulation = 2000; // Maximum population of horses
     private final double maxDeerPopulation = 4000; // Maximum population of deer
     private final double maxWolfPopulation = 2000; // Maximum population of wolves
-    private final double maxGrassBiomass = 2000; // Maximum biomass of grass
+    private final double maxGrassBiomass = 10000000; // Maximum biomass of grass
 
     private static double cattleInitialPopulation = DatabaseApp.getInitialPopulation("Heck cattle"); // Initial population of cattle
     private static double horseInitialPopulation = DatabaseApp.getInitialPopulation("Konik horses"); // Initial population of horses
@@ -34,14 +34,14 @@ public class FormulaVariables {
     private double grassGrowthRate = 0.5; // Intrinsic growth rate of grass
     private static double grassCarryingCapacity = DatabaseApp.getInitialGrass(2022) * 56000000 * 0.2 / 100; // Carrying capacity for grass
 
-    private double competitionHorseOnCattle = 0.2; // Competition coefficient horses on cattle
-    private double competitionDeerOnCattle = 0.4; // Competition coefficient deer on cattle
+    private double competitionHorseOnCattle = 0.4; // Competition coefficient horses on cattle
+    private double competitionDeerOnCattle = 0.2; // Competition coefficient deer on cattle
 
-    private double competitionCattleOnHorses = 0.3; // Competition coefficient cattle on horses
-    private double competitionDeerOnHorses = 0.5; // Competition coefficient deer on horses
+    private double competitionCattleOnHorses = 0.5; // Competition coefficient cattle on horses
+    private double competitionDeerOnHorses = 0.3; // Competition coefficient deer on horses
 
-    private double competitionHorsesOnDeer = 0.6; // Competition coefficient horses on deer
-    private double competitionCattleOnDeer = 0.1; // Competition coefficient cattle on deer
+    private double competitionHorsesOnDeer = 0.3; // Competition coefficient horses on deer
+    private double competitionCattleOnDeer = 0.3; // Competition coefficient cattle on deer
 
     private double predationRateWolvesOnCattle = 0.012; // Predation rate of wolves on cattle
     private double predationRateWolvesOnHorses = 0.06; // Predation rate of wolves on horses
@@ -107,6 +107,6 @@ public class FormulaVariables {
         FormulaVariables.cattleInitialPopulation = DatabaseApp.getInitialPopulation("Heck cattle"); // Initial population of cattle
         FormulaVariables.horseInitialPopulation = DatabaseApp.getInitialPopulation("Konik horses"); // Initial population of horses
         FormulaVariables.deerInitialPopulation = DatabaseApp.getInitialPopulation("Red deer"); // Initial population of deer
-        FormulaVariables.grassInitialBiomass = DatabaseApp.getInitialGrass(2022); // Initial biomass of grass
+        FormulaVariables.grassInitialBiomass = DatabaseApp.getInitialGrass(2022) * 0.2 * 56000000 / 100; // Initial biomass of grass
     }
 }
