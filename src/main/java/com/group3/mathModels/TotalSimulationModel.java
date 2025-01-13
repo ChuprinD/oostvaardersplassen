@@ -20,6 +20,7 @@ import org.jfree.data.xy.XYSeriesCollection;
 import com.group3.Formulae.FormulaVariables;
 
 import java.awt.Font;
+import java.util.Arrays;
 import java.awt.BasicStroke;
 import java.awt.Color;
 
@@ -52,9 +53,11 @@ public class TotalSimulationModel implements MathModel {
         }
 
         FirstOrderIntegrator integrator = new DormandPrince853Integrator(1.0e-5, 100.0, 1.0e-8, 1.0e-8);
+        
         double[] currentState = initialPopulations.clone();
         for (int i = 1; i < steps; i++) {
-            integrator.integrate(new PredatorPreyEquations(formulaVariables), t0, currentState, seriesTime[i], currentState);
+            integrator.integrate(new PredatorPreyEquations(formulaVariables), t0, currentState, seriesTime[i],
+                    currentState);
             seriesCattle[i] = currentState[0];
             seriesHorse[i] = currentState[1];
             seriesDeer[i] = currentState[2];
@@ -172,7 +175,6 @@ public class TotalSimulationModel implements MathModel {
             yDot[4] = formulaVariables.getGrassGrowthRate() * grassBiomass * (1 - grassBiomass / formulaVariables.getGrassCarryingCapacity()) - (formulaVariables.getGrassConsumptionRateCattle() * cattlePopulation + formulaVariables.getGrassConsumptionRateHorses() * horsePopulation + formulaVariables.getGrassConsumptionRateDeer() * deerPopulation) * grassBiomass;
             
             // dW/dt
-            System.out.println(grassBiomass);
         }
     }
 }

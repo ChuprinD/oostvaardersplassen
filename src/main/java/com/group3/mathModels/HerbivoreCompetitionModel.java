@@ -56,8 +56,9 @@ public class HerbivoreCompetitionModel implements MathModel {
             seriesCattle[i] = currentState[0];
             seriesHorse[i] = currentState[1];
             seriesDeer[i] = currentState[2];
-            t0 += dt; 
+            t0 += dt;
         }
+        
         XYSeries deerSeries = new XYSeries("Deer");
         XYSeries cattleSeries = new XYSeries("Cattle");
         XYSeries horsesSeries = new XYSeries("Horses");

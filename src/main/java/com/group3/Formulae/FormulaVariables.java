@@ -43,17 +43,17 @@ public class FormulaVariables {
     private double competitionHorsesOnDeer = 0.3; // Competition coefficient horses on deer
     private double competitionCattleOnDeer = 0.3; // Competition coefficient cattle on deer
 
-    private double predationRateWolvesOnCattle = 0.012; // Predation rate of wolves on cattle
-    private double predationRateWolvesOnHorses = 0.06; // Predation rate of wolves on horses
-    private double predationRateWolvesOnDeer = 0.18; // Predation rate of wolves on deer
+    private double predationRateWolvesOnCattle = 0.0012; // Predation rate of wolves on cattle
+    private double predationRateWolvesOnHorses = 0.006; // Predation rate of wolves on horses
+    private double predationRateWolvesOnDeer = 0.018; // Predation rate of wolves on deer
 
-    private double conversionEfficiencyCattleToWolves = 0.07; // Conversion efficiency of cattle into wolf offspring
-    private double conversionEfficiencyHorsesToWolves = 0.07; // Conversion efficiency of horses into wolf offspring
-    private double conversionEfficiencyDeerToWolves = 0.07; // Conversion efficiency of deer into wolf offspring
+    private double conversionEfficiencyCattleToWolves = 0.007; // Conversion efficiency of cattle into wolf offspring
+    private double conversionEfficiencyHorsesToWolves = 0.007; // Conversion efficiency of horses into wolf offspring
+    private double conversionEfficiencyDeerToWolves = 0.007; // Conversion efficiency of deer into wolf offspring
 
-    private double grassConsumptionRateCattle = 5.165; // Consumption rate of grass by cattle
-    private double grassConsumptionRateHorses = 3.285; // Consumption rate of grass by horses
-    private double grassConsumptionRateDeer = 1825; // Consumption rate of grass by deer
+    private double grassConsumptionRateCattle = 0.01; // Consumption rate of grass by cattle
+    private double grassConsumptionRateHorses = 0.01; // Consumption rate of grass by horses
+    private double grassConsumptionRateDeer = 0.01; // Consumption rate of grass by deer
     
     public double getCattleInitialPopulation() {
         return cattleInitialPopulation;

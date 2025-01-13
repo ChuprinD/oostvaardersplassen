@@ -2,7 +2,7 @@ package com.group3.view;
 
 import com.group3.Formulae.FormulaVariables;
 import com.group3.controller.NavigationController;
-import com.group3.mathModels.PreyPredatorModel;
+import com.group3.mathModels.TotalSimulationModel;
 
 import javafx.scene.layout.VBox;
 
@@ -13,7 +13,7 @@ public class TotalSimulation extends AbstractPage {
 
     @Override
     protected VBox createSectionGraph() {
-        return createSectionGraph("Total Simulation", new PreyPredatorModel());
+        return createSectionGraph("Total Simulation", new TotalSimulationModel());
     }
 
     @Override
