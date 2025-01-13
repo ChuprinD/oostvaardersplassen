@@ -3,7 +3,7 @@ package com.group3.controller;
 import com.group3.view.Page;
 import com.group3.view.PageFactory;
 import com.group3.view.MainPage;
-import com.group3.mathModels.FormulaVariables;
+import com.group3.Formulae.FormulaVariables;
 import com.group3.view.AbstractPage;
 
 import java.util.HashMap;

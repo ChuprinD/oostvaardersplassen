@@ -17,6 +17,8 @@ import org.jfree.chart.ui.VerticalAlignment;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
+import com.group3.Formulae.FormulaVariables;
+
 import java.awt.Font;
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -164,7 +166,7 @@ public class PreyPredatorModel implements MathModel {
             yDot[0] = formulaVariables.getCattleGrowthRate() * cattlePopulation * (1 - (cattlePopulation + formulaVariables.getCompetitionHorseOnCattle() * horsePopulation + formulaVariables.getCompetitionDeerOnCattle() * deerPopulation) / formulaVariables.getCattleCarryingCapacity()) - formulaVariables.getPredationRateWolvesOnCattle() * wolfPopulation * cattlePopulation;
             yDot[1] = formulaVariables.getHorseGrowthRate() * horsePopulation * (1 - (horsePopulation + formulaVariables.getCompetitionCattleOnHorses() * cattlePopulation  + formulaVariables.getCompetitionDeerOnHorses() * deerPopulation) / formulaVariables.getHorseCarryingCapacity()) - formulaVariables.getPredationRateWolvesOnHorses() * wolfPopulation * horsePopulation;
             yDot[2] = formulaVariables.getDeerGrowthRate() * deerPopulation * (1 - (deerPopulation + formulaVariables.getCompetitionHorsesOnDeer() * horsePopulation + formulaVariables.getCompetitionCattleOnDeer() * cattlePopulation) / formulaVariables.getDeerCarryingCapacity()) - formulaVariables.getPredationRateWolvesOnDeer() * wolfPopulation * deerPopulation;
-            yDot[3] = formulaVariables.getConversionEfficiencyCattleToWolves() * wolfPopulation * (formulaVariables.predationRateWolvesOnCattle() * cattlePopulation + formulaVariables.predationRateWolvesOnHorses() * horsePopulation + formulaVariables.predationRateWolvesOnDeer() * deerPopulation) - formulaVariables.getWolfDeathRate() * wolfPopulation;
+            yDot[3] = formulaVariables.getConversionEfficiencyCattleToWolves() * wolfPopulation * (formulaVariables.getPredationRateWolvesOnCattle() * cattlePopulation + formulaVariables.getPredationRateWolvesOnHorses() * horsePopulation + formulaVariables.getPredationRateWolvesOnDeer() * deerPopulation) - formulaVariables.getWolfDeathRate() * wolfPopulation;
             // dW/dt
         }
     }

@@ -5,4 +5,5 @@
         "lib/**/*.jar",
         "C:/javafx-sdk-21.0.5/lib/*.jar"
     ],
+    "java.debug.settings.onBuildFailureProceed": true,
 }

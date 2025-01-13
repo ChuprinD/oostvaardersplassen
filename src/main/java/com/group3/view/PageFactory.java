@@ -1,7 +1,7 @@
 package com.group3.view;
 
+import com.group3.Formulae.FormulaVariables;
 import com.group3.controller.NavigationController;
-import com.group3.mathModels.FormulaVariables;
 
 public class PageFactory {
     

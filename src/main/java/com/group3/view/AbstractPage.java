@@ -30,8 +30,8 @@ import java.io.File;
 
 import javax.swing.SwingUtilities;
 
+import com.group3.Formulae.FormulaVariables;
 import com.group3.controller.NavigationController;
-import com.group3.mathModels.FormulaVariables;
 import com.group3.mathModels.MathModel;
 import com.group3.utils.Util;
 

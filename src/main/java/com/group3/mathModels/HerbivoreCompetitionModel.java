@@ -17,6 +17,8 @@ import org.jfree.chart.ui.VerticalAlignment;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
+import com.group3.Formulae.FormulaVariables;
+
 import java.awt.Font;
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -57,7 +59,6 @@ public class HerbivoreCompetitionModel implements MathModel {
             seriesDeer[i] = currentState[2];
             t0 += dt; 
         }
-        
         XYSeries deerSeries = new XYSeries("Deer");
         XYSeries cattleSeries = new XYSeries("Cattle");
         XYSeries horsesSeries = new XYSeries("Horses");
