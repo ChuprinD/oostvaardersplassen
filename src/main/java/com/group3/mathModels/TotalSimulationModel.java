@@ -28,7 +28,7 @@ public class TotalSimulationModel implements MathModel {
     public XYSeriesCollection calculateData() {
         double t0 = 0.0;
         double t1 = 10.0;
-        double dt = 1;
+        double dt = 0.1;
         int steps = (int) ((t1 - t0) / dt);
 
         double[] initialPopulations = { formulaVariables.getCattleInitialPopulation(), formulaVariables.getHorseInitialPopulation(), formulaVariables.getDeerInitialPopulation(), formulaVariables.getWolfInitialPopulation(), formulaVariables.getGrassInitialBiomass() };
@@ -60,7 +60,6 @@ public class TotalSimulationModel implements MathModel {
             seriesDeer[i] = currentState[2];
             seriesWolf[i] = currentState[3];
             seriesGrass[i] = currentState[4];
-            //System.out.println(currentState[3]);
             t0 += dt;
         }
         
@@ -68,14 +67,12 @@ public class TotalSimulationModel implements MathModel {
         XYSeries cattleSeries = new XYSeries("Cattle");
         XYSeries horsesSeries = new XYSeries("Horses");
         XYSeries wolfSeries = new XYSeries("Wolves");
-        //XYSeries grassSeries = new XYSeries("Grass");
 
         for (int i = 0; i < steps; i++) {
             deerSeries.add(seriesTime[i], seriesDeer[i]);
             cattleSeries.add(seriesTime[i], seriesCattle[i]);
             horsesSeries.add(seriesTime[i], seriesHorse[i]);
             wolfSeries.add(seriesTime[i], seriesWolf[i]);
-            //grassSeries.add(seriesTime[i], seriesGrass[i]);
         }
 
         XYSeriesCollection dataset = new XYSeriesCollection();
@@ -83,7 +80,6 @@ public class TotalSimulationModel implements MathModel {
         dataset.addSeries(cattleSeries);
         dataset.addSeries(horsesSeries);
         dataset.addSeries(wolfSeries);
-        //dataset.addSeries(grassSeries);
 
         return dataset;
     }
@@ -119,19 +115,16 @@ public class TotalSimulationModel implements MathModel {
         renderer.setSeriesPaint(1, Color.BLUE);
         renderer.setSeriesPaint(2, Color.GREEN);
         renderer.setSeriesPaint(3, Color.ORANGE);
-        //renderer.setSeriesPaint(4, Color.PINK);
 
         renderer.setSeriesStroke(0, new BasicStroke(2.0f));
         renderer.setSeriesStroke(1, new BasicStroke(2.0f));
         renderer.setSeriesStroke(2, new BasicStroke(2.0f));
         renderer.setSeriesStroke(3, new BasicStroke(2.0f));
-        //renderer.setSeriesStroke(4, new BasicStroke(2.0f));
 
         renderer.setSeriesShapesVisible(0, false);
         renderer.setSeriesShapesVisible(1, false);
         renderer.setSeriesShapesVisible(2, false);
         renderer.setSeriesShapesVisible(3, false);
-        //renderer.setSeriesShapesVisible(4, false);
         plot.setRenderer(renderer);
 
         LegendTitle legend = xylineChart.getLegend();
