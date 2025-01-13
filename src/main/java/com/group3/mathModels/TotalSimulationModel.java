@@ -87,7 +87,7 @@ public class TotalSimulationModel implements MathModel {
     public ChartPanel getGraph(double width, double height, FormulaVariables formulaVariables) {
         this.formulaVariables = formulaVariables;
         JFreeChart xylineChart = ChartFactory.createXYLineChart(
-                "",
+                "3 layered simulation ",
                 "Time",
                 "Population",
                 calculateData(),
@@ -167,7 +167,7 @@ public class TotalSimulationModel implements MathModel {
             yDot[0] = formulaVariables.getCattleGrowthRate() * cattlePopulation * (1 - (cattlePopulation + formulaVariables.getCompetitionHorseOnCattle() * horsePopulation + formulaVariables.getCompetitionDeerOnCattle() * deerPopulation) / formulaVariables.getCattleCarryingCapacity()) - formulaVariables.getPredationRateWolvesOnCattle() * wolfPopulation * cattlePopulation + formulaVariables.getGrassConsumptionRateCattle() * cattlePopulation * grassBiomass;
             yDot[1] = formulaVariables.getHorseGrowthRate() * horsePopulation * (1 - (horsePopulation + formulaVariables.getCompetitionCattleOnHorses() * cattlePopulation  + formulaVariables.getCompetitionDeerOnHorses() * deerPopulation) / formulaVariables.getHorseCarryingCapacity()) - formulaVariables.getPredationRateWolvesOnHorses() * wolfPopulation * horsePopulation + formulaVariables.getGrassConsumptionRateHorses() * horsePopulation * grassBiomass;
             yDot[2] = formulaVariables.getDeerGrowthRate() * deerPopulation * (1 - (deerPopulation + formulaVariables.getCompetitionHorsesOnDeer() * horsePopulation + formulaVariables.getCompetitionCattleOnDeer() * cattlePopulation) / formulaVariables.getDeerCarryingCapacity()) - formulaVariables.getPredationRateWolvesOnDeer() * wolfPopulation * deerPopulation + formulaVariables.getGrassConsumptionRateDeer() * deerPopulation * grassBiomass;
-            yDot[3] = formulaVariables.getWolfGrowthRate() * wolfPopulation * (formulaVariables.getConversionEfficiencyCattleToWolves() * cattlePopulation + formulaVariables.getConversionEfficiencyHorsesToWolves() * horsePopulation + formulaVariables.getConversionEfficiencyDeerToWolves() * deerPopulation - formulaVariables.getWolfCarryingCapacity()) - formulaVariables.getWolfDeathRate() * wolfPopulation;
+            yDot[3] = formulaVariables.getConversionEfficiencyCattleToWolves() * wolfPopulation * (formulaVariables.predationRateWolvesOnCattle() * cattlePopulation + formulaVariables.predationRateWolvesOnHorses() * horsePopulation + formulaVariables.predationRateWolvesOnDeer() * deerPopulation) - formulaVariables.getWolfDeathRate() * wolfPopulation;
             yDot[4] = formulaVariables.getGrassGrowthRate() * grassBiomass * (1 - grassBiomass / formulaVariables.getGrassCarryingCapacity()) - (formulaVariables.getGrassConsumptionRateCattle() * cattlePopulation + formulaVariables.getGrassConsumptionRateHorses() * horsePopulation + formulaVariables.getGrassConsumptionRateDeer() * deerPopulation) * grassBiomass;
             // dW/dt
         }

@@ -5,14 +5,14 @@ import com.group3.database.DatabaseApp;
 public class LotkaVolterra {
 
     // Parameters
-    private static final double cattleGrowthRate = 0.1; // Intrinsic growth rate of cattle MySQL DB
+    private static final double cattleGrowthRate = 0.14; // Intrinsic growth rate of cattle MySQL DB
     private static final double cattleCarryingCapacity = 1000; // Carrying capacity for cattle  static
-    private static final double horseGrowthRate = 0.1; // Intrinsic growth rate of horses MySQL DB
+    private static final double horseGrowthRate = 0.13; // Intrinsic growth rate of horses MySQL DB
     private static final double horseCarryingCapacity = 1000; // Carrying capacity for horses  static
-    private static final double deerGrowthRate = 0.1; // Intrinsic growth rate of deer MySQL DB
+    private static final double deerGrowthRate = 0.19; // Intrinsic growth rate of deer MySQL DB
     private static final double deerCarryingCapacity = 1000; // Carrying capacity for deer static
     private static final double wolfGrowthRate = 0.1; // Intrinsic growth rate of wolves static
-    private static final double wolfCarryingCapacity = 1000; // Carrying capacity for wolvs static
+    private static final double wolfCarryingCapacity = 1000; // Carrying capacity for wolves static
     private static final double grassGrowthRate = 0.1; // Intrinsic growth rate of grass MySQl DB
     private static final double grassCarryingCapacity = 1000; // Carrying capacity for grass static
     private static final double competitionHorseOnCattle = 0.1; // Competition coefficient horses on cattle static
