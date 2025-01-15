@@ -6,7 +6,7 @@ import javafx.stage.Stage;
 
 import com.group3.controller.NavigationController;
 
-public class Main extends Application {
+    public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
         // Create the navigation controller

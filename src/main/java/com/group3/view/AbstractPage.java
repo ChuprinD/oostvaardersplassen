@@ -45,16 +45,19 @@ public abstract class AbstractPage implements Page {
     protected BorderPane root; // Main root element
     protected VBox descriptionSection; // Description section of the page
     protected VBox graphSection; // Graph section of the page
+    protected VBox secondGraphSection;
     protected ScrollPane scrollPane; // Scrollable area
     protected FormulaVariables formulaVariables;
+    protected int numberOfGraphs;
 
     private final double topBarHeight = 23;
 
-    public AbstractPage(String pageName, String graphTitle, NavigationController navigationController, FormulaVariables formulaVariables) {
+    public AbstractPage(String pageName, String graphTitle, NavigationController navigationController, FormulaVariables formulaVariables, int numberOfGraphs) {
         this.pageName = pageName;
         this.navigationController = navigationController;
         this.graphTitle = graphTitle;
         this.formulaVariables = formulaVariables;
+        this.numberOfGraphs = numberOfGraphs;
 
         // Determine screen dimensions
         this.windowWidth = Screen.getPrimary().getVisualBounds().getWidth();
@@ -94,6 +97,8 @@ public abstract class AbstractPage implements Page {
         
         // Add sections
         graphSection = createSectionGraph();
+        if (numberOfGraphs > 1)
+            secondGraphSection = createSectionSecondGraph();
         descriptionSection = createSectionDescription();
 
         Region spacer = new Region();
@@ -102,8 +107,10 @@ public abstract class AbstractPage implements Page {
         spacer.setStyle("-fx-background-color: transparent;");
 
         HBox footer = commonComponents.createFooter();
-
-        mainContent.getChildren().addAll(spacer, graphSection, descriptionSection, footer);
+        if (numberOfGraphs > 1)
+            mainContent.getChildren().addAll(spacer, graphSection, secondGraphSection, descriptionSection, footer);
+        else
+            mainContent.getChildren().addAll(spacer, graphSection, descriptionSection, footer);
 
         // Scrollable area
         scrollPane = new ScrollPane();
@@ -129,7 +136,10 @@ public abstract class AbstractPage implements Page {
 
     
     protected abstract VBox createSectionGraph();
+
     protected abstract VBox createSectionDescription();
+
+    protected abstract VBox createSectionSecondGraph();
 
 
     /**
@@ -144,7 +154,8 @@ public abstract class AbstractPage implements Page {
     protected VBox createSectionGraph(String title, MathModel graphGenerator) {
         // Title for the graph section
         Label graphTitle = new Label(this.graphTitle);
-        graphTitle.setStyle("-fx-font-weight: bold; -fx-font-size: " + Util.getTitleFontSize(windowWidth) + "px; -fx-text-fill: #000000;");
+        graphTitle.setStyle("-fx-font-weight: bold; -fx-font-size: " + Util.getTitleFontSize(windowWidth)
+                + "px; -fx-text-fill: #000000;");
         graphTitle.setFont(Util.getBoldFont(Util.getTitleFontSize(windowWidth)));
         graphTitle.setAlignment(Pos.TOP_CENTER);
 
@@ -158,8 +169,81 @@ public abstract class AbstractPage implements Page {
         });
         graphContainer.getChildren().add(swingNode);
         graphContainer.setMaxWidth(windowWidth * 0.9);
-        graphContainer.setOnMouseClicked(event -> openGraphPopup(title, graphGenerator));
-        swingNode.setOnMouseClicked(event -> openGraphPopup(title, graphGenerator));
+        graphContainer.setOnMouseClicked(event -> openGraphPopup(title, graphGenerator, 1));
+        swingNode.setOnMouseClicked(event -> openGraphPopup(title, graphGenerator, 1));
+
+        // Info button ("i")
+        Image imageInfoButton = new Image(CommonComponents.class.getResourceAsStream("/images/icons/infoButton.png"));
+        ImageView infoButton = new ImageView(imageInfoButton);
+        infoButton.setFitHeight(windowHeight * 0.04);
+        infoButton.setFitWidth(windowWidth * 0.04);
+        infoButton.setPreserveRatio(true);
+        infoButton.setOnMouseClicked(e -> {
+            javafx.application.Platform.runLater(() -> {
+                scrollToDescription();
+            });
+        });
+
+        // Download button
+        Image imageDownloadButton = new Image(
+                CommonComponents.class.getResourceAsStream("/images/icons/downloadButton.png"));
+        ImageView downloadButton = new ImageView(imageDownloadButton);
+        downloadButton.setFitHeight(windowHeight * 0.04);
+        downloadButton.setFitWidth(windowWidth * 0.04);
+        downloadButton.setPreserveRatio(true);
+        downloadButton.setOnMouseClicked(e -> {
+            handleDownloadAction(this.graphTitle);
+        });
+
+        // Settings button
+        Image imageSettingsButton = new Image(
+                CommonComponents.class.getResourceAsStream("/images/icons/settingsButton.png"));
+        ImageView settingsButton = new ImageView(imageSettingsButton);
+        settingsButton.setFitHeight(windowHeight * 0.04);
+        settingsButton.setFitWidth(windowWidth * 0.04);
+        settingsButton.setPreserveRatio(true);
+        settingsButton.setOnMouseClicked(e -> {
+            openSettings();
+        });
+
+        VBox buttons = new VBox(windowHeight * 0.01);
+        buttons.getChildren().addAll(settingsButton, downloadButton, infoButton);
+        buttons.setAlignment(Pos.BOTTOM_LEFT);
+
+        HBox graphBox = new HBox(windowWidth * 0.007);
+        graphBox.getChildren().addAll(graphContainer, buttons);
+        graphBox.setAlignment(Pos.BOTTOM_CENTER);
+
+        VBox graphSection = new VBox(windowHeight * 0.02, graphTitle, graphBox);
+        graphSection.setPrefWidth(windowWidth);
+        graphSection.setAlignment(Pos.CENTER);
+        graphSection.setStyle("-fx-background-color: #a8c28c;" +
+                "-fx-border-width: 2;" +
+                "-fx-border-radius: 6;" +
+                "-fx-background-radius: 6");
+        graphSection.setMinHeight(windowHeight - windowHeight * 0.07 - 2 * windowHeight * 0.03 - topBarHeight);
+        graphSection.setOpacity(0.9);
+        return graphSection;
+    }
+    
+    protected VBox createSectionSecondGraph(String title, MathModel graphGenerator) {
+        // Title for the graph section
+        Label graphTitle = new Label(this.graphTitle);
+        graphTitle.setStyle("-fx-font-weight: bold; -fx-font-size: " + Util.getTitleFontSize(windowWidth) + "px; -fx-text-fill: #000000;");
+        graphTitle.setFont(Util.getBoldFont(Util.getTitleFontSize(windowWidth)));
+        graphTitle.setAlignment(Pos.TOP_CENTER);
+
+        // Graph 
+        StackPane graphContainer = new StackPane();
+        graphContainer.setStyle("-fx-background-color: #ffffff; -fx-border-radius: 6; -fx-background-radius: 6;");
+        graphContainer.setPadding(new Insets(5));
+        SwingNode swingNode = new SwingNode();
+        graphGenerator.getSecondGraph(windowWidth * 0.7, windowHeight * 0.6, formulaVariables, swingNode);
+      
+        graphContainer.getChildren().add(swingNode);
+        graphContainer.setMaxWidth(windowWidth * 0.9);
+        graphContainer.setOnMouseClicked(event -> openGraphPopup(title, graphGenerator, 2));
+        swingNode.setOnMouseClicked(event -> openGraphPopup(title, graphGenerator, 2));
 
         // Info button ("i")
         Image imageInfoButton = new Image(CommonComponents.class.getResourceAsStream("/images/icons/infoButton.png"));
@@ -257,7 +341,7 @@ public abstract class AbstractPage implements Page {
      * @param title The title of the graph.
      * @param graphGenerator The MathModel implementation that generates the graph.
      */
-    private void openGraphPopup(String title, MathModel graphGenerator) {
+    private void openGraphPopup(String title, MathModel graphGenerator, int graphNumber) {
         // Create a new stage for the popup
         Stage popupStage = new Stage();
         popupStage.setTitle("Graph Popup");
@@ -269,9 +353,14 @@ public abstract class AbstractPage implements Page {
 
         // Add SwingNode with graph content
         SwingNode enlargedGraph = new SwingNode();
-        SwingUtilities.invokeLater(() -> {
-            enlargedGraph.setContent(graphGenerator.getGraph(windowWidth * 0.9, windowHeight * 0.8, formulaVariables));
-        });
+        if (graphNumber == 1) {
+            SwingUtilities.invokeLater(() -> {
+                enlargedGraph.setContent(graphGenerator.getGraph(windowWidth * 0.9, windowHeight * 0.8, formulaVariables));
+            }); 
+        } else {
+            graphGenerator.getSecondGraph(windowWidth * 0.9, windowHeight * 0.8, formulaVariables, enlargedGraph);
+        }
+        
         graphContainer.getChildren().add(enlargedGraph);
         graphContainer.setMaxWidth(windowWidth * 0.9);
 
@@ -460,11 +549,16 @@ public abstract class AbstractPage implements Page {
             formulaVariables.setWolfInitialPopulation(Double.parseDouble(inputFields[4].getText()));
 
             VBox newGraphSection = createSectionGraph();
+            if (numberOfGraphs > 1) {
+                int secondGraphIndex = ((VBox) scrollPane.getContent()).getChildren().indexOf(secondGraphSection);
+                secondGraphSection = createSectionSecondGraph();
+                ((VBox) scrollPane.getContent()).getChildren().set(secondGraphIndex, secondGraphSection);
+            }
 
             int graphIndex = ((VBox) scrollPane.getContent()).getChildren().indexOf(graphSection);
             ((VBox) scrollPane.getContent()).getChildren().set(graphIndex, newGraphSection);
-
             graphSection = newGraphSection;
+            
             dialog.close();
         });
 

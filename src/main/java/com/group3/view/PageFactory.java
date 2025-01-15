@@ -18,11 +18,11 @@ public class PageFactory {
     public static AbstractPage createPage(String pageType, NavigationController navigationController, FormulaVariables formulaVariables) {
         switch (pageType) {
             case "Herbivore Competition":
-                return new HerbivorePage(navigationController, formulaVariables);
+                return new HerbivorePage(navigationController, formulaVariables, 1);
             case "Predator-Prey Dynamics":
-                return new PreyPredator(navigationController, formulaVariables);
+                return new PreyPredator(navigationController, formulaVariables, 2);
             case "Total Simulation":
-                return new TotalSimulation(navigationController, formulaVariables);
+                return new TotalSimulation(navigationController, formulaVariables, 1);
             default:
                 throw new IllegalArgumentException("Unknown page type: " + pageType);
         }

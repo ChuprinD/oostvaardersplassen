@@ -18,6 +18,9 @@ import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
 import com.group3.Formulae.FormulaVariables;
+import com.group3.mathModels.HerbivoreCompetitionModel.HerbivoreCompetitionEquations;
+
+import javafx.embed.swing.SwingNode;
 
 import java.awt.Font;
 import java.awt.BasicStroke;
@@ -27,7 +30,7 @@ public class HerbivoreCompetitionModel implements MathModel {
     FormulaVariables formulaVariables;
     public XYSeriesCollection calculateData() {
         double t0 = 0.0;
-        double t1 = 10.0;
+        double t1 = 100.0;
         double dt = 0.1;
         int steps = (int) ((t1 - t0) / dt);
 
@@ -133,6 +136,10 @@ public class HerbivoreCompetitionModel implements MathModel {
         chartPanel.setPreferredSize(new java.awt.Dimension((int) width, (int) height));
 
         return chartPanel;
+    }
+
+    @Override
+    public void getSecondGraph(double width, double height, FormulaVariables formulaVariables, SwingNode swingNode) {
     }
     
     static class HerbivoreCompetitionEquations implements FirstOrderDifferentialEquations {

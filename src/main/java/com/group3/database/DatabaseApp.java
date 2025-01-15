@@ -10,8 +10,7 @@ import java.util.List;
 public class DatabaseApp {
     private static final String DB_URL = "jdbc:mysql://localhost:3306/oostvaardersplassen";
     private static final String USER = "root";
-    private static final String PASS = "0525";
-    //private static final String PASS = "12weuser321!";
+    private static final String PASS = "YOUR_PASSWORD";   
     
     private static Connection getConnection() throws Exception {
         Class.forName("com.mysql.cj.jdbc.Driver");

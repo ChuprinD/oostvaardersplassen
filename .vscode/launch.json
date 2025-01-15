@@ -2,34 +2,6 @@
     "configurations": [
         {
             "type": "java",
-            "name": "PopulationGrowthRate",
-            "request": "launch",
-            "mainClass": "com.group3.Formulae.PopulationGrowthRate",
-            "projectName": "oostvaardersplassen"
-        },
-        {
-            "type": "java",
-            "name": "test",
-            "request": "launch",
-            "mainClass": "com.group3.mathModels.test",
-            "projectName": "oostvaardersplassen"
-        },
-        {
-            "type": "java",
-            "name": "DatabaseApp",
-            "request": "launch",
-            "mainClass": "com.group3.database.DatabaseApp",
-            "projectName": "oostvaardersplassen"
-        },
-        {
-            "type": "java",
-            "name": "LotkaVolterra",
-            "request": "launch",
-            "mainClass": "com.group3.mathModels.LotkaVolterra",
-            "projectName": "oostvaardersplassen"
-        },
-        {
-            "type": "java",
             "name": "Main",
             "request": "launch",
             "mainClass": "com.group3.Main",
