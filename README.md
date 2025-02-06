@@ -20,15 +20,15 @@ conservation efforts in other areas.
 This is how you set up the code to run it from source.
 
 1. Run the clone command 
-'git clone https://github.com/ChuprinD/oostvaardersplassen'
+`git clone https://github.com/ChuprinD/oostvaardersplassen`
 2. Create an empty sql database 
-'CREATE DATABASE database_name;'
+`CREATE DATABASE database_name;`
 3. Use the mysql command in the terminal 
-'mysql -u username -p database_name < [path_to_project]/ src/main/resources/DB_Mysql/ oostvaardersplassen3.0.sql'
+`mysql -u username -p database_name < [path_to_project]/ src/main/resources/DB_Mysql/ oostvaardersplassen3.0.sql`
 4. Go to [path_to_project]/src/main/java/com/group3/database/ DatabaseApp.java 
 Change variable PASS to your sql password
 5. From project folder run 
-'mvn clean install'
+`mvn clean install`
 6. Download javafx-sdk-21.0.5 from official [site](https://openjfx.io/)
 7. From project folder run 
-'java --module-path [path_to_javaFX]/lib --add-modules javafx.controls,javafx.fxml,javafx.swing -jar target/oostvaardersplassen-1.0-SNAPSHOT.jar'
+`java --module-path [path_to_javaFX]/lib --add-modules javafx.controls,javafx.fxml,javafx.swing -jar target/oostvaardersplassen-1.0-SNAPSHOT.jar`
