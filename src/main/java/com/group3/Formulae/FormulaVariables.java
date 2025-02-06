@@ -19,7 +19,7 @@ public class FormulaVariables {
     private static double cattleInitialPopulation = DatabaseApp.getInitialPopulation("Heck cattle"); // Initial population of cattle
     private static double horseInitialPopulation = DatabaseApp.getInitialPopulation("Konik horses"); // Initial population of horses
     private static double deerInitialPopulation = DatabaseApp.getInitialPopulation("Red deer"); // Initial population of deer
-    private double wolfInitialPopulation = 30; // Initial population of wolves
+    private double wolfInitialPopulation = 10; // Initial population of wolves
     private static double grassInitialBiomass = (double) DatabaseApp.getInitialGrass(2022) * oostvaardersplassenArea * grassDensity / 100; // Initial biomass of grass
 
     private double wolfDeathRate = 0.5;
